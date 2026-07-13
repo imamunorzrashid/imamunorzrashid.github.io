@@ -35,3 +35,65 @@
   .edu-result{text-align:left;grid-template-columns:max-content max-content;column-gap:10px;align-items:baseline}
   .edu-result span{margin-bottom:0}
 }
+
+
+/* Refined V2 layout fixes */
+html{scroll-padding-top:92px}
+
+/* Education: neutralize legacy .education div rules that caused overlap */
+.education-card div{display:block;justify-content:initial;padding-top:0;margin-top:0;border-top:0}
+.education-card{min-height:150px}
+.edu-result{display:grid!important;grid-template-columns:1fr!important;gap:0!important;text-align:right}
+.edu-result strong{display:block;line-height:1.25}
+.edu-result span{display:block;margin:2px 0 10px}
+
+/* Compact research figures: contained, centered, no horizontal overflow */
+.research-visual.compact-visual{width:min(100%,1050px);margin:30px auto 10px;padding:12px}
+.research-visual.compact-visual img{width:100%;height:clamp(260px,34vw,470px);max-height:none;object-fit:contain}
+.research-block{overflow:hidden}
+
+/* Reusable 50/50 cards */
+.split-list{display:grid;gap:22px}
+.split-card{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);min-height:320px;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.018));transition:transform .3s ease,border-color .3s ease}
+.split-card:hover{transform:translateY(-5px);border-color:rgba(102,227,196,.55)}
+.split-media{min-width:0;min-height:300px;overflow:hidden;background:var(--panel)}
+.split-media img{width:100%;height:100%;display:block;object-fit:contain;transition:transform .45s ease}
+.split-card:hover .split-media img{transform:scale(1.025)}
+.split-content{padding:38px;display:flex;flex-direction:column;justify-content:center}
+.card-kicker{color:var(--accent);font-size:.72rem;letter-spacing:.13em;font-weight:700}
+.split-content h3{font:700 clamp(1.6rem,2.6vw,2.5rem) Manrope;margin:22px 0 14px;line-height:1.1}
+.split-content p{color:var(--muted);line-height:1.7}
+.split-content .tags{margin-top:18px}
+.split-content .text-link{margin-top:20px}
+.placeholder-media{display:grid;place-items:center;align-content:center;gap:8px;text-align:center;padding:30px;background:linear-gradient(135deg,rgba(102,227,196,.08),rgba(88,166,255,.06))}
+.placeholder-media span{font:700 1.05rem Manrope;color:#c7d6dc}
+.placeholder-media small{color:var(--muted);font-size:.75rem}
+.certificate-media{background:#f5f5f5}
+.certificate-media img{padding:14px}
+
+/* Session split */
+.session-card{display:grid;grid-template-columns:1.25fr .75fr;min-height:430px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.session-content{padding:55px 45px 55px 0;display:flex;flex-direction:column;justify-content:center}
+.session-content h3{font:700 clamp(2.2rem,4vw,4rem) Manrope;line-height:1.05;margin:34px 0 24px}
+.session-content>p{color:var(--muted);font-size:1.05rem;line-height:1.7}
+.session-media{min-height:430px}
+
+/* Scroll-spy nav */
+.nav-links a{position:relative;padding:8px 0;transition:color .25s ease}
+.nav-links a::after{content:"";position:absolute;left:0;right:0;bottom:1px;height:2px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .25s ease}
+.nav-links a.active{color:var(--accent)}
+.nav-links a.active::after{transform:scaleX(1)}
+
+@media(max-width:900px){
+  .education-card{grid-template-columns:120px minmax(0,1fr) 150px}
+  .split-content{padding:28px}
+}
+@media(max-width:780px){
+  .education-card{grid-template-columns:1fr;min-height:0}
+  .edu-result{display:grid!important;grid-template-columns:max-content max-content!important;column-gap:10px!important;text-align:left}
+  .split-card,.session-card{grid-template-columns:1fr}
+  .split-media,.session-media{min-height:240px}
+  .session-content{padding:45px 0}
+  .project-split .split-media{order:0}
+  .research-visual.compact-visual img{height:clamp(220px,62vw,380px)}
+}

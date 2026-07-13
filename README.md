@@ -54,3 +54,11 @@ education history, additional projects, honors and awards, technical session, se
 - Separated About and Education.
 - Unified RUET, college, and high-school education styling.
 - Added two selected research figures without converting the site into a gallery.
+
+## Refined V2 fixes
+- Fixed Education overlap caused by a legacy CSS selector.
+- Constrained selected research figures to the content width and viewport.
+- Converted certification entries to 50/50 certificate-preview/detail cards.
+- Converted project entries to 50/50 image/detail cards with explicit image placeholders.
+- Added a right-side visual slot for the technical session.
+- Added scroll-spy navigation highlighting.
