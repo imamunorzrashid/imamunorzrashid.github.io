@@ -359,3 +359,33 @@ html{scroll-padding-top:92px}
     justify-content:flex-start !important;
   }
 }
+
+
+/* V10 — abstract microgrid / network topology background */
+body:before{
+  content:"";
+  position:fixed;
+  inset:0;
+  background-image:
+    radial-gradient(circle at 12% 18%, rgba(102,227,196,.18) 0 2px, transparent 3px),
+    radial-gradient(circle at 31% 34%, rgba(102,227,196,.12) 0 2px, transparent 3px),
+    radial-gradient(circle at 53% 16%, rgba(102,227,196,.15) 0 2px, transparent 3px),
+    radial-gradient(circle at 76% 31%, rgba(102,227,196,.12) 0 2px, transparent 3px),
+    radial-gradient(circle at 91% 14%, rgba(102,227,196,.16) 0 2px, transparent 3px),
+    radial-gradient(circle at 18% 72%, rgba(88,166,255,.11) 0 2px, transparent 3px),
+    radial-gradient(circle at 43% 61%, rgba(102,227,196,.14) 0 2px, transparent 3px),
+    radial-gradient(circle at 67% 76%, rgba(88,166,255,.10) 0 2px, transparent 3px),
+    radial-gradient(circle at 88% 66%, rgba(102,227,196,.13) 0 2px, transparent 3px),
+    linear-gradient(32deg, transparent 49.82%, rgba(102,227,196,.025) 50%, transparent 50.18%),
+    linear-gradient(148deg, transparent 49.84%, rgba(88,166,255,.022) 50%, transparent 50.16%);
+  background-size:
+    520px 420px, 620px 500px, 700px 460px, 560px 520px, 760px 440px,
+    640px 560px, 720px 620px, 600px 540px, 680px 500px,
+    420px 320px, 520px 390px;
+  background-position:
+    0 0, 70px 30px, 180px -20px, 250px 70px, 360px 10px,
+    20px 130px, 130px 190px, 280px 160px, 410px 210px,
+    0 0, 90px 40px;
+  pointer-events:none;
+  opacity:.72;
+}
