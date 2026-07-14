@@ -296,3 +296,66 @@ html{scroll-padding-top:92px}
     justify-items:start !important;
   }
 }
+
+
+/* V9 — CTA buttons left and compact social links at far right on the SAME row */
+.hero-copy{
+  max-width:none !important;
+  width:100% !important;
+}
+.hero-copy .eyebrow,
+.hero-copy h1,
+.hero-copy .hero-lead{
+  max-width:920px;
+}
+.hero-action-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:28px;
+  width:100%;
+  margin-top:34px;
+}
+.hero-action-row .actions{
+  margin-top:0 !important;
+  flex:0 0 auto;
+}
+.hero-action-row .social-buttons{
+  position:static !important;
+  transform:none !important;
+  width:auto !important;
+  max-width:none !important;
+  margin:0 !important;
+  display:flex !important;
+  flex-direction:row !important;
+  flex-wrap:nowrap !important;
+  justify-content:flex-end !important;
+  align-items:center !important;
+  gap:7px !important;
+  margin-left:auto !important;
+}
+.hero-action-row .social-buttons a{
+  padding:6px 10px !important;
+  font-size:.7rem !important;
+  gap:6px !important;
+  min-width:0 !important;
+  width:auto !important;
+  flex:0 0 auto !important;
+}
+.hero-action-row .social-buttons a svg{
+  width:13px !important;
+  height:13px !important;
+  flex:0 0 13px !important;
+}
+
+@media(max-width:1000px){
+  .hero-action-row{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+  .hero-action-row .social-buttons{
+    margin-left:0 !important;
+    flex-wrap:wrap !important;
+    justify-content:flex-start !important;
+  }
+}
