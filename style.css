@@ -359,41 +359,16 @@ html{scroll-padding-top:92px}
   text-justify:inter-word;
 }
 
+.about-intro{
+  max-width:100%;
+  width:100%;
+}
 
-
-/* =========================================================
-   V13 — PRECISE TEXT ALIGNMENT
-   ========================================================= */
-
-/* 1. Homepage hero description — JUSTIFIED */
-.hero-lead{
+.about-intro>p{
+  max-width:100% !important;
+  width:100%;
   text-align:justify;
   text-justify:inter-word;
-}
-
-/* 2. Selected research main descriptions — JUSTIFIED */
-.research-block>.large{
-  text-align:justify;
-  text-justify:inter-word;
-}
-
-/* 3. Challenge / Approach / Validation — CENTERED */
-.research-grid > div{
-  text-align:center;
-}
-
-.research-grid > div p{
-  text-align:center;
-}
-
-/* 4. Statistics — CENTERED */
-.stats > div{
-  text-align:center;
-}
-
-.stats strong,
-.stats span{
-  text-align:center;
 }
 
 @media(max-width:1000px){
