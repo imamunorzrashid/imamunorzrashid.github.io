@@ -234,3 +234,19 @@ html{scroll-padding-top:92px}
     flex-wrap:wrap !important;
   }
 }
+
+
+/* V7 — align the horizontal social row to the right edge of the hero section */
+.hero .social-buttons{
+  width: calc(var(--max) - 64px) !important;
+  max-width: calc(100vw - 64px) !important;
+  justify-content: flex-end !important;
+}
+
+@media(max-width:760px){
+  .hero .social-buttons{
+    width:100% !important;
+    max-width:100% !important;
+    justify-content:flex-start !important;
+  }
+}
