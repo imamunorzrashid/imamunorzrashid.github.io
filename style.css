@@ -206,3 +206,31 @@ html{scroll-padding-top:92px}
   .hero .social-buttons{position:static;transform:none;flex-direction:row;margin-top:28px}
   .hero .social-buttons a{min-width:0}
 }
+
+
+/* V6 — social links: original horizontal layout, shifted right */
+.hero .social-buttons{
+  position: static !important;
+  transform: none !important;
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  width: 100% !important;
+  margin-top: 28px !important;
+  gap: 12px !important;
+}
+.hero .social-buttons a{
+  min-width: 0 !important;
+  width: auto !important;
+  justify-content: center !important;
+  flex: 0 0 auto !important;
+}
+
+@media(max-width:760px){
+  .hero .social-buttons{
+    justify-content:flex-start !important;
+    flex-wrap:wrap !important;
+  }
+}
