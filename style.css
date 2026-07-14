@@ -347,6 +347,25 @@ html{scroll-padding-top:92px}
   height:13px !important;
   flex:0 0 13px !important;
 }
+/* V11 — selective text justification only */
+
+/* Homepage hero description */
+.hero-lead{
+  text-align:justify;
+  text-justify:inter-word;
+}
+
+/* About section descriptive paragraphs */
+.about-intro>p{
+  text-align:justify;
+  text-justify:inter-word;
+}
+
+/* Selected research descriptions */
+.research-block>.large{
+  text-align:justify;
+  text-justify:inter-word;
+}
 
 @media(max-width:1000px){
   .hero-action-row{
