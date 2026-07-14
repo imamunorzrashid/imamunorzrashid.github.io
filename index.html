@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=20260714-3">
 </head>
 <body>
   <div class="progress"></div>
@@ -40,11 +40,19 @@
           <a class="btn" href="#publications">Publications</a>
           <a class="btn" href="assets/Mamun_Or_Rashid_CV.pdf" target="_blank">View CV</a>
         </div>
-        <div class="socials">
-          <a href="mailto:mamunorzrashid@gmail.com">Email</a>
-          <a href="https://scholar.google.com/citations?hl=en&user=cHE7FAUAAAAJ" target="_blank" rel="noopener">Google Scholar</a>
-          <a href="https://github.com/imamunorzrashid" target="_blank" rel="noopener">GitHub</a>
-          <a href="https://bd.linkedin.com/in/imamunorzrashid" target="_blank" rel="noopener">LinkedIn</a>
+        <div class="socials social-buttons">
+          <a href="mailto:mamunorzrashid@gmail.com" aria-label="Email Mamun">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h18v14H3V5Zm9 7 7-5H5l7 5Zm0 2.4L5 9v8h14V9l-7 5.4Z"/></svg><span>Email</span>
+          </a>
+          <a href="https://scholar.google.com/citations?hl=en&amp;user=cHE7FAUAAAAJ" target="_blank" rel="noopener" aria-label="Google Scholar">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2 9l10 6 8-4.8V16h2V9L12 3Zm-6 9.4V17c2.9 2.7 9.1 2.7 12 0v-4.6L12 16l-6-3.6Z"/></svg><span>Scholar</span>
+          </a>
+          <a href="https://github.com/imamunorzrashid" target="_blank" rel="noopener" aria-label="GitHub">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.87c-2.78.6-3.37-1.18-3.37-1.18-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.35 1.09 2.92.83.09-.65.35-1.09.64-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02A9.55 9.55 0 0 1 12 6.82a9.5 9.5 0 0 1 2.5.34c1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.86V21c0 .27.18.58.69.48A10 10 0 0 0 12 2Z"/></svg><span>GitHub</span>
+          </a>
+          <a href="https://bd.linkedin.com/in/imamunorzrashid" target="_blank" rel="noopener" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5.2 8.4H2V22h3.2V8.4ZM3.6 2A1.9 1.9 0 1 0 3.6 5.8 1.9 1.9 0 0 0 3.6 2ZM22 14.2c0-4.1-2.2-6-5.1-6-2.4 0-3.4 1.3-4 2.2v-2H9.7V22h3.2v-6.7c0-1.8.3-3.5 2.5-3.5 2.1 0 2.2 2 2.2 3.6V22H22v-7.8Z"/></svg><span>LinkedIn</span>
+          </a>
         </div>
       </div>
       <div class="stats reveal">
@@ -233,15 +241,14 @@
 
 <section id="honors" class="section">
       <div class="section-head reveal"><p class="eyebrow">RECOGNITION</p><h2>Honors & awards</h2></div>
-      <div class="honors reveal">
-        <ul>
-          <li><span>2026</span> Student of the Year Award · Department of Mechatronics Engineering, RUET</li>
-          <li><span>2023–2026</span> Technical Scholarship · Outstanding academic performance for four consecutive academic years</li>
-          <li><span>2025</span> 18th Overall Ranking · Formula SAE Japan, EV Class</li>
-          <li><span>2025</span> Semi-Finalist · International Rover Design Challenge, Team Ogrodoot</li>
-          <li><span>2024</span> 15th Overall Static Result · Formula Bharat, EV Class</li>
-        </ul>
+      <div class="award-grid reveal">
+          <article class="award-card"><span>2026</span><h3>Student of the Year Award</h3><p>Department of Mechatronics Engineering, RUET</p></article>
+          <article class="award-card"><span>2023–2026</span><h3>Technical Scholarship</h3><p>Outstanding academic performance for four consecutive academic years</p></article>
+          <article class="award-card"><span>2025</span><h3>Formula SAE Japan</h3><p>18th overall ranking · EV Class</p></article>
+          <article class="award-card"><span>2025</span><h3>International Rover Design Challenge</h3><p>Semi-Finalist · Team Ogrodoot</p></article>
+          <article class="award-card"><span>2024</span><h3>Formula Bharat</h3><p>15th overall static result · EV Class</p></article>
       </div>
+      <div class="subsection-label reveal"><span>TECHNICAL ENGAGEMENT</span><h3>Technical session</h3></div>
       <div class="session-card reveal">
         <div class="session-content">
           <div class="research-meta"><span>01</span><p>Technical Session · 5–6 December 2024 · Rajshahi</p></div>
@@ -290,7 +297,18 @@
     </section>
   </main>
 
-  <footer><span>© 2026 Mamun Or Rashid</span><span>Research portfolio</span></footer>
-  <script src="script.js"></script>
+  <footer class="site-footer">
+    <div class="footer-main">
+      <div><span>© 2026 Mamun Or Rashid</span><small>Research portfolio</small></div>
+      <div class="visitor-counter">
+        <span class="counter-label">VISITORS BY COUNTRY</span>
+        <!-- Replace this setup link with the unique Flag Counter embed code generated for this site. -->
+        <a href="https://info.flagcounter.com/jXJ4" target="_blank" rel="noopener" aria-label="Visitor statistics">
+          <img src="https://s05.flagcounter.com/count2/jXJ4/bg_071018/txt_66E3C4/border_66E3C4/columns_2/maxflags_10/viewers_0/labels_0/pageviews_1/flags_0/percent_0/" alt="Flag Counter" border="0">
+        </a>
+      </div>
+    </div>
+  </footer>
+  <script src="script.js?v=20260714-3"></script>
 </body>
 </html>

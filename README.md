@@ -62,3 +62,12 @@ education history, additional projects, honors and awards, technical session, se
 - Converted project entries to 50/50 image/detail cards with explicit image placeholders.
 - Added a right-side visual slot for the technical session.
 - Added scroll-spy navigation highlighting.
+
+## Refined V3
+- Cache-busted CSS/JS to prevent GitHub Pages from serving the old card layout.
+- Compact certificate cards in a 2-column grid with 50/50 clickable thumbnail/details.
+- Compact projects in a 3-column grid with 50/50 image/details.
+- Separated honors into discrete award cards.
+- Replaced text-only social links with icon buttons.
+- Rebuilt active-section navigation tracking using IntersectionObserver.
+- Added a styled footer slot for a unique Flag Counter embed.

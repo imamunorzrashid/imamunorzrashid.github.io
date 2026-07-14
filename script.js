@@ -14,21 +14,29 @@ const stats=document.querySelector(".stats");
 const countObserver=new IntersectionObserver(entries=>{if(entries[0].isIntersecting&&!counted){counted=true;document.querySelectorAll("[data-count]").forEach(el=>{const target=+el.dataset.count;let start=0;const step=target/50;const timer=setInterval(()=>{start+=step;if(start>=target){start=target;clearInterval(timer)}el.textContent=target%1?start.toFixed(2):Math.floor(start)},25)})}},{threshold:.4});
 countObserver.observe(stats);
 
-// Highlight the navigation item for the section currently in view.
-const navAnchors=[...document.querySelectorAll(".nav-links a[href^='#']")];
-const sectionMap=navAnchors
-  .map(a=>({a,section:document.querySelector(a.getAttribute("href"))}))
-  .filter(item=>item.section);
 
-const setActiveNav=()=>{
-  const probe=window.scrollY+window.innerHeight*0.34;
-  let current=sectionMap[0];
-  sectionMap.forEach(item=>{
-    if(item.section.offsetTop<=probe) current=item;
+
+
+// Robust section-aware navigation highlighting.
+const trackedLinks = [...document.querySelectorAll(".nav-links a[href^='#']")];
+const trackedSections = trackedLinks
+  .map(link => ({ link, section: document.querySelector(link.getAttribute("href")) }))
+  .filter(item => item.section);
+
+function activateNav(id) {
+  trackedLinks.forEach(link => {
+    link.classList.toggle("active", link.getAttribute("href") === `#${id}`);
   });
-  navAnchors.forEach(a=>a.classList.remove("active"));
-  if(current) current.a.classList.add("active");
-};
-window.addEventListener("scroll",setActiveNav,{passive:true});
-window.addEventListener("resize",setActiveNav);
-setActiveNav();
+}
+
+const sectionObserver = new IntersectionObserver((entries) => {
+  const visible = entries
+    .filter(entry => entry.isIntersecting)
+    .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+  if (visible.length) activateNav(visible[0].target.id);
+}, {
+  rootMargin: "-18% 0px -58% 0px",
+  threshold: [0, .1, .25, .5]
+});
+
+trackedSections.forEach(({ section }) => sectionObserver.observe(section));
