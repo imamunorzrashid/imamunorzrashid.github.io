@@ -20,6 +20,11 @@ const buildDate = new Date().toISOString().slice(0, 10);
     ))}
   </p>
   <p>Last updated {buildDate}</p>
+  {p.flag_counter && (
+    <p>
+      <a href={`https://info.flagcounter.com/${p.flag_counter}`} rel="noopener"><img src={`https://s05.flagcounter.com/count2/${p.flag_counter}/bg_FFFFFF/txt_5C5C5C/border_FFFFFF/columns_2/maxflags_10/viewers_0/labels_0/pageviews_1/flags_0/percent_0/`} alt="Visitor counter by country (Flag Counter)" loading="lazy" width="162" height="154" /></a>
+    </p>
+  )}
 </footer>
 
 <style>

@@ -41,6 +41,7 @@ export const profile = z.object({
   ),
   cv_academic: opt(str),
   cv_lecturer: opt(str),
+  flag_counter: opt(str),
   skills: z.array(z.object({ label: str, items: list })).default([]),
 });
 

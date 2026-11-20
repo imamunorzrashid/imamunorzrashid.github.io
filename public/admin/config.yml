@@ -50,6 +50,7 @@ collections:
               - { name: researchgate, label: ResearchGate, widget: string, required: false, pattern: ['^https?://', 'Use a full URL starting with https://'] }
           - { name: cv_academic, label: Academic CV link, widget: string, required: false }
           - { name: cv_lecturer, label: Teaching CV link, widget: string, required: false }
+          - { name: flag_counter, label: Flag Counter ID, widget: string, required: false, hint: 'Leave empty to hide the counter' }
           - name: skills
             label: Technical skills
             widget: list

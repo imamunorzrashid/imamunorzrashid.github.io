@@ -60,7 +60,7 @@ test.describe('Gallery page', () => {
 
   test('every img has a non-empty alt, and the figure count equals the gallery entries', async ({ page }) => {
     await page.goto('/gallery/');
-    const alts = await page.locator('img').evaluateAll((els) => els.map((el) => el.getAttribute('alt') ?? ''));
+    const alts = await page.locator('main img').evaluateAll((els) => els.map((el) => el.getAttribute('alt') ?? ''));
     expect(alts).toHaveLength(gallery.length);
     for (const alt of alts) expect(alt.trim()).not.toBe('');
     await expect(page.locator('figure')).toHaveCount(gallery.length);

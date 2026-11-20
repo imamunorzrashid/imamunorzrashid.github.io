@@ -29,7 +29,7 @@ Content edits must not require touching code. Mamun fills a form for a section, 
 ## Anti-goals (a failure even if it technically works)
 
 - Any of these in the design: gradients, glows, glassmorphism, drop shadows on content, a card border around every item, icons next to every heading, uppercase eyebrow labels, animated counters, typing effects, scroll-reveal animations, emoji, stat badges, a full-viewport hero, a "Hi, I'm…" opener.
-- Third-party widgets (the Flag Counter goes).
+- Third-party widgets, except the Flag Counter in the footer (Mamun, 2026-11-21).
 - Copy containing stock AI phrasing (see the banned list under Constraints).
 - Any invented fact. Dates, CGPA, rank, author lists, venues and publication status come only from the existing site or from Mamun. Anything unclear is marked `TODO(Mamun)` and listed in `docs/content-todo.md`.
 
@@ -61,8 +61,8 @@ The website does **not** show his phone number or the referees' contact details.
 - Colours: `--ink #1b1b1b`, `--muted #5c5c5c`, `--rule #e3e3e3`, `--bg #ffffff`, `--accent #1f4e79`, `--accent-hover #163a5a`. One accent colour only.
 - Type scale: body 1.125rem/1.6 serif; h1 2rem; h2 1.5rem serif, weight 600; metadata 0.9rem sans in `--muted`.
 - Layout: reading column `max-width: 44rem`, centred, text left-aligned. Header has the name on the left and the nav on the right. On wide screens the header may be wider than the 44rem reading column, so the 9-item nav fits on one row, and it wraps below that width (no hamburger menu) (Mamun, 2026-11-21). Section separation uses whitespace and at most a 1px `--rule` line.
-- Main nav (9 items, in this order): Home, Research, Publications, Projects, Academics, Experience, Achievements, Teaching, CV. (Mamun, 2026-11-21) The footer holds the email, Scholar, ORCID, GitHub, LinkedIn, Gallery, and "Last updated <build date>".
-- Social links are text links, not icon buttons.
+- Main nav (9 items, in this order): Home, Research, Publications, Projects, Academics, Experience, Achievements, Teaching, CV. (Mamun, 2026-11-21) The footer holds the email, Scholar, ORCID, ResearchGate, GitHub, LinkedIn, Gallery, the optional Flag Counter (shown only when its ID is set), and "Last updated <build date>".
+- Social links are text links with a small monochrome icon before the label, never icon-only (Mamun, 2026-11-21).
 - Banned phrases in editable prose (case-insensitive): `passionate`, `cutting-edge`, `leverage`, `leveraging`, `seamless`, `seamlessly`, `delve`, `spearhead`, `harness the power`, `unlock`, `empower`, `world-class`, `game-changer`, `synergy`, `tapestry`, `thrilled`. Publication titles are exempt.
 - Images: every file under `public/images/` is ≤ 500 KB, ≤ 1600 px wide, WebP or JPG, with a kebab-case filename (no spaces or apostrophes). Organisation logos aren't used in the new design.
 - Accessibility: every image needs alt text (the schema enforces it), colour contrast meets WCAG AA, and each page has exactly one `<h1>`.

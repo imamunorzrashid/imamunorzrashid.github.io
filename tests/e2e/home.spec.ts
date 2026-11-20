@@ -7,6 +7,7 @@ const profile = load(readFileSync(new URL('../../src/content/pages/profile.yaml'
   email: string;
   cv_academic: string;
   links: { scholar: string; researchgate: string };
+  flag_counter?: string;
 };
 
 test('home has exactly one h1 with the profile name', async ({ page }) => {
@@ -140,4 +141,21 @@ test('body uses Source Serif 4', async ({ page }) => {
   await page.goto('/');
   const fontFamily = await page.evaluate(() => getComputedStyle(document.body).fontFamily);
   expect(fontFamily).toContain('Source Serif 4 Variable');
+});
+
+test('footer shows the Flag Counter after the last updated line iff flag_counter is set', async ({ page }) => {
+  await page.goto('/');
+  const footer = page.locator('footer');
+  if (!profile.flag_counter) {
+    await expect(footer.locator('a[href*="flagcounter.com"]')).toHaveCount(0);
+    return;
+  }
+  const counter = footer.locator(`a[href="https://info.flagcounter.com/${profile.flag_counter}"]`);
+  await expect(counter).toHaveCount(1);
+  const img = counter.locator('img');
+  await expect(img).toHaveCount(1);
+  await expect(img).toHaveAttribute('alt', /\S/);
+  await expect(counter).toHaveAttribute('rel', 'noopener');
+  const previous = await counter.evaluate((el) => el.closest('p')?.previousElementSibling?.textContent ?? '');
+  expect(previous).toContain('Last updated');
 });

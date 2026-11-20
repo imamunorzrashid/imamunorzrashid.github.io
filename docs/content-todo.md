@@ -37,7 +37,7 @@ Every `TODO(Mamun)` in `src/content/` is listed here with its file and what is n
 - Class rank: 3rd of 59. The CV PDFs now say 3rd of 59 and Head of Electrical May – July 2026. (Mamun, 2026-11-21)
 - ResearchGate link added. (Mamun, 2026-11-20)
 - Interests and skills are from the academic CV.
-- The Flag Counter is dropped.
+- The Flag Counter is dropped. (Superseded on 2026-11-21, see below.)
 - The old Google Drive CV link and `legacy/assets/Mamun_Or_Rashid_CV.pdf` are superseded and not copied.
 - CV downloads: `cv_academic` and `cv_lecturer` link to Google Drive. Mamun replaced both files' contents with web versions that have no References and no phone number, and checked that the links open the new versions. (Mamun, 2026-11-20)
 - Profile photo: Mamun's upload `/images/uploads/passport-size-photo.webp`. (Mamun, 2026-11-20)
@@ -56,3 +56,6 @@ Every `TODO(Mamun)` in `src/content/` is listed here with its file and what is n
 - Rover drivetrain project removed from the site. (Mamun, 2026-11-21)
 - Research theme titles: the three research themes use new titles (data-efficient frequency control with transfer learning; cyber-resilient control against false data injection; low-leakage transformerless PV inverters). (Mamun, 2026-11-21)
 - Short experience texts: each experience entry shows one short paragraph (or a bulleted list for two or more points), and the Mamun-edited experience files are kept as saved in the CMS. (Mamun, 2026-11-21)
+- Link icons: each social link has a small monochrome icon before its text label, never icon-only. Icons are Simple Icons v13.21.0 (CC0). (Mamun, 2026-11-21)
+- Home CV link: an Academic CV link is on the home page links row, from `cv_academic`. (Mamun, 2026-11-21)
+- Flag Counter: the footer shows the existing counter (ID `jXJ4`, from the old site), so counts carry over. It is hidden when `flag_counter` is empty. (Mamun, 2026-11-21)
