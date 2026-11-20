@@ -8,7 +8,6 @@ Every `TODO(Mamun)` in `src/content/` is listed here with its file and what is n
 
 ## Files and assets
 
-- [ ] Web CV links: the Google Drive CV links Mamun added on 2026-11-20 contain his phone number, so they are not linked. Export versions without References and phone, then set `cv_academic` / `cv_lecturer` in `src/content/pages/profile.yaml`. The copies go to `public/cv/mamun-or-rashid-cv-academic.pdf` and `public/cv/mamun-or-rashid-cv-teaching.pdf`.
 - [ ] Gallery: three `.HEIC` photos have no entry because they cannot be optimised: `formula japan 2025.HEIC`, `industrial attachment presentation.HEIC`, `industrial attachment presentation 2.HEIC`. Export them as JPG if they should appear, then run `scripts/optimize-images.mjs` on them.
 - [ ] `public/images/gallery/class-representative-award.webp`: the source was 12.7 MB and is now 82 KB at 1600 px. Confirm the optimised version looks right.
 - [ ] Gallery alt text was written from the photos themselves. Check the 11 alt texts in `src/content/gallery/` against the photos.
@@ -40,6 +39,7 @@ Every `TODO(Mamun)` in `src/content/` is listed here with its file and what is n
 - Interests and skills are from the academic CV.
 - The Flag Counter is dropped.
 - The old Google Drive CV link and `legacy/assets/Mamun_Or_Rashid_CV.pdf` are superseded and not copied.
+- CV downloads: `cv_academic` and `cv_lecturer` link to Google Drive. Mamun replaced both files' contents with web versions that have no References and no phone number, and checked that the links open the new versions. (Mamun, 2026-11-20)
 - The profile photo is the GitHub avatar at 460 px (`public/images/profile.jpg`).
 - Profile title and affiliation: title `B.Sc. in Mechatronics Engineering`; affiliation `Rajshahi University of Engineering & Technology (RUET)`. He has graduated, so the "Department of …" wording no longer fits. (Mamun, 2026-11-20)
 - Seeking line: "Open to PhD positions starting in Fall 2027". Mamun added it. (Mamun, 2026-11-20) This replaces the earlier decision that it was not wanted.
