@@ -26,7 +26,11 @@ type Collection = {
   files?: FileEntry[];
   fields?: Field[];
 };
-type Config = { media_folder?: string; collections: Collection[] };
+type Config = {
+  media_folder?: string;
+  media_libraries?: { default?: { config?: { slugify_filename?: boolean } } };
+  collections: Collection[];
+};
 type Shaped = { shape: Record<string, unknown> };
 
 const config = load(readFileSync(join(root, 'public/admin/config.yml'), 'utf8')) as Config;
@@ -74,6 +78,10 @@ describe('cms config', () => {
   test('parses and has collections', () => {
     expect(Array.isArray(collections)).toBe(true);
     expect(collections.length).toBeGreaterThan(0);
+  });
+
+  test('uploads are renamed to slugified filenames', () => {
+    expect(config.media_libraries?.default?.config?.slugify_filename).toBe(true);
   });
 
   test('every folder collection points at an existing folder under src/content/', () => {

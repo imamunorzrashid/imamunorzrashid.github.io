@@ -9,6 +9,7 @@ public_folder: /images/uploads
 media_libraries:
   default:
     config:
+      slugify_filename: true
       transformations:
         raster_image:
           format: webp
