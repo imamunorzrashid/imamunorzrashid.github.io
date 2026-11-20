@@ -1,0 +1,66 @@
+---
+import { getEntry } from 'astro:content';
+
+const profile = await getEntry('profile', 'profile');
+if (!profile) throw new Error('Missing src/content/pages/profile.yaml (collection "profile", id "profile")');
+
+const nav = [
+  { label: 'Home', href: '/' },
+  { label: 'Research', href: '/research/' },
+  { label: 'Publications', href: '/publications/' },
+  { label: 'Projects', href: '/projects/' },
+  { label: 'Teaching', href: '/teaching/' },
+  { label: 'CV', href: '/cv/' },
+];
+---
+<header class="site-header wrap">
+  <a class="site-name" href="/">{profile.data.name}</a>
+  <nav aria-label="Main">
+    <ul>
+      {nav.map((item) => (
+        <li>
+          <a href={item.href} aria-current={Astro.url.pathname === item.href ? 'page' : undefined}>{item.label}</a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+</header>
+
+<style>
+  .site-header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.5rem 1.5rem;
+    padding-block: 1.5rem;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .site-name {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1.25rem;
+    list-style: none;
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+  }
+
+  li a {
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  li a[aria-current='page'] {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+</style>

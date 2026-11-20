@@ -1,0 +1,13 @@
+---
+import { marked } from 'marked';
+
+interface Props {
+  md: string;
+  inline?: boolean;
+}
+
+// Content comes from the site owner's YAML only, so the output is not sanitised.
+const { md, inline = false } = Astro.props;
+const html = inline ? marked.parseInline(md, { async: false }) : marked.parse(md, { async: false });
+---
+{inline ? <span class="prose" set:html={html} /> : <div class="prose" set:html={html} />}

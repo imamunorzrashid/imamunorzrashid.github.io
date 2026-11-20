@@ -1,0 +1,44 @@
+---
+import { getEntry } from 'astro:content';
+
+const profile = await getEntry('profile', 'profile');
+if (!profile) throw new Error('Missing src/content/pages/profile.yaml (collection "profile", id "profile")');
+const p = profile.data;
+
+const links: { label: string; href: string | undefined }[] = [
+  { label: 'Email', href: `mailto:${p.email}` },
+  { label: 'Google Scholar', href: p.links?.scholar },
+  { label: 'ORCID', href: p.links?.orcid },
+  { label: 'GitHub', href: p.links?.github },
+  { label: 'LinkedIn', href: p.links?.linkedin },
+  { label: 'Gallery', href: '/gallery/' },
+];
+const shown = links.filter((l): l is { label: string; href: string } => Boolean(l.href));
+const buildDate = new Date().toISOString().slice(0, 10);
+---
+<footer class="site-footer wrap">
+  <p>
+    {shown.map((l, i) => (
+      <>
+        {i > 0 && ' · '}
+        <a href={l.href}>{l.label}</a>
+      </>
+    ))}
+  </p>
+  <p>Last updated {buildDate}</p>
+</footer>
+
+<style>
+  .site-footer {
+    margin-top: 4rem;
+    padding-block: 2rem 3rem;
+    border-top: 1px solid var(--rule);
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+
+  .site-footer p {
+    margin: 0 0 0.5rem;
+  }
+</style>

@@ -1,15 +1,140 @@
 ---
+import { getCollection, getEntry } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Prose from '../components/Prose.astro';
+import PubEntry from '../components/PubEntry.astro';
+import { formatYm, ymSortKey } from '../lib/dates';
+import { groupPublications } from '../lib/pubs';
+
+const profile = await getEntry('profile', 'profile');
+if (!profile) throw new Error('Missing src/content/pages/profile.yaml (collection "profile", id "profile")');
+const p = profile.data;
+
+const news = (await getCollection('news'))
+  .sort((a, b) => ymSortKey(b.data.date) - ymSortKey(a.data.date))
+  .slice(0, 5);
+
+const featured = groupPublications(
+  (await getCollection('publications')).map((e) => e.data).filter((pub) => pub.featured),
+).flatMap((g) => g.items);
+
+const links: { label: string; href: string | undefined }[] = [
+  { label: 'Email', href: `mailto:${p.email}` },
+  { label: 'Google Scholar', href: p.links?.scholar },
+  { label: 'ORCID', href: p.links?.orcid },
+  { label: 'GitHub', href: p.links?.github },
+  { label: 'LinkedIn', href: p.links?.linkedin },
+];
+const shownLinks = links.filter((l): l is { label: string; href: string } => Boolean(l.href));
 ---
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Mamun Or Rashid</title>
-  </head>
-  <body>
-    <main>
-      <h1>Mamun Or Rashid</h1>
-    </main>
-  </body>
-</html>
+<Base title={p.name} description={`${p.title}, ${p.affiliation}`}>
+  <script is:inline>
+    // Old one-page anchors (possibly in sent emails) map to their new pages. location.replace keeps the back button usable.
+    const oldHashes = {
+      '#research': '/research/',
+      '#publications': '/publications/',
+      '#projects': '/projects/',
+      '#gallery': '/gallery/',
+      '#education': '/cv/',
+      '#leadership': '/cv/',
+      '#industry': '/cv/',
+      '#honors': '/cv/',
+      '#certifications': '/cv/',
+    };
+    const target = oldHashes[location.hash];
+    if (target) location.replace(target);
+  </script>
+
+  <section class="intro">
+    <img class="photo" src={p.photo} alt={p.photo_alt} width="160" height="160" />
+    <div>
+      <h1>{p.name}</h1>
+      <p class="meta">{p.title}</p>
+      <p class="meta">{p.affiliation}</p>
+      {p.seeking && <p>{p.seeking}</p>}
+    </div>
+  </section>
+
+  <section class="section">
+    <Prose md={p.bio} />
+    <p class="text-links">
+      {shownLinks.map((l, i) => (
+        <>
+          {i > 0 && ' · '}
+          <a href={l.href}>{l.label}</a>
+        </>
+      ))}
+    </p>
+  </section>
+
+  {p.interests.length > 0 && (
+    <section class="section">
+      <h2>Research Interests</h2>
+      <p>{p.interests.join(', ')}</p>
+    </section>
+  )}
+
+  {news.length > 0 && (
+    <section class="section">
+      <h2>News</h2>
+      <ul class="news">
+        {news.map((n) => (
+          <li>
+            <span class="meta">{formatYm(n.data.date)}</span>
+            {n.data.link ? (
+              <a href={n.data.link}><Prose md={n.data.text} inline /></a>
+            ) : (
+              <Prose md={n.data.text} inline />
+            )}
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  {featured.length > 0 && (
+    <section class="section">
+      <h2>Selected Publications</h2>
+      <ul class="pubs">
+        {featured.map((pub) => (
+          <li>
+            <PubEntry pub={pub} selfName={p.pub_name} />
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  <style>
+    .intro {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+    }
+
+    .photo {
+      width: 160px;
+      height: 160px;
+      flex: none;
+      object-fit: cover;
+      border-radius: 4px;
+    }
+
+    @media (min-width: 768px) {
+      .intro {
+        flex-direction: row;
+        align-items: flex-start;
+      }
+    }
+
+    .news li,
+    .pubs li {
+      margin-bottom: 0.75rem;
+    }
+
+    .news .meta {
+      margin-right: 0.75rem;
+    }
+  </style>
+</Base>

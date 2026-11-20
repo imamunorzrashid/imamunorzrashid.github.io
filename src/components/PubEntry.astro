@@ -1,0 +1,22 @@
+---
+// Placeholder for the publication entry; Task 5 finishes the numbering and links.
+import { splitAuthors, type Pub } from '../lib/pubs';
+
+interface Props {
+  pub: Pub;
+  selfName: string;
+}
+
+const { pub, selfName } = Astro.props;
+const authors = splitAuthors(pub.authors, selfName);
+---
+<span class="pub">
+  {authors.map((a, i) => (
+    <>
+      {i > 0 && ', '}
+      {a.self ? <strong>{a.name}</strong> : a.name}
+    </>
+  ))}
+  . {pub.title}.
+  <em>{pub.venue}</em>{pub.year !== undefined && ` (${pub.year})`}
+</span>
