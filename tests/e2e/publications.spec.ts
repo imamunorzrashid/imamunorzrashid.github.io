@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 import { load } from 'js-yaml';
 
 const research = load(readFileSync(new URL('../../src/content/pages/research.yaml', import.meta.url), 'utf8')) as {
@@ -53,6 +53,25 @@ test('in-preparation entries have no DOI link and no year', async ({ page }) => 
     const li = items.nth(i);
     await expect(li.locator('a[href^="https://doi.org/"]')).toHaveCount(0);
     expect(await li.innerText()).not.toMatch(/\b\d{4}\b/);
+  }
+});
+
+test('each publication shows an Abstract fold-out only when its YAML has an abstract', async ({ page }) => {
+  await page.goto('/publications/');
+  const dir = new URL('../../src/content/publications/', import.meta.url);
+  const pubs = readdirSync(dir)
+    .filter((f) => f.endsWith('.yaml'))
+    .map((f) => load(readFileSync(new URL(f, dir), 'utf8')) as { title: string; abstract?: string });
+  for (const pub of pubs) {
+    const entry = page.locator('li').filter({ hasText: pub.title });
+    await expect(entry).toHaveCount(1);
+    const details = entry.locator('details');
+    if (pub.abstract) {
+      await expect(details).toHaveCount(1);
+      await expect(details.locator('summary')).toHaveText('Abstract');
+    } else {
+      await expect(details).toHaveCount(0);
+    }
   }
 });
 

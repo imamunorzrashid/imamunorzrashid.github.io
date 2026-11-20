@@ -76,6 +76,7 @@ export const publication = z
     code: opt(url),
     featured: bool,
     note: opt(str),
+    abstract: opt(str),
   })
   .refine((p) => p.status === 'in_preparation' || p.status === 'accepted' || p.year !== undefined, {
     message: 'year required unless status is in_preparation or accepted',

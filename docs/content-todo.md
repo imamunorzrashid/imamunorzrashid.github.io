@@ -2,6 +2,10 @@
 
 Every `TODO(Mamun)` in `src/content/` is listed here with its file and what is needed. Items below marked "decided" record a choice already made, for reference.
 
+## Content to add
+
+- [ ] Abstracts: paste each paper's abstract into its Abstract field in the CMS (Publications); it appears as a fold-out under the paper.
+
 ## Files and assets
 
 - [ ] Gallery: three `.HEIC` photos have no entry because they cannot be optimised: `formula japan 2025.HEIC`, `industrial attachment presentation.HEIC`, `industrial attachment presentation 2.HEIC`. Export them as JPG if they should appear, then run `scripts/optimize-images.mjs` on them.

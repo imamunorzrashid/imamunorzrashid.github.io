@@ -116,6 +116,7 @@ collections:
       - { name: code, label: Code link, widget: string, required: false, pattern: ['^https?://', 'Use a full URL starting with https://'] }
       - { name: featured, label: Featured, widget: boolean, default: false }
       - { name: note, label: Note, widget: text, required: false }
+      - { name: abstract, label: Abstract, widget: markdown, required: false }
 
   - name: projects
     label: Projects

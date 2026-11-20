@@ -77,6 +77,16 @@ describe('publication', () => {
   });
 });
 
+describe('publication abstract', () => {
+  const base = { title: 'T', authors: ['A'], venue: 'V', type: 'journal', status: 'accepted', featured: false };
+  test('an empty abstract from the CMS is treated as missing', () => {
+    expect(publication.parse({ ...base, abstract: '' }).abstract).toBeUndefined();
+  });
+  test('an abstract is kept as written', () => {
+    expect(publication.parse({ ...base, abstract: 'Line one.\n\nLine two.' }).abstract).toBe('Line one.\n\nLine two.');
+  });
+});
+
 describe('profile photo_alt', () => {
   test('an empty photo_alt fails', () => {
     expect(profile.shape.photo_alt.safeParse('').success).toBe(false);

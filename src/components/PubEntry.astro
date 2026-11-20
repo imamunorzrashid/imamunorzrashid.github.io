@@ -1,4 +1,5 @@
 ---
+import Prose from './Prose.astro';
 import { splitAuthors, type Pub } from '../lib/pubs';
 
 interface Props {
@@ -26,7 +27,7 @@ if (pub.code) metaItems.push({ label: 'Code', href: pub.code });
 
 const tail = `${pub.note ? `, ${pub.note}` : ''}${pub.year !== undefined ? `, ${pub.year}` : ''}`;
 ---
-<span class="pub">
+<div class="pub">
   {label ? `[${label}] ` : ''}{authors.map((a, i) => (
     <>
       {i > 0 && ', '}
@@ -43,7 +44,13 @@ const tail = `${pub.note ? `, ${pub.note}` : ''}${pub.year !== undefined ? `, ${
       ))}
     </span>
   )}
-</span>
+  {pub.abstract && (
+    <details class="abstract">
+      <summary>Abstract</summary>
+      <Prose md={pub.abstract} />
+    </details>
+  )}
+</div>
 
 <style>
   .pub {
@@ -53,5 +60,17 @@ const tail = `${pub.note ? `, ${pub.note}` : ''}${pub.year !== undefined ? `, ${
   .pub .meta {
     display: block;
     margin-top: 0.15rem;
+  }
+
+  /* Summary looks like .meta but keeps its default display, so the disclosure marker still shows. */
+  .abstract {
+    margin-top: 0.15rem;
+  }
+
+  .abstract summary {
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    color: var(--muted);
+    cursor: pointer;
   }
 </style>
