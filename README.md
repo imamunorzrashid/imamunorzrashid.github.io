@@ -2,10 +2,10 @@
 
 ## How to edit
 
-The content lives in `src/content/` as YAML. You edit it through the Sveltia CMS at `/admin/`, which runs only in development. The production site never includes it.
+The content lives in `src/content/` as YAML. You edit it through the Sveltia CMS at `/admin/index.html`, which runs only in development. The production site never includes it.
 
 1. Run `npm run dev` in the project folder.
-2. Open `http://localhost:4321/admin/` in Chrome or Edge. Firefox can't use the local repository workflow. Click "Work with Local Repository" and choose this project folder (first time only).
+2. Open `http://localhost:4321/admin/index.html` in Chrome or Edge. Firefox can't use the local repository workflow. Click "Work with Local Repository" and choose this project folder (first time only).
 3. Edit and save. The CMS writes the YAML into the content folders, and the dev server shows the change live. Uploaded photos are converted to WebP and resized to at most 1600 px wide.
 4. Commit and push the change:
 

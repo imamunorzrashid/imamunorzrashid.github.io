@@ -1,4 +1,4 @@
-# Sveltia CMS configuration. Served at /admin/ in development only (the build script removes dist/admin).
+# Sveltia CMS configuration. In development it is served at /admin/index.html only (the build script removes dist/admin).
 # Paths are relative to the repository root. Edit with Chrome or Edge via "Work with Local Repository".
 backend:
   name: github
@@ -14,6 +14,9 @@ media_libraries:
           format: webp
           quality: 80
           width: 1600
+# Keeps generated filenames under Windows MAX_PATH when a slug comes from long text.
+slug:
+  maxlength: 60
 
 collections:
   - name: pages
@@ -33,25 +36,26 @@ collections:
           - { name: photo_alt, label: Photo alt text, widget: string }
           - { name: bio, label: Bio, widget: markdown }
           - { name: seeking, label: Seeking, widget: string, required: false }
-          - { name: interests, label: Research interests, widget: list }
+          - { name: interests, label: Research interests, widget: list, required: false }
           - name: links
             label: Links
             widget: object
             required: false
             fields:
-              - { name: scholar, label: Google Scholar, widget: string, required: false }
-              - { name: orcid, label: ORCID, widget: string, required: false }
-              - { name: github, label: GitHub, widget: string, required: false }
-              - { name: linkedin, label: LinkedIn, widget: string, required: false }
-              - { name: researchgate, label: ResearchGate, widget: string, required: false }
+              - { name: scholar, label: Google Scholar, widget: string, required: false, pattern: ['^https?://', 'Use a full URL starting with https://'] }
+              - { name: orcid, label: ORCID, widget: string, required: false, pattern: ['^https?://', 'Use a full URL starting with https://'] }
+              - { name: github, label: GitHub, widget: string, required: false, pattern: ['^https?://', 'Use a full URL starting with https://'] }
+              - { name: linkedin, label: LinkedIn, widget: string, required: false, pattern: ['^https?://', 'Use a full URL starting with https://'] }
+              - { name: researchgate, label: ResearchGate, widget: string, required: false, pattern: ['^https?://', 'Use a full URL starting with https://'] }
           - { name: cv_academic, label: Academic CV link, widget: string, required: false }
           - { name: cv_lecturer, label: Teaching CV link, widget: string, required: false }
           - name: skills
             label: Technical skills
             widget: list
+            required: false
             fields:
               - { name: label, label: Label, widget: string }
-              - { name: items, label: Items, widget: list }
+              - { name: items, label: Items, widget: list, required: false }
       - name: research
         label: Research page
         file: src/content/pages/research.yaml
@@ -60,6 +64,7 @@ collections:
           - name: themes
             label: Research themes
             widget: list
+            required: false
             fields:
               - { name: title, label: Title, widget: string }
               - { name: summary, label: Summary, widget: markdown }
@@ -68,8 +73,8 @@ collections:
         file: src/content/pages/teaching.yaml
         fields:
           - { name: statement, label: Teaching statement, widget: markdown }
-          - { name: courses_primary, label: Courses ready to teach, widget: list }
-          - { name: courses_also, label: Other courses, widget: list }
+          - { name: courses_primary, label: Courses ready to teach, widget: list, required: false }
+          - { name: courses_also, label: Other courses, widget: list, required: false }
 
   - name: news
     label: News
@@ -98,11 +103,11 @@ collections:
       - { name: venue, label: Venue, widget: string }
       - { name: type, label: Type, widget: select, options: [journal, conference, preprint, thesis] }
       - { name: status, label: Status, widget: select, options: [published, accepted, under_review, in_preparation] }
-      - { name: year, label: Year, widget: number, value_type: int, required: false }
+      - { name: year, label: Year, widget: number, value_type: int, required: false, hint: 'Required unless status is accepted or in preparation' }
       - { name: doi, label: DOI, widget: string, required: false }
-      - { name: url, label: URL, widget: string, required: false }
+      - { name: url, label: URL, widget: string, required: false, pattern: ['^https?://', 'Use a full URL starting with https://'] }
       - { name: pdf, label: PDF, widget: string, required: false }
-      - { name: code, label: Code link, widget: string, required: false }
+      - { name: code, label: Code link, widget: string, required: false, pattern: ['^https?://', 'Use a full URL starting with https://'] }
       - { name: featured, label: Featured, widget: boolean, default: false }
       - { name: note, label: Note, widget: text, required: false }
 
@@ -120,15 +125,15 @@ collections:
       - { name: start, label: Start (YYYY or YYYY-MM), widget: string, required: false, pattern: ['^\d{4}(-(0[1-9]|1[0-2]))?$', 'Use YYYY or YYYY-MM'] }
       - { name: end, label: End (YYYY or YYYY-MM), widget: string, required: false, pattern: ['^\d{4}(-(0[1-9]|1[0-2]))?$', 'Use YYYY or YYYY-MM'] }
       - { name: summary, label: Summary, widget: markdown }
-      - { name: tags, label: Tags, widget: list }
+      - { name: tags, label: Tags, widget: list, required: false }
       - name: links
         label: Links
         widget: object
         required: false
         fields:
-          - { name: code, label: Code, widget: string, required: false }
-          - { name: paper, label: Paper, widget: string, required: false }
-          - { name: demo, label: Demo, widget: string, required: false }
+          - { name: code, label: Code, widget: string, required: false, pattern: ['^https?://', 'Use a full URL starting with https://'] }
+          - { name: paper, label: Paper, widget: string, required: false, pattern: ['^https?://', 'Use a full URL starting with https://'] }
+          - { name: demo, label: Demo, widget: string, required: false, pattern: ['^https?://', 'Use a full URL starting with https://'] }
       - { name: image, label: Image, widget: image, required: false }
       - { name: image_alt, label: Image alt text (required if an image is set), widget: string, required: false }
       - { name: featured, label: Featured, widget: boolean, default: false }
@@ -149,7 +154,7 @@ collections:
       - { name: end, label: End (YYYY or YYYY-MM), widget: string, required: false, pattern: ['^\d{4}(-(0[1-9]|1[0-2]))?$', 'Use YYYY or YYYY-MM'] }
       - { name: thesis_title, label: Thesis title, widget: string, required: false }
       - { name: supervisor, label: Supervisor, widget: string, required: false }
-      - { name: details, label: Details, widget: list }
+      - { name: details, label: Details, widget: list, required: false }
 
   - name: experience
     label: Experience
@@ -158,7 +163,7 @@ collections:
     format: yaml
     create: true
     identifier_field: role
-    slug: '{{slug}}-{{org | slugify}}'
+    slug: '{{slug}}-{{org}}'
     fields:
       - { name: role, label: Role, widget: string }
       - { name: org, label: Organisation, widget: string }
@@ -166,8 +171,8 @@ collections:
       - { name: start, label: Start (YYYY or YYYY-MM), widget: string, pattern: ['^\d{4}(-(0[1-9]|1[0-2]))?$', 'Use YYYY or YYYY-MM'] }
       - { name: end, label: End (YYYY or YYYY-MM), widget: string, required: false, pattern: ['^\d{4}(-(0[1-9]|1[0-2]))?$', 'Use YYYY or YYYY-MM'] }
       - { name: location, label: Location, widget: string, required: false }
-      - { name: link, label: Link, widget: string, required: false }
-      - { name: points, label: Points, widget: list }
+      - { name: link, label: Link, widget: string, required: false, pattern: ['^https?://', 'Use a full URL starting with https://'] }
+      - { name: points, label: Points, widget: list, required: false }
 
   - name: teaching
     label: Teaching experience
@@ -182,7 +187,7 @@ collections:
       - { name: context, label: Context, widget: string }
       - { name: start, label: Start (YYYY or YYYY-MM), widget: string, pattern: ['^\d{4}(-(0[1-9]|1[0-2]))?$', 'Use YYYY or YYYY-MM'] }
       - { name: end, label: End (YYYY or YYYY-MM), widget: string, required: false, pattern: ['^\d{4}(-(0[1-9]|1[0-2]))?$', 'Use YYYY or YYYY-MM'] }
-      - { name: subjects, label: Subjects, widget: list }
+      - { name: subjects, label: Subjects, widget: list, required: false }
       - { name: level, label: Level, widget: string, required: false }
       - { name: description, label: Description, widget: markdown, required: false }
 
@@ -201,7 +206,7 @@ collections:
       - { name: date, label: Date (YYYY or YYYY-MM), widget: string, pattern: ['^\d{4}(-(0[1-9]|1[0-2]))?$', 'Use YYYY or YYYY-MM'] }
       - { name: end, label: End (YYYY or YYYY-MM), widget: string, required: false, pattern: ['^\d{4}(-(0[1-9]|1[0-2]))?$', 'Use YYYY or YYYY-MM'] }
       - { name: description, label: Description, widget: text, required: false }
-      - { name: link, label: Link, widget: string, required: false }
+      - { name: link, label: Link, widget: string, required: false, pattern: ['^https?://', 'Use a full URL starting with https://'] }
 
   - name: activities
     label: Talks and service
@@ -217,7 +222,7 @@ collections:
       - { name: event, label: Event, widget: string }
       - { name: date, label: Date (YYYY or YYYY-MM), widget: string, pattern: ['^\d{4}(-(0[1-9]|1[0-2]))?$', 'Use YYYY or YYYY-MM'] }
       - { name: location, label: Location, widget: string, required: false }
-      - { name: link, label: Link, widget: string, required: false }
+      - { name: link, label: Link, widget: string, required: false, pattern: ['^https?://', 'Use a full URL starting with https://'] }
 
   - name: certificates
     label: Certificates
@@ -231,7 +236,7 @@ collections:
       - { name: title, label: Title, widget: string }
       - { name: issuer, label: Issuer, widget: string }
       - { name: date, label: Date (YYYY or YYYY-MM), widget: string, pattern: ['^\d{4}(-(0[1-9]|1[0-2]))?$', 'Use YYYY or YYYY-MM'] }
-      - { name: credential_url, label: Credential URL, widget: string, required: false }
+      - { name: credential_url, label: Credential URL, widget: string, required: false, pattern: ['^https?://', 'Use a full URL starting with https://'] }
 
   - name: gallery
     label: Gallery

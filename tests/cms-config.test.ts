@@ -3,6 +3,7 @@ import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { load } from 'js-yaml';
 import { describe, expect, test } from 'vitest';
+import * as s from '../src/lib/schema';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
 
@@ -25,23 +26,34 @@ type Collection = {
   fields?: Field[];
 };
 type Config = { media_folder?: string; collections: Collection[] };
+type Shaped = { shape: Record<string, unknown> };
 
 const config = load(readFileSync(join(root, 'public/admin/config.yml'), 'utf8')) as Config;
 const collections = config.collections;
 const folderCollections = collections.filter((c) => c.folder);
 const fileCollections = collections.filter((c) => c.files);
 
-// Expected enums copied from src/lib/schema.ts (zod enums are not easy to read back).
-const expectedEnums: Record<string, string[]> = {
-  'publications.type': ['journal', 'conference', 'preprint', 'thesis'],
-  'publications.status': ['published', 'accepted', 'under_review', 'in_preparation'],
-  'experience.kind': ['research', 'industry', 'leadership'],
-  'awards.category': ['academic', 'international'],
-  'activities.kind': ['talk', 'service', 'reviewing', 'outreach'],
+// Each CMS collection (or file) name mapped to its exported schema in src/lib/schema.ts.
+const folderSchemas: Record<string, Shaped> = {
+  news: s.news,
+  publications: s.publication,
+  projects: s.project,
+  education: s.education,
+  experience: s.experience,
+  teaching: s.teaching,
+  awards: s.award,
+  activities: s.activity,
+  certificates: s.certificate,
+  gallery: s.gallery,
+};
+const fileSchemas: Record<string, Shaped> = {
+  profile: s.profile,
+  research: s.researchPage,
+  teaching: s.teachingPage,
 };
 
-function fieldNames(fields: Field[]): string[] {
-  return fields.map((f) => f.name);
+function topLevelNames(fields: Field[]): string[] {
+  return fields.map((f) => f.name).sort();
 }
 
 // Walks nested fields (object `fields`, list `fields` or `field`) and yields each field with its widget.
@@ -77,6 +89,24 @@ describe('cms config', () => {
     }
   });
 
+  test('every folder collection has a schema, and its CMS fields are exactly the schema keys', () => {
+    for (const c of folderCollections) {
+      const schema = folderSchemas[c.name];
+      expect(schema, `no schema for ${c.name}`).toBeDefined();
+      expect(topLevelNames(c.fields ?? []), c.name).toEqual(Object.keys(schema.shape).sort());
+    }
+  });
+
+  test('every files entry has a schema, and its CMS fields are exactly the schema keys', () => {
+    for (const c of fileCollections) {
+      for (const f of c.files ?? []) {
+        const schema = fileSchemas[f.name];
+        expect(schema, `no schema for ${f.name}`).toBeDefined();
+        expect(topLevelNames(f.fields), f.name).toEqual(Object.keys(schema.shape).sort());
+      }
+    }
+  });
+
   test('every file in a folder collection is a .yaml entry (or .gitkeep)', () => {
     const bad: string[] = [];
     for (const c of folderCollections) {
@@ -90,7 +120,7 @@ describe('cms config', () => {
   test('every top-level key of every folder entry is a field of its collection', () => {
     const missing: string[] = [];
     for (const c of folderCollections) {
-      const names = fieldNames(c.fields ?? []);
+      const names = topLevelNames(c.fields ?? []);
       for (const name of entryFiles(c.folder as string).filter((n) => n.endsWith('.yaml'))) {
         const entry = load(readFileSync(join(root, c.folder as string, name), 'utf8')) as Record<string, unknown>;
         for (const key of Object.keys(entry)) {
@@ -110,7 +140,7 @@ describe('cms config', () => {
           continue;
         }
         const data = load(readFileSync(join(root, f.file), 'utf8')) as Record<string, unknown>;
-        const names = fieldNames(f.fields);
+        const names = topLevelNames(f.fields);
         for (const key of Object.keys(data)) {
           if (!names.includes(key)) problems.push(`${f.file} -> ${key}`);
         }
@@ -135,31 +165,27 @@ describe('cms config', () => {
     expect(missing).toEqual([]);
   });
 
-  test('every select field uses the schema enum, and no select is unchecked', () => {
-    const seen = new Set<string>();
+  test('every select field lists exactly the options of its schema enum', () => {
     const problems: string[] = [];
-    for (const c of collections) {
-      const allFields: [string, Field[]][] = [];
-      if (c.fields) allFields.push([c.name, c.fields]);
-      for (const f of c.files ?? []) allFields.push([`${c.name}/${f.name}`, f.fields]);
-      for (const [where, fields] of allFields) {
-        for (const f of walk(fields)) {
-          if (f.widget !== 'select') continue;
-          const key = `${c.name}.${f.name}`;
-          seen.add(key);
-          const expected = expectedEnums[key];
-          if (!expected) {
-            problems.push(`${where}.${f.name}: no expected enum`);
-            continue;
-          }
-          const actual = [...(f.options ?? [])].map(String).sort();
-          if (JSON.stringify(actual) !== JSON.stringify([...expected].sort())) {
-            problems.push(`${key}: ${actual.join(',')} != ${expected.join(',')}`);
-          }
+    const check = (where: string, fields: Field[], schema: Shaped) => {
+      for (const f of walk(fields)) {
+        if (f.widget !== 'select') continue;
+        const enumField = schema.shape[f.name] as { options?: readonly unknown[] } | undefined;
+        const expected = enumField?.options;
+        if (!Array.isArray(expected)) {
+          problems.push(`${where}.${f.name}: schema field is not an enum`);
+          continue;
+        }
+        const actual = (f.options ?? []).map(String).sort();
+        if (JSON.stringify(actual) !== JSON.stringify(expected.map(String).sort())) {
+          problems.push(`${where}.${f.name}: ${actual.join(',')} != ${expected.join(',')}`);
         }
       }
+    };
+    for (const c of folderCollections) check(c.name, c.fields ?? [], folderSchemas[c.name]);
+    for (const c of fileCollections) {
+      for (const f of c.files ?? []) check(f.name, f.fields, fileSchemas[f.name]);
     }
     expect(problems).toEqual([]);
-    expect([...seen].sort()).toEqual(Object.keys(expectedEnums).sort());
   });
 });

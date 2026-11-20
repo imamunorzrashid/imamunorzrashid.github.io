@@ -5,3 +5,8 @@ test('/admin/ is not served by the production build', async ({ request }) => {
   const res = await request.get('/admin/');
   expect(res.status()).not.toBe(200);
 });
+
+test('/admin/config.yml is not served by the production build', async ({ request }) => {
+  const res = await request.get('/admin/config.yml');
+  expect(res.status()).not.toBe(200);
+});
