@@ -4,5 +4,4 @@ kind: research
 start: '2025'
 end: '2025'
 points:
-  - 'Built the MATLAB/Simulink models, analyzed and visualized the results, wrote the original draft and prepared the reviewer responses for an optimized unipolar PWM scheme for a modified H7 transformerless PV inverter.'
-  - 'The scheme brought leakage current down to 7.14 mA, against 32.5 mA for the conventional H7, and reached 98.37% efficiency with THD within IEEE 519 limits. Second author, IEEE ICM 2025, Wollongong, Australia.'
+  - 'Built the simulation models, analysed the results, wrote the first draft and prepared the reviewer responses for an optimized PWM scheme for a transformerless PV inverter. Second author, IEEE ICM 2025.'
