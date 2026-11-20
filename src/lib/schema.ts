@@ -26,7 +26,7 @@ export const profile = z.object({
   location: str,
   email: str,
   photo: str,
-  photo_alt: str,
+  photo_alt: z.string().min(1),
   bio: str,
   seeking: opt(str),
   interests: list,

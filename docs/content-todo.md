@@ -4,7 +4,6 @@ Every `TODO(Mamun)` in `src/content/` is listed here with its file and what is n
 
 ## Missing text in the content
 
-- [ ] `src/content/pages/teaching.yaml` `statement`: provide the teaching statement. (Mamun, 2026-11-20: extract it from his CVs. The orchestrator drafts it in Task 9.)
 
 ## Files and assets
 

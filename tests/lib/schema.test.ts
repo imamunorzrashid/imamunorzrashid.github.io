@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 import { z } from 'astro/zod';
-import { opt, ym, education, publication, project, teachingPage } from '../../src/lib/schema';
+import { opt, ym, education, publication, project, profile, teachingPage } from '../../src/lib/schema';
 
 describe('opt', () => {
   test('maps empty string to undefined', () => {
@@ -74,5 +74,14 @@ describe('publication', () => {
   });
   test('allows missing year for accepted', () => {
     expect(publication.safeParse({ ...base, status: 'accepted' }).success).toBe(true);
+  });
+});
+
+describe('profile photo_alt', () => {
+  test('an empty photo_alt fails', () => {
+    expect(profile.shape.photo_alt.safeParse('').success).toBe(false);
+  });
+  test('a non-empty photo_alt passes', () => {
+    expect(profile.shape.photo_alt.safeParse('Portrait').success).toBe(true);
   });
 });
