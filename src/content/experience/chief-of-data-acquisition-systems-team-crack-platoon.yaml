@@ -1,0 +1,9 @@
+role: 'Chief of Data Acquisition Systems'
+org: 'Team Crack Platoon'
+kind: leadership
+start: '2023'
+end: '2025'
+link: 'https://teamcrackplatoon.com/'
+points:
+  - 'Designed the HV, LV, powertrain, and BSPD subsystems of the team’s Formula SAE EV.'
+  - 'Diagnosed and resolved BSPD, APPS, and LV system faults during development and testing; contributed to APPS validation and LV distribution.'

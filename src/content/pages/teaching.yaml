@@ -1,5 +1,15 @@
-statement: TODO(Mamun)
+statement: 'TODO(Mamun)'
 courses_primary:
-  - TODO(Mamun)
+  - 'Computer Fundamentals and Programming'
+  - 'Structured Programming'
+  - 'Artificial Intelligence'
+  - 'Machine Learning'
+  - 'Digital Logic Design'
+  - 'Microprocessor and Microcontroller'
+  - 'Digital Signal Processing'
+  - 'Embedded Systems'
 courses_also:
-  - TODO(Mamun)
+  - 'Numerical Methods'
+  - 'Data Science and Visualization'
+  - 'Machine Vision'
+  - 'Robotics'

@@ -1,0 +1,8 @@
+title: 'Low-EMI Synchronous Step-Down Converter (LMQ61460-Q1)'
+order: 3
+summary: 'Designed a 4-layer synchronous step-down converter (26 V to 5 V at 6 A) around the LMQ61460-Q1, covering component selection, schematic design, and PCB layout following low-EMI practices; fabricated the board and bench-tested it for functional operation.'
+tags: ['4-Layer PCB', '26 V → 5 V', '6 A', 'LMQ61460-Q1']
+links:
+  code: 'https://github.com/imamunorzrashid/synchronous-step-down-converter'
+image: '/images/projects/lowemi.webp'
+image_alt: 'Low-EMI synchronous step-down converter PCB render'

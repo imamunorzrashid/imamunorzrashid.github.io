@@ -1,0 +1,8 @@
+title: 'Brake System Plausibility Device (BSPD)'
+order: 2
+summary: 'Designed a standalone, non-programmable analog BSPD on a custom KiCad PCB, integrating window comparators, signal conditioning, fault detection, timing logic, and shutdown control compliant with Formula SAE EV regulations.'
+tags: ['KiCad', 'Analog Electronics', 'Fault Detection', 'Functional Safety']
+links:
+  code: 'https://github.com/imamunorzrashid/Break-System-Plausibility-Device'
+image: '/images/projects/bspd.webp'
+image_alt: 'Brake System Plausibility Device schematic and PCB design'

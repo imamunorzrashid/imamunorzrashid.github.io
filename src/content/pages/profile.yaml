@@ -1,15 +1,36 @@
-name: TODO(Mamun)
-pub_name: TODO(Mamun)
-title: TODO(Mamun)
-affiliation: TODO(Mamun)
-location: TODO(Mamun)
-email: TODO(Mamun)
-photo: TODO(Mamun)
-photo_alt: TODO(Mamun)
-bio: TODO(Mamun)
+name: 'Mamun Or Rashid'
+pub_name: 'M. O. Rashid'
+title: 'TODO(Mamun)'
+affiliation: 'Department of Mechatronics Engineering, RUET'
+location: 'Rajshahi-6204, Bangladesh'
+email: 'mamunorzrashid@gmail.com'
+photo: '/images/profile.jpg'
+photo_alt: 'Portrait of Mamun Or Rashid, a man in a white shirt and red tie against a plain light background.'
+bio: 'I completed my B.Sc. in Mechatronics Engineering from RUET with a CGPA of 3.90/4.00, ranking 3rd among 58 students. My research focuses on artificial intelligence, data-driven modeling, transfer learning, and intelligent systems, supported by practical experience in Python, MATLAB, TensorFlow/Keras, PyTorch, and real-time simulation. With international research publications and experience in technical training, student mentoring, and engineering leadership, I aim to contribute to teaching, applied research, and technological innovation in AI and Data Science.'
 interests:
-  - TODO(Mamun)
+  - 'Transfer Learning & Data-efficient Learning'
+  - 'Data-driven Distributed Control'
+  - 'Cyber-Physical Security'
+  - 'Smart Grids & Microgrids'
+  - 'Renewable Energy Systems'
+  - 'Physics-informed ML for Energy Systems'
+links:
+  scholar: 'https://scholar.google.com/citations?user=cHE7FAUAAAAJ'
+  orcid: 'https://orcid.org/0009-0007-8391-9790'
+  github: 'https://github.com/imamunorzrashid'
+  linkedin: 'https://www.linkedin.com/in/imamunorzrashid'
 skills:
-  - label: TODO(Mamun)
-    items:
-      - TODO(Mamun)
+  - label: 'Programming'
+    items: ['Python', 'MATLAB', 'C++']
+  - label: 'ML Methods'
+    items: ['Transfer Learning & Domain Adaptation', 'Bayesian Regularization', 'Dynamic Neural Networks (NARX)', 'LSTM', 'CNN', 'Anomaly Detection']
+  - label: 'ML Frameworks'
+    items: ['TensorFlow', 'Keras', 'PyTorch', 'MATLAB Neural Network Toolbox']
+  - label: 'Simulation & Real-time'
+    items: ['MATLAB/Simulink', 'OPAL-RT (OP5700)', 'LTspice', 'PSpice']
+  - label: 'Domain'
+    items: ['Microgrids', 'Frequency Control', 'Cyber-Physical Systems', 'Power Electronics']
+  - label: 'Hardware'
+    items: ['STM32', 'ESP32', 'KiCad', 'Altium']
+  - label: 'Research Tools'
+    items: ['LaTeX', 'Git', 'Zotero']

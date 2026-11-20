@@ -1,0 +1,8 @@
+role: 'Undergraduate Researcher'
+org: 'Collaboration with Dr. Md. Rabiul Islam, University of Wollongong (remote)'
+kind: research
+start: '2025'
+end: '2025'
+points:
+  - 'Designed the MATLAB/Simulink models, analyzed and visualized results, wrote the original draft, and prepared reviewer responses for an optimized unipolar PWM scheme for a modified H7 transformerless PV inverter.'
+  - 'The scheme achieved 7.14 mA leakage current (vs. 32.5 mA for the conventional H7) and 98.37% efficiency with IEEE-519-compliant THD. Second author, IEEE ICM 2025, Wollongong, Australia.'
