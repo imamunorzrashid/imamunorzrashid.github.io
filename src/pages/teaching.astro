@@ -1,0 +1,71 @@
+---
+import { getCollection, getEntry } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Entry from '../components/Entry.astro';
+import Prose from '../components/Prose.astro';
+import { formatRange, ymSortKey } from '../lib/dates';
+
+const page = await getEntry('teachingPage', 'teachingPage');
+if (!page) throw new Error('Missing src/content/pages/teaching.yaml (collection "teachingPage", id "teachingPage")');
+const t = page.data;
+
+const roles = (await getCollection('teaching'))
+  .map((e) => e.data)
+  .sort((a, b) => ymSortKey(b.start) - ymSortKey(a.start));
+
+const hasCourses = t.courses_primary.length > 0 || t.courses_also.length > 0;
+---
+<Base title="Teaching">
+  <h1>Teaching</h1>
+
+  <section class="section">
+    <h2>Teaching Statement</h2>
+    <Prose md={t.statement} />
+  </section>
+
+  {roles.length > 0 && (
+    <section class="section">
+      <h2>Teaching Experience</h2>
+      <ul class="entries">
+        {roles.map((r) => (
+          <li>
+            <Entry heading={r.role} sub={[r.context, r.level].filter(Boolean).join(', ')} range={formatRange(r.start, r.end)}>
+              {r.description && <Prose md={r.description} />}
+              {r.subjects.length > 0 && <p class="meta">{r.subjects.join(', ')}</p>}
+            </Entry>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  {hasCourses && (
+    <section class="section">
+      <h2>Courses I Can Teach</h2>
+      {t.courses_primary.length > 0 && (
+        <ul class="courses">
+          {t.courses_primary.map((c) => (
+            <li>{c}</li>
+          ))}
+        </ul>
+      )}
+      {t.courses_also.length > 0 && <p>Also prepared to teach: {t.courses_also.join(', ')}</p>}
+    </section>
+  )}
+
+  <style>
+    .entries {
+      list-style: none;
+    }
+
+    .entries li {
+      margin-top: 2rem;
+    }
+
+    .courses {
+      list-style: disc;
+      padding-left: 1.25rem;
+      margin-bottom: 1em;
+    }
+  </style>
+</Base>

@@ -1,0 +1,28 @@
+---
+interface Props {
+  heading: string;
+  sub?: string;
+  range?: string;
+}
+
+const { heading, sub, range } = Astro.props;
+const meta = [sub, range].filter(Boolean).join(' · ');
+---
+<div class="entry">
+  <h3>{heading}</h3>
+  {meta && <p class="meta">{meta}</p>}
+  <slot />
+</div>
+
+<style>
+  h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    line-height: 1.3;
+    margin: 0 0 0.15rem;
+  }
+
+  .meta {
+    margin: 0 0 0.5rem;
+  }
+</style>

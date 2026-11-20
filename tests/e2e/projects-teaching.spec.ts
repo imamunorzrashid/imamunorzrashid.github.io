@@ -1,0 +1,130 @@
+import { test, expect } from '@playwright/test';
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
+import { load } from 'js-yaml';
+
+type Project = {
+  title: string;
+  order?: number;
+  start?: string;
+  end?: string;
+  links?: { code?: string; paper?: string; demo?: string };
+};
+
+const yamlIn = <T>(dir: URL): T[] =>
+  readdirSync(dir)
+    .filter((f) => f.endsWith('.yaml'))
+    .map((f) => load(readFileSync(new URL(f, dir), 'utf8')) as T);
+
+const projects = yamlIn<Project>(new URL('../../src/content/projects/', import.meta.url));
+const teachingDir = new URL('../../src/content/teaching/', import.meta.url);
+const teachingEntries = existsSync(teachingDir) ? yamlIn<{ role: string }>(teachingDir) : [];
+const teachingPage = load(readFileSync(new URL('../../src/content/pages/teaching.yaml', import.meta.url), 'utf8')) as {
+  courses_primary: string[];
+  courses_also: string[];
+};
+
+const entryOf = (page: import('@playwright/test').Page, title: string) =>
+  page.locator('li').filter({ has: page.getByRole('heading', { name: title, exact: true }) });
+
+const sectionOf = (page: import('@playwright/test').Page, heading: string) =>
+  page.locator('section').filter({ has: page.getByRole('heading', { name: heading, exact: true }) });
+
+test('projects has one h1 "Projects"', async ({ page }) => {
+  await page.goto('/projects/');
+  const h1 = page.locator('h1');
+  await expect(h1).toHaveCount(1);
+  await expect(h1).toHaveText('Projects');
+});
+
+test('every project title is an h3, sorted by order then title', async ({ page }) => {
+  await page.goto('/projects/');
+  const expected = [...projects]
+    .sort((a, b) => (a.order ?? 100) - (b.order ?? 100) || a.title.localeCompare(b.title))
+    .map((p) => p.title);
+  await expect(page.locator('h3')).toHaveText(expected);
+});
+
+test('each project shows only the links it has, with the right href', async ({ page }) => {
+  await page.goto('/projects/');
+  for (const p of projects) {
+    const entry = entryOf(page, p.title);
+    for (const [label, key] of [
+      ['Code', 'code'],
+      ['Paper', 'paper'],
+      ['Demo', 'demo'],
+    ] as const) {
+      const link = entry.getByRole('link', { name: label, exact: true });
+      const href = p.links?.[key];
+      if (href) await expect(link).toHaveAttribute('href', href);
+      else await expect(link).toHaveCount(0);
+    }
+  }
+});
+
+test('dated projects show their range; undated projects never show "Present"', async ({ page }) => {
+  await page.goto('/projects/');
+  for (const p of projects) {
+    const text = await entryOf(page, p.title).innerText();
+    if (p.start) {
+      expect(text).toContain(p.start);
+      if (p.end) {
+        expect(text).toContain(p.end);
+        expect(text).not.toContain('Present');
+      } else {
+        expect(text).toContain('Present');
+      }
+    } else if (!p.end) {
+      expect(text).not.toContain('Present');
+    }
+  }
+});
+
+test('teaching has one h1 "Teaching"', async ({ page }) => {
+  await page.goto('/teaching/');
+  const h1 = page.locator('h1');
+  await expect(h1).toHaveCount(1);
+  await expect(h1).toHaveText('Teaching');
+});
+
+test('teaching statement section is always present', async ({ page }) => {
+  await page.goto('/teaching/');
+  await expect(page.getByRole('heading', { name: 'Teaching Statement', level: 2, exact: true })).toHaveCount(1);
+});
+
+test('teaching experience h2 appears exactly when the collection has entries', async ({ page }) => {
+  await page.goto('/teaching/');
+  const section = sectionOf(page, 'Teaching Experience');
+  if (teachingEntries.length > 0) {
+    await expect(section).toHaveCount(1);
+    await expect(section.locator('h3')).toHaveText(teachingEntries.map((e) => e.role));
+  } else {
+    await expect(section).toHaveCount(0);
+  }
+});
+
+test('courses h2 appears exactly when a course list is non-empty', async ({ page }) => {
+  await page.goto('/teaching/');
+  const section = sectionOf(page, 'Courses I Can Teach');
+  const any = teachingPage.courses_primary.length > 0 || teachingPage.courses_also.length > 0;
+  await expect(section).toHaveCount(any ? 1 : 0);
+});
+
+test('primary course list is shown exactly when non-empty', async ({ page }) => {
+  await page.goto('/teaching/');
+  const list = sectionOf(page, 'Courses I Can Teach').locator('ul li');
+  if (teachingPage.courses_primary.length > 0) {
+    await expect(list).toHaveText(teachingPage.courses_primary);
+  } else {
+    await expect(list).toHaveCount(0);
+  }
+});
+
+test('"Also prepared to teach" line is shown exactly when non-empty', async ({ page }) => {
+  await page.goto('/teaching/');
+  const line = sectionOf(page, 'Courses I Can Teach').getByText(/^Also prepared to teach:/);
+  if (teachingPage.courses_also.length > 0) {
+    await expect(line).toHaveText(`Also prepared to teach: ${teachingPage.courses_also.join(', ')}`);
+  } else {
+    await expect(line).toHaveCount(0);
+  }
+});
