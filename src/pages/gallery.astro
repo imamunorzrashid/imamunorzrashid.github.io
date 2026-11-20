@@ -1,0 +1,50 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import { ymSortKey } from '../lib/dates';
+
+// Newest first; undated photos last, then by caption.
+const photos = (await getCollection('gallery'))
+  .map((e) => e.data)
+  .sort(
+    (a, b) =>
+      (b.date ? ymSortKey(b.date) : -1) - (a.date ? ymSortKey(a.date) : -1) || a.caption.localeCompare(b.caption),
+  );
+---
+<Base title="Gallery">
+  <h1>Gallery</h1>
+  <div class="gallery">
+    {photos.map((g) => (
+      <figure>
+        <img src={g.image} alt={g.alt} loading="lazy" />
+        <figcaption>{g.caption}</figcaption>
+      </figure>
+    ))}
+  </div>
+
+  <style>
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1.5rem 1rem;
+      margin-top: 2rem;
+    }
+
+    figure {
+      margin: 0;
+    }
+
+    img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    figcaption {
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-top: 0.4rem;
+    }
+  </style>
+</Base>

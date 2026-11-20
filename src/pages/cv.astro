@@ -1,0 +1,240 @@
+---
+import { getCollection, getEntry } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Entry from '../components/Entry.astro';
+import { formatRange, formatYm, ymSortKey } from '../lib/dates';
+
+const profile = await getEntry('profile', 'profile');
+if (!profile) throw new Error('Missing src/content/pages/profile.yaml (collection "profile", id "profile")');
+const p = profile.data;
+
+type Dated = { start?: string; end?: string };
+// Ongoing items (no end) sort first; ties fall back to start, then name.
+const recentFirst = <T extends Dated>(items: T[], name: (t: T) => string) =>
+  [...items].sort(
+    (a, b) =>
+      ymSortKey(b.end) - ymSortKey(a.end) || ymSortKey(b.start) - ymSortKey(a.start) || name(a).localeCompare(name(b)),
+  );
+
+const rangeOf = (d: Dated) => (d.start ? formatRange(d.start, d.end) : d.end ? formatYm(d.end) : undefined);
+
+const education = recentFirst(
+  (await getCollection('education')).map((e) => e.data),
+  (e) => e.degree,
+);
+
+const experience = (await getCollection('experience')).map((e) => e.data);
+const experienceSections = [
+  { heading: 'Research Experience', kind: 'research' },
+  { heading: 'Industry Experience', kind: 'industry' },
+  { heading: 'Leadership', kind: 'leadership' },
+]
+  .map((s) => ({
+    heading: s.heading,
+    items: recentFirst(
+      experience.filter((e) => e.kind === s.kind),
+      (e) => e.role,
+    ),
+  }))
+  .filter((s) => s.items.length > 0);
+
+// Awards sort by their end (or date if none), then date.
+const awards = recentFirst(
+  (await getCollection('awards')).map((e) => ({ ...e.data, start: e.data.date, end: e.data.end ?? e.data.date })),
+  (a) => a.title,
+);
+const awardGroups = [
+  { label: 'Academic', items: awards.filter((a) => a.category === 'academic') },
+  { label: 'International', items: awards.filter((a) => a.category === 'international') },
+].filter((g) => g.items.length > 0);
+
+const activities = recentFirst(
+  (await getCollection('activities')).map((e) => ({ ...e.data, start: e.data.date, end: e.data.date })),
+  (a) => a.title,
+);
+
+const certificates = recentFirst(
+  (await getCollection('certificates')).map((e) => ({ ...e.data, start: e.data.date, end: e.data.date })),
+  (c) => c.title,
+);
+
+const cvLinks = [
+  { label: 'Academic CV (PDF)', href: p.cv_academic },
+  { label: 'Teaching CV (PDF)', href: p.cv_lecturer },
+].filter((l): l is { label: string; href: string } => Boolean(l.href));
+---
+<Base title="CV">
+  <h1>CV</h1>
+  {cvLinks.length > 0 && (
+    <p class="cv-links">
+      {cvLinks.map((l, i) => (
+        <>
+          {i > 0 && ' · '}
+          <a href={l.href}>{l.label}</a>
+        </>
+      ))}
+    </p>
+  )}
+
+  {education.length > 0 && (
+    <section class="section">
+      <h2>Education</h2>
+      <ul class="entries">
+        {education.map((e) => (
+          <li>
+            <Entry heading={e.degree} sub={[e.institution, e.location].filter(Boolean).join(', ')} range={rangeOf(e)}>
+              {e.thesis_title && <p>Thesis: {e.thesis_title}</p>}
+              {e.supervisor && <p class="meta">Supervisor: {e.supervisor}</p>}
+              {e.details.length > 0 && (
+                <ul class="points">
+                  {e.details.map((d) => (
+                    <li>{d}</li>
+                  ))}
+                </ul>
+              )}
+            </Entry>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  {experienceSections.map((s) => (
+    <section class="section">
+      <h2>{s.heading}</h2>
+      <ul class="entries">
+        {s.items.map((e) => (
+          <li>
+            <Entry heading={e.role} sub={[e.org, e.location].filter(Boolean).join(', ')} range={rangeOf(e)}>
+              {e.points.length > 0 && (
+                <ul class="points">
+                  {e.points.map((pt) => (
+                    <li>{pt}</li>
+                  ))}
+                </ul>
+              )}
+              {e.link && (
+                <p class="meta">
+                  <a href={e.link}>Website</a>
+                </p>
+              )}
+            </Entry>
+          </li>
+        ))}
+      </ul>
+    </section>
+  ))}
+
+  {awardGroups.length > 0 && (
+    <section class="section">
+      <h2>Awards and Honours</h2>
+      {awardGroups.map((g) => (
+        <>
+          <h3 class="group">{g.label}</h3>
+          <ul class="entries">
+            {g.items.map((a) => (
+              <li>
+                <h4>{a.title}</h4>
+                <p class="meta">{[a.issuer, formatRange(a.date, a.end)].join(' · ')}</p>
+                {a.description && <p>{a.description}</p>}
+                {a.link && (
+                  <p class="meta">
+                    <a href={a.link}>Link</a>
+                  </p>
+                )}
+              </li>
+            ))}
+          </ul>
+        </>
+      ))}
+    </section>
+  )}
+
+  {activities.length > 0 && (
+    <section class="section">
+      <h2>Talks and Service</h2>
+      <ul class="entries">
+        {activities.map((a) => (
+          <li>
+            <Entry heading={a.title} sub={[a.event, a.location].filter(Boolean).join(', ')} range={formatYm(a.date)}>
+              {a.link && (
+                <p class="meta">
+                  <a href={a.link}>Link</a>
+                </p>
+              )}
+            </Entry>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  {certificates.length > 0 && (
+    <section class="section">
+      <h2>Certificates</h2>
+      <ul class="certs">
+        {certificates.map((c) => (
+          <li>
+            {[c.title, c.issuer, formatYm(c.date)].join(' · ')}
+            {c.credential_url && (
+              <>
+                {' · '}
+                <a href={c.credential_url}>Credential</a>
+              </>
+            )}
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  {p.skills.length > 0 && (
+    <section class="section">
+      <h2>Technical Skills</h2>
+      {p.skills.map((s) => (
+        <p>
+          <strong>{s.label}:</strong> {s.items.join(', ')}
+        </p>
+      ))}
+    </section>
+  )}
+
+  <style>
+    .cv-links {
+      font-family: var(--font-sans);
+      font-size: 0.95rem;
+    }
+
+    .points {
+      list-style: disc;
+      padding-left: 1.25rem;
+      margin: 0 0 0.5rem;
+    }
+
+    .group {
+      font-size: 1.25rem;
+      font-weight: 600;
+      line-height: 1.3;
+      margin: 2rem 0 0;
+    }
+
+    .group + .entries > li:first-child {
+      margin-top: 0.75rem;
+    }
+
+    h4 {
+      font-size: 1.125rem;
+      font-weight: 600;
+      line-height: 1.3;
+      margin: 0 0 0.15rem;
+    }
+
+    .certs {
+      list-style: none;
+    }
+
+    .certs li + li {
+      margin-top: 0.5rem;
+    }
+  </style>
+</Base>
