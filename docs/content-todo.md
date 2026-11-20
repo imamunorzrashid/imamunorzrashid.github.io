@@ -54,3 +54,5 @@ Every `TODO(Mamun)` in `src/content/` is listed here with its file and what is n
 - Research theme 2 is correct: the 50% data-scarcity and packet-loss tests were run on the six-area network. (Mamun, 2026-11-21)
 - Teaching department renamed to "Mechatronics Engineering"; this is intended. (Mamun, 2026-11-21)
 - Rover drivetrain project removed from the site. (Mamun, 2026-11-21)
+- Research theme titles: the three research themes use new titles (data-efficient frequency control with transfer learning; cyber-resilient control against false data injection; low-leakage transformerless PV inverters). (Mamun, 2026-11-21)
+- Short experience texts: each experience entry shows one short paragraph (or a bulleted list for two or more points), and the Mamun-edited experience files are kept as saved in the CMS. (Mamun, 2026-11-21)

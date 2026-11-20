@@ -60,7 +60,7 @@ The website does **not** show his phone number or the referees' contact details.
 - Fonts are self-hosted through Fontsource: **Source Serif 4** (variable) for body and headings, and **IBM Plex Sans** (400, 500, 600) for the nav, metadata, labels and buttons.
 - Colours: `--ink #1b1b1b`, `--muted #5c5c5c`, `--rule #e3e3e3`, `--bg #ffffff`, `--accent #1f4e79`, `--accent-hover #163a5a`. One accent colour only.
 - Type scale: body 1.125rem/1.6 serif; h1 2rem; h2 1.5rem serif, weight 600; metadata 0.9rem sans in `--muted`.
-- Layout: reading column `max-width: 44rem`, centred, text left-aligned. Header has the name on the left and the nav on the right, and the nav wraps onto a second line below 640px (no hamburger menu). Section separation uses whitespace and at most a 1px `--rule` line.
+- Layout: reading column `max-width: 44rem`, centred, text left-aligned. Header has the name on the left and the nav on the right. On wide screens the header may be wider than the 44rem reading column, so the 9-item nav fits on one row, and it wraps below that width (no hamburger menu) (Mamun, 2026-11-21). Section separation uses whitespace and at most a 1px `--rule` line.
 - Main nav (9 items, in this order): Home, Research, Publications, Projects, Academics, Experience, Achievements, Teaching, CV. (Mamun, 2026-11-21) The footer holds the email, Scholar, ORCID, GitHub, LinkedIn, Gallery, and "Last updated <build date>".
 - Social links are text links, not icon buttons.
 - Banned phrases in editable prose (case-insensitive): `passionate`, `cutting-edge`, `leverage`, `leveraging`, `seamless`, `seamlessly`, `delve`, `spearhead`, `harness the power`, `unlock`, `empower`, `world-class`, `game-changer`, `synergy`, `tapestry`, `thrilled`. Publication titles are exempt.
@@ -88,7 +88,7 @@ The website does **not** show his phone number or the referees' contact details.
 | `/experience/` | Research, industry and leadership experience, then talks and service (`experience`, `activities`). (Mamun, 2026-11-21) |
 | `/achievements/` | Academic and international awards, then certificates (`awards`, `certificates`). (Mamun, 2026-11-21) |
 | `/teaching/` | Teaching statement, teaching experience, courses he's ready to teach (`teachingPage`, `teaching`) |
-| `/cv/` | Download links for the Academic CV and the Teaching CV only (Mamun, 2026-11-21). Education, experience, awards, activities, certificates and skills stay in YAML and the CMS but aren't shown (`profile`) |
+| `/cv/` | Download links for the Academic CV and the Teaching CV only (Mamun, 2026-11-21). |
 | `/gallery/` | Captioned photos (`gallery`) |
 | `/admin/` | Sveltia CMS (development only) |
 
