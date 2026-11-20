@@ -4,13 +4,11 @@ Every `TODO(Mamun)` in `src/content/` is listed here with its file and what is n
 
 ## Missing text in the content
 
-- [ ] `src/content/pages/research.yaml` `statement`: the old site has no Research section. Provide the research statement. (Mamun, 2026-11-20: extract it from his CVs. The orchestrator drafts it in Task 9.)
-- [ ] `src/content/pages/research.yaml` `themes`: left as an empty list. Provide research themes (title and summary each), or leave empty.
 - [ ] `src/content/pages/teaching.yaml` `statement`: provide the teaching statement. (Mamun, 2026-11-20: extract it from his CVs. The orchestrator drafts it in Task 9.)
 
 ## Files and assets
 
-- [ ] `src/content/pages/profile.yaml` `cv_academic` and `cv_lecturer` are unset. `docs/sources/cv-academic-web.pdf` and `docs/sources/cv-lecturer-web.pdf` do not exist. Export the web versions (no references, no phone number) so they can be copied to `public/cv/mamun-or-rashid-cv-academic.pdf` and `public/cv/mamun-or-rashid-cv-teaching.pdf`, then set both fields. Mamun sent CV PDFs on 2026-11-20, but both still contain References with referee phones and emails (and the lecturer CV contains his mobile number). They can't be published. Export versions without References and phone.
+- [ ] Web CV links: the Google Drive CV links Mamun added on 2026-11-20 contain his phone number, so they are not linked. Export versions without References and phone, then set `cv_academic` / `cv_lecturer` in `src/content/pages/profile.yaml`. The copies go to `public/cv/mamun-or-rashid-cv-academic.pdf` and `public/cv/mamun-or-rashid-cv-teaching.pdf`.
 - [ ] Gallery: three `.HEIC` photos have no entry because they cannot be optimised: `formula japan 2025.HEIC`, `industrial attachment presentation.HEIC`, `industrial attachment presentation 2.HEIC`. Export them as JPG if they should appear, then run `scripts/optimize-images.mjs` on them.
 - [ ] `public/images/gallery/class-representative-award.webp`: the source was 12.7 MB and is now 82 KB at 1600 px. Confirm the optimised version looks right.
 - [ ] Gallery alt text was written from the photos themselves. Check the 11 alt texts in `src/content/gallery/` against the photos.
@@ -35,13 +33,16 @@ Every `TODO(Mamun)` in `src/content/` is listed here with its file and what is n
 
 ## Decided (for reference)
 
-- `profile.bio` is the lecturer CV "Research & Teaching Profile" paragraph, verbatim, as the starting point for Task 9.
+- Profile title and bio: written by Mamun. (Mamun, 2026-11-20) The bio replaces the lecturer CV paragraph used earlier.
+- Research statement and themes: written by Mamun. (Mamun, 2026-11-20)
+- Class rank: 3rd of 59. Both CV PDFs still say 58; Mamun to fix the PDFs. (Mamun, 2026-11-20)
+- ResearchGate link added. (Mamun, 2026-11-20)
 - Interests and skills are from the academic CV.
 - The Flag Counter is dropped.
 - The old Google Drive CV link and `legacy/assets/Mamun_Or_Rashid_CV.pdf` are superseded and not copied.
 - The profile photo is the GitHub avatar at 460 px (`public/images/profile.jpg`).
 - Profile title and affiliation: title `B.Sc. in Mechatronics Engineering`; affiliation `Rajshahi University of Engineering & Technology (RUET)`. He has graduated, so the "Department of …" wording no longer fits. (Mamun, 2026-11-20)
-- Seeking line: not wanted. `profile.seeking` stays unset. (Mamun, 2026-11-20)
+- Seeking line: "Open to PhD positions starting in Fall 2027". Mamun added it. (Mamun, 2026-11-20) This replaces the earlier decision that it was not wanted.
 - VC's List and Technical Scholarship 2021 – 2024: both are correct. The academic session is 2020-21 to 2023-24, and classes started in 2022 because of COVID. Keep 2021 – 2024. (Mamun, 2026-11-20)
 - Head of Electrical: May – July 2026. (Mamun, 2026-11-20)
 - KiCad 9 certificate: Udemy, June 2025, URL confirmed. (Mamun, 2026-11-20)

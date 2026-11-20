@@ -1,36 +1,69 @@
-name: 'Mamun Or Rashid'
-pub_name: 'M. O. Rashid'
-title: 'B.Sc. in Mechatronics Engineering'
-affiliation: 'Rajshahi University of Engineering & Technology (RUET)'
-location: 'Rajshahi-6204, Bangladesh'
-email: 'mamunorzrashid@gmail.com'
-photo: '/images/profile.jpg'
-photo_alt: 'Portrait of Mamun Or Rashid, a man in a white shirt and red tie against a plain light background.'
-bio: 'I completed my B.Sc. in Mechatronics Engineering from RUET with a CGPA of 3.90/4.00, ranking 3rd among 58 students. My research focuses on artificial intelligence, data-driven modeling, transfer learning, and intelligent systems, supported by practical experience in Python, MATLAB, TensorFlow/Keras, PyTorch, and real-time simulation. With international research publications and experience in technical training, student mentoring, and engineering leadership, I aim to contribute to teaching, applied research, and technological innovation in AI and Data Science.'
+name: Mamun Or Rashid
+pub_name: M. O. Rashid
+title: B.Sc. in Mechatronics Engineering
+affiliation: Rajshahi University of Engineering & Technology (RUET)
+location: Rajshahi-6204, Bangladesh
+email: mamunorzrashid@gmail.com
+photo: /images/uploads/passport-size-photo.webp
+photo_alt: Portrait of Mamun Or Rashid, a man in a blue shirt and tie against a plain light background.
+bio: |-
+  I am a Mechatronics Engineering graduate of Rajshahi University of Engineering & Technology (RUET), with a CGPA of 3.90/4.00 (3rd of 59), working on data-efficient control and cyber-physical security for microgrids.
+
+  In the EPIC Research Group there, supervised by Subrata Kumar Sarker, I study how distributed frequency controllers can keep working when their training data is scarce, noisy or under attack. My first-author paper in _Energy Conversion and Management: X_ (2026) transfers a dynamic neural network controller trained on clean data to degraded conditions through two-phase transfer learning, cutting error by up to 64% and training time by up to 35% against training from scratch, with real-time validation on OPAL-RT. A second first-author paper, accepted in _Next Energy_, extends the approach to detecting and mitigating false data injection attacks. My undergraduate thesis carries it from frequency regulation up to the economic dispatch layer.
+seeking: Open to PhD positions starting in Fall 2027
 interests:
-  - 'Transfer Learning & Data-efficient Learning'
-  - 'Data-driven Distributed Control'
-  - 'Cyber-Physical Security'
-  - 'Smart Grids & Microgrids'
-  - 'Renewable Energy Systems'
-  - 'Physics-informed ML for Energy Systems'
+  - Transfer Learning & Data-efficient Learning
+  - Data-driven Distributed Control
+  - Cyber-Physical Security
+  - Smart Grids & Microgrids
+  - Renewable Energy Systems
+  - Physics-informed ML for Energy Systems
 links:
-  scholar: 'https://scholar.google.com/citations?user=cHE7FAUAAAAJ'
-  orcid: 'https://orcid.org/0009-0007-8391-9790'
-  github: 'https://github.com/imamunorzrashid'
-  linkedin: 'https://www.linkedin.com/in/imamunorzrashid'
+  scholar: https://scholar.google.com/citations?user=cHE7FAUAAAAJ
+  orcid: https://orcid.org/0009-0007-8391-9790
+  github: https://github.com/imamunorzrashid
+  linkedin: https://www.linkedin.com/in/imamunorzrashid
+  researchgate: https://www.researchgate.net/profile/Mamun-Or-Rashid-6
 skills:
-  - label: 'Programming'
-    items: ['Python', 'MATLAB', 'C++']
-  - label: 'ML Methods'
-    items: ['Transfer Learning & Domain Adaptation', 'Bayesian Regularization', 'Dynamic Neural Networks (NARX)', 'LSTM', 'CNN', 'Anomaly Detection']
-  - label: 'ML Frameworks'
-    items: ['TensorFlow', 'Keras', 'PyTorch', 'MATLAB Neural Network Toolbox']
-  - label: 'Simulation & Real-time'
-    items: ['MATLAB/Simulink', 'OPAL-RT (OP5700)', 'LTspice', 'PSpice']
-  - label: 'Domain'
-    items: ['Microgrids', 'Frequency Control', 'Cyber-Physical Systems', 'Power Electronics']
-  - label: 'Hardware'
-    items: ['STM32', 'ESP32', 'KiCad', 'Altium']
-  - label: 'Research Tools'
-    items: ['LaTeX', 'Git', 'Zotero']
+  - label: Programming
+    items:
+      - Python
+      - MATLAB
+      - C++
+  - label: ML Methods
+    items:
+      - Transfer Learning & Domain Adaptation
+      - Bayesian Regularization
+      - Dynamic Neural Networks (NARX)
+      - LSTM
+      - CNN
+      - Anomaly Detection
+  - label: ML Frameworks
+    items:
+      - TensorFlow
+      - Keras
+      - PyTorch
+      - MATLAB Neural Network Toolbox
+  - label: Simulation & Real-time
+    items:
+      - MATLAB/Simulink
+      - OPAL-RT (OP5700)
+      - LTspice
+      - PSpice
+  - label: Domain
+    items:
+      - Microgrids
+      - Frequency Control
+      - Cyber-Physical Systems
+      - Power Electronics
+  - label: Hardware
+    items:
+      - STM32
+      - ESP32
+      - KiCad
+      - Altium
+  - label: Research Tools
+    items:
+      - LaTeX
+      - Git
+      - Zotero
