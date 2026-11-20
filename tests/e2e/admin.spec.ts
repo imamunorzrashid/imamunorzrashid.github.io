@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures';
 
 // The CMS is for development only, so the production build must not serve it.
 test('/admin/ is not served by the production build', async ({ request }) => {

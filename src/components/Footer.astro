@@ -14,7 +14,7 @@ const buildDate = new Date().toISOString().slice(0, 10);
   <p>
     {shown.map((l, i) => (
       <>
-        {i > 0 && ' · '}
+        {i > 0 && ' · '}
         <a href={l.href} class:list={[l.icon && 'with-icon']}>{l.icon && <LinkIcon name={l.icon} />} {l.label}</a>
       </>
     ))}
@@ -39,5 +39,9 @@ const buildDate = new Date().toISOString().slice(0, 10);
 
   .site-footer p {
     margin: 0 0 0.5rem;
+  }
+
+  .site-footer img {
+    height: auto;
   }
 </style>

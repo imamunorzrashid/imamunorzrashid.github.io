@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures';
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { load } from 'js-yaml';
 import { formatRange, formatYm, ymSortKey } from '../../src/lib/dates';

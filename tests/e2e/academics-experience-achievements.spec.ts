@@ -1,4 +1,4 @@
-import { test, expect, type Page } from '@playwright/test';
+import { test, expect, type Page } from './fixtures';
 import { readFileSync, readdirSync } from 'node:fs';
 import { load } from 'js-yaml';
 import { recentFirst } from '../../src/lib/dates';

@@ -1,14 +1,20 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures';
 import { readFileSync } from 'node:fs';
 import { load } from 'js-yaml';
 
 const profile = load(readFileSync(new URL('../../src/content/pages/profile.yaml', import.meta.url), 'utf8')) as {
   name: string;
   email: string;
-  cv_academic: string;
-  links: { scholar: string; researchgate: string };
+  cv_academic?: string;
+  links: { scholar: string; researchgate?: string };
   flag_counter?: string;
 };
+
+// Optional links appear only when the profile sets them.
+const researchGate = profile.links.researchgate ? ['ResearchGate'] : [];
+const academicCv = profile.cv_academic ? ['Academic CV'] : [];
+const homeLabels = ['Email', 'Google Scholar', 'ORCID', ...researchGate, 'GitHub', 'LinkedIn', ...academicCv];
+const footerLabels = [profile.email, 'Google Scholar', 'ORCID', ...researchGate, 'GitHub', 'LinkedIn', 'Gallery'];
 
 test('home has exactly one h1 with the profile name', async ({ page }) => {
   await page.goto('/');
@@ -84,15 +90,7 @@ test('footer shows the last updated line', async ({ page }) => {
 test('home links row: each link shows an aria-hidden icon before its text label', async ({ page }) => {
   await page.goto('/');
   const row = page.locator('.text-links').first();
-  await expect(row.locator('a')).toHaveText([
-    'Email',
-    'Google Scholar',
-    'ORCID',
-    'ResearchGate',
-    'GitHub',
-    'LinkedIn',
-    'Academic CV',
-  ]);
+  await expect(row.locator('a')).toHaveText(homeLabels);
   const links = row.locator('a');
   const count = await links.count();
   for (let i = 0; i < count; i++) {
@@ -106,23 +104,31 @@ test('home links row: each link shows an aria-hidden icon before its text label'
 test('home links row: accessible names equal the text labels and hrefs match the profile', async ({ page }) => {
   await page.goto('/');
   const link = (name: string) => page.locator('.text-links').first().getByRole('link', { name, exact: true });
-  await expect(link('ResearchGate')).toHaveAttribute('href', profile.links.researchgate);
-  await expect(link('Academic CV')).toHaveAttribute('href', profile.cv_academic);
+  if (profile.links.researchgate) await expect(link('ResearchGate')).toHaveAttribute('href', profile.links.researchgate);
+  if (profile.cv_academic) await expect(link('Academic CV')).toHaveAttribute('href', profile.cv_academic);
   await expect(link('Google Scholar')).toHaveAttribute('href', profile.links.scholar);
+});
+
+test('home links row and footer first paragraph: each accessible name equals its trimmed visible text', async ({ page }) => {
+  await page.goto('/');
+  const groups = [
+    page.locator('.text-links').first().locator('a'),
+    page.locator('footer > p').first().locator('a'),
+  ];
+  for (const group of groups) {
+    const count = await group.count();
+    expect(count).toBeGreaterThan(0);
+    for (let i = 0; i < count; i++) {
+      const a = group.nth(i);
+      await expect(a).toHaveAccessibleName((await a.innerText()).trim());
+    }
+  }
 });
 
 test('footer links: icons on social links, ResearchGate listed, Gallery has no icon', async ({ page }) => {
   await page.goto('/');
   const footerLinksLocator = page.locator('footer > p').first().locator('a');
-  await expect(footerLinksLocator).toHaveText([
-    profile.email,
-    'Google Scholar',
-    'ORCID',
-    'ResearchGate',
-    'GitHub',
-    'LinkedIn',
-    'Gallery',
-  ]);
+  await expect(footerLinksLocator).toHaveText(footerLabels);
   const count = await footerLinksLocator.count();
   for (let i = 0; i < count; i++) {
     const a = footerLinksLocator.nth(i);
