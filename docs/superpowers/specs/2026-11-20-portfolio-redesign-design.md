@@ -14,7 +14,7 @@ Content edits must not require touching code. Mamun fills a form for a section, 
 ## Goals
 
 - A quiet, typographic academic site, closer to a faculty or postdoc page than a startup landing page.
-- Separate pages with real headings: Home, Research, Publications, Projects, Teaching, CV, and Gallery (linked from the footer only).
+- Separate pages with real headings: Home, Research, Publications, Projects, Academics, Experience, Achievements, Teaching, CV, and Gallery (linked from the footer only). (Mamun, 2026-11-21)
 - Every piece of content lives in YAML files under `src/content/`, and each collection has a matching form in a local CMS at `/admin`.
 - Keep the domain `mamunorrashid.me` on GitHub Pages (repo `imamunorzrashid/imamunorzrashid.github.io`, `CNAME` = `mamunorrashid.me`). The deploy moves from "serve the repo root" to a GitHub Actions build of `dist/`.
 - Cut the page weight: the old repo has 51 MB of assets, including a 12.7 MB JPG and three `.HEIC` files that Chrome can't display.
@@ -61,7 +61,7 @@ The website does **not** show his phone number or the referees' contact details.
 - Colours: `--ink #1b1b1b`, `--muted #5c5c5c`, `--rule #e3e3e3`, `--bg #ffffff`, `--accent #1f4e79`, `--accent-hover #163a5a`. One accent colour only.
 - Type scale: body 1.125rem/1.6 serif; h1 2rem; h2 1.5rem serif, weight 600; metadata 0.9rem sans in `--muted`.
 - Layout: reading column `max-width: 44rem`, centred, text left-aligned. Header has the name on the left and the nav on the right, and the nav wraps onto a second line below 640px (no hamburger menu). Section separation uses whitespace and at most a 1px `--rule` line.
-- Main nav (6 items, in this order): Home, Research, Publications, Projects, Teaching, CV. The footer holds the email, Scholar, ORCID, GitHub, LinkedIn, Gallery, and "Last updated <build date>".
+- Main nav (9 items, in this order): Home, Research, Publications, Projects, Academics, Experience, Achievements, Teaching, CV. (Mamun, 2026-11-21) The footer holds the email, Scholar, ORCID, GitHub, LinkedIn, Gallery, and "Last updated <build date>".
 - Social links are text links, not icon buttons.
 - Banned phrases in editable prose (case-insensitive): `passionate`, `cutting-edge`, `leverage`, `leveraging`, `seamless`, `seamlessly`, `delve`, `spearhead`, `harness the power`, `unlock`, `empower`, `world-class`, `game-changer`, `synergy`, `tapestry`, `thrilled`. Publication titles are exempt.
 - Images: every file under `public/images/` is ≤ 500 KB, ≤ 1600 px wide, WebP or JPG, with a kebab-case filename (no spaces or apostrophes). Organisation logos aren't used in the new design.
@@ -84,12 +84,15 @@ The website does **not** show his phone number or the referees' contact details.
 | `/research/` | Research statement, research themes, each with a short summary (`researchPage`) |
 | `/publications/` | Grouped and numbered: Journal Articles [J], Conference Papers [C], Accepted [S], Under Review [U], In Preparation [P]. Reverse chronological within each group, with Mamun's name in bold (`publications`, `profile.pub_name`) |
 | `/projects/` | Title, period, summary, tags, links (`projects`) |
+| `/academics/` | Education entries, then technical skills (`education`, `profile`). (Mamun, 2026-11-21) |
+| `/experience/` | Research, industry and leadership experience, then talks and service (`experience`, `activities`). (Mamun, 2026-11-21) |
+| `/achievements/` | Academic and international awards, then certificates (`awards`, `certificates`). (Mamun, 2026-11-21) |
 | `/teaching/` | Teaching statement, teaching experience, courses he's ready to teach (`teachingPage`, `teaching`) |
 | `/cv/` | Download links for the Academic CV and the Teaching CV only (Mamun, 2026-11-21). Education, experience, awards, activities, certificates and skills stay in YAML and the CMS but aren't shown (`profile`) |
 | `/gallery/` | Captioned photos (`gallery`) |
 | `/admin/` | Sveltia CMS (development only) |
 
-Old hash links: on `/`, `#research` goes to `/research/`, `#publications` to `/publications/`, `#projects` to `/projects/`, and `#gallery` to `/gallery/`. `#education`, `#leadership`, `#industry`, `#honors` and `#certifications` go to `/cv/`. `#home` and `#contact` stay on `/`.
+Old hash links: on `/`, `#research` goes to `/research/`, `#publications` to `/publications/`, `#projects` to `/projects/`, and `#gallery` to `/gallery/`. `#education` goes to `/academics/`, `#leadership` and `#industry` to `/experience/`, and `#honors` and `#certifications` to `/achievements/`. (Mamun, 2026-11-21) `#home` and `#contact` stay on `/`.
 
 ## Content model
 
@@ -99,7 +102,7 @@ Shorthand used below: `str`, `str?` (optional, and an empty string from the CMS 
 - **researchPage** (`src/content/pages/research.yaml`, single): `statement: md`, `themes: [{title, summary: md}]`
 - **teachingPage** (`src/content/pages/teaching.yaml`, single): `statement: md`, `course_groups: [{department, courses: [str] (at least one)}]`
 - **news** (`src/content/news/*.yaml`): `date: ym`, `text: md`, `link: str?`
-- **publications** (`src/content/publications/*.yaml`): `title`, `authors: [str]`, `venue`, `type: journal|conference|preprint|thesis`, `status: published|accepted|under_review|in_preparation` (groups: Journal Articles [J], Conference Papers [C], Accepted [S], Under Review [U], In Preparation [P], following the CV's numbering), `year: number?` (required unless the status is `in_preparation`), `doi?`, `url?`, `pdf?`, `code?`, `featured: bool = false`, `note?`
+- **publications** (`src/content/publications/*.yaml`): `title`, `authors: [str]`, `venue`, `type: journal|conference|preprint|thesis`, `status: published|accepted|under_review|in_preparation` (groups: Journal Articles [J], Conference Papers [C], Accepted [S], Under Review [U], In Preparation [P], following the CV's numbering), `year: number?` (required unless the status is `in_preparation`), `doi?`, `url?`, `pdf?`, `code?`, `featured: bool = false`, `note?`, `abstract: md?` (shown as a fold-out under the paper; Mamun, 2026-11-21)
 - **projects** (`src/content/projects/*.yaml`): `title`, `order: number = 100`, `start: ym?`, `end: ym?`, `summary: md`, `tags: [str]`, `links: {code?, paper?, demo?}`, `image?`, `image_alt?` (required if `image` is set), `featured: bool = false`
 - **education** (`src/content/education/*.yaml`): `degree`, `institution`, `location?`, `start: ym?`, `end: ym?` (if only `end` is set, show just that date), `thesis_title?`, `supervisor?`, `details: [str]`
 - **experience** (`src/content/experience/*.yaml`): `role`, `org`, `kind: research|industry|leadership`, `start: ym`, `end: ym?`, `location?`, `link?`, `points: [str]`
