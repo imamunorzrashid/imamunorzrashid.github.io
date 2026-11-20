@@ -10,21 +10,23 @@ const p = profile.data;
 
 const groups = groupPublications((await getCollection('publications')).map((e) => e.data));
 
-const links: { label: string; href: string }[] = [
+const links: { label: string; href: string | undefined }[] = [
   { label: 'Google Scholar', href: p.links?.scholar },
   { label: 'ORCID', href: p.links?.orcid },
 ].filter((l): l is { label: string; href: string } => Boolean(l.href));
 ---
 <Base title="Publications">
   <h1>Publications</h1>
-  <p class="text-links">
-    {links.map((l, i) => (
-      <>
-        {i > 0 && ' · '}
-        <a href={l.href}>{l.label}</a>
-      </>
-    ))}
-  </p>
+  {links.length > 0 && (
+    <p class="text-links">
+      {links.map((l, i) => (
+        <>
+          {i > 0 && ' · '}
+          <a href={l.href}>{l.label}</a>
+        </>
+      ))}
+    </p>
+  )}
 
   {groups.map((g) => (
     <section class="section">

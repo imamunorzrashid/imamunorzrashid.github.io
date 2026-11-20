@@ -1,4 +1,10 @@
 import { test, expect } from '@playwright/test';
+import { readFileSync } from 'node:fs';
+import { load } from 'js-yaml';
+
+const research = load(readFileSync(new URL('../../src/content/pages/research.yaml', import.meta.url), 'utf8')) as {
+  themes: { title: string }[];
+};
 
 const ORDER = ['Journal Articles', 'Conference Papers', 'Accepted', 'Under Review', 'In Preparation'];
 
@@ -16,9 +22,9 @@ test('publications h2s are a known subset in the expected order', async ({ page 
 
 test('Next Energy is listed under Accepted as [S1]', async ({ page }) => {
   await page.goto('/publications/');
-  const accepted = groupOf(page, 'Accepted');
-  await expect(accepted).toContainText('[S1]');
-  await expect(accepted).toContainText('Next Energy');
+  const entry = groupOf(page, 'Accepted').locator('li').filter({ hasText: 'Next Energy' });
+  await expect(entry).toHaveCount(1);
+  await expect(entry).toHaveText(/^\[S1\]/);
 });
 
 test('every DOI link has a non-empty path', async ({ page }) => {
@@ -31,7 +37,7 @@ test('every DOI link has a non-empty path', async ({ page }) => {
 
 test('no publication text contains "undefined" or "null"', async ({ page }) => {
   await page.goto('/publications/');
-  const text = await page.locator('main').innerText();
+  const text = await page.locator('body').innerText();
   expect(text).not.toMatch(/undefined|null/);
 });
 
@@ -57,9 +63,10 @@ test('research has one h1 "Research"', async ({ page }) => {
   await expect(h1).toHaveText('Research');
 });
 
-test('research has at least one h2', async ({ page }) => {
+test('research has one h2 per theme, in order', async ({ page }) => {
+  test.skip(research.themes.length === 0, 'research themes empty until Task 9');
   await page.goto('/research/');
-  const n = await page.locator('h2').count();
-  test.skip(n === 0, 'research themes empty until Task 9');
-  expect(n).toBeGreaterThan(0);
+  const h2s = page.locator('main h2');
+  await expect(h2s).toHaveCount(research.themes.length);
+  await expect(h2s).toHaveText(research.themes.map((t) => t.title));
 });

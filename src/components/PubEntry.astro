@@ -20,6 +20,7 @@ const metaItems: { label: string; href?: string }[] = [];
 const status = STATUS[pub.status];
 if (status) metaItems.push({ label: status });
 if (pub.doi) metaItems.push({ label: 'DOI', href: `https://doi.org/${pub.doi}` });
+if (pub.url) metaItems.push({ label: 'Link', href: pub.url });
 if (pub.pdf) metaItems.push({ label: 'PDF', href: pub.pdf });
 if (pub.code) metaItems.push({ label: 'Code', href: pub.code });
 
@@ -31,7 +32,7 @@ const tail = `${pub.note ? `, ${pub.note}` : ''}${pub.year !== undefined ? `, ${
       {i > 0 && ', '}
       {a.self ? <strong>{a.name}</strong> : a.name}
     </>
-  ))}, “{pub.title},” <em>{pub.venue}</em>{tail}.
+  ))}, “{pub.title},” <em>{pub.venue}</em>{tail}.{' '}
   {metaItems.length > 0 && (
     <span class="meta">
       {metaItems.map((m, i) => (
