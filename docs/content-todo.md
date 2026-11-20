@@ -2,9 +2,6 @@
 
 Every `TODO(Mamun)` in `src/content/` is listed here with its file and what is needed. Items below marked "decided" record a choice already made, for reference.
 
-## Missing text in the content
-
-
 ## Files and assets
 
 - [ ] Gallery: three `.HEIC` photos have no entry because they cannot be optimised: `formula japan 2025.HEIC`, `industrial attachment presentation.HEIC`, `industrial attachment presentation 2.HEIC`. Export them as JPG if they should appear, then run `scripts/optimize-images.mjs` on them.
@@ -18,7 +15,7 @@ Every `TODO(Mamun)` in `src/content/` is listed here with its file and what is n
 - [ ] Formula Bharat static award (`src/content/awards/formula-bharat-static-2024.yaml`): the old site says "15th overall static result"; the CV says "15th in static; 16th overall out of 37 teams". The site uses the CV.
 - [ ] Thesis title: the old site says "Isolated Network Microgrids"; both CVs say "Isolated Networked Microgrids". The site uses the CV wording.
 - [ ] Embedded certificate (`src/content/certificates/embedded-systems-bare-metal-stm32.yaml`): the old site says "Advanced Embedded Systems Bare-Metal Programming"; the CV says "Embedded Systems Bare-Metal Programming Ground Up™ (STM32)". The site uses the CV title.
-- [ ] Dates on projects: the BSPD, LMQ converter and rover projects have no dates in the sources (the rover title says 2025). They have none on the site. Provide dates if they should show.
+- [ ] Dates on projects: the BSPD and LMQ converter projects have no dates in the sources. They have none on the site. Provide dates if they should show.
 
 ## Not migrated (Mamun to decide)
 
@@ -33,7 +30,7 @@ Every `TODO(Mamun)` in `src/content/` is listed here with its file and what is n
 
 - Profile title and bio: written by Mamun. (Mamun, 2026-11-20) The bio replaces the lecturer CV paragraph used earlier.
 - Research statement and themes: written by Mamun. (Mamun, 2026-11-20)
-- Class rank: 3rd of 59. Both CV PDFs still say 58; Mamun to fix the PDFs. (Mamun, 2026-11-20)
+- Class rank: 3rd of 59. The CV PDFs now say 3rd of 59 and Head of Electrical May – July 2026. (Mamun, 2026-11-21)
 - ResearchGate link added. (Mamun, 2026-11-20)
 - Interests and skills are from the academic CV.
 - The Flag Counter is dropped.
@@ -49,3 +46,7 @@ Every `TODO(Mamun)` in `src/content/` is listed here with its file and what is n
 - Featured publications: the two journal papers (ECMX and Next Energy). (Mamun, 2026-11-20)
 - News: the Next Energy acceptance on 9 Nov 2026, in `src/content/news/2026-11-next-energy-accepted.yaml`. (Mamun, 2026-11-20)
 - FSAE and rover demo links: the academic CV links are fine. (Mamun, 2026-11-20)
+- CV page shows only the download links: the Academic CV and the Teaching CV (Mamun, 2026-11-21).
+- Research theme 2 is correct: the 50% data-scarcity and packet-loss tests were run on the six-area network. (Mamun, 2026-11-21)
+- Teaching department renamed to "Mechatronics Engineering"; this is intended. (Mamun, 2026-11-21)
+- Rover drivetrain project removed from the site. (Mamun, 2026-11-21)
