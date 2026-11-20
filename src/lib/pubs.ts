@@ -36,8 +36,8 @@ export function groupPublications(pubs: Pub[]) {
   })).filter((g) => g.items.length > 0);
 }
 
-// Ignores dots, spaces and case: "M. O. Rashid" matches "M.O. Rashid".
-const norm = (s: string) => s.replace(/[.\s]/g, '').toLowerCase();
+// Dots become spaces and runs of spaces collapse, so "M. O. Rashid" matches "M.O. Rashid" but not "Mo Rashid".
+const norm = (s: string) => s.toLowerCase().replace(/\./g, ' ').replace(/\s+/g, ' ').trim();
 
 export function splitAuthors(authors: string[], self: string): { name: string; self: boolean }[] {
   const me = norm(self);

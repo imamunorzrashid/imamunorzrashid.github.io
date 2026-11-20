@@ -63,4 +63,10 @@ describe('splitAuthors', () => {
       { name: 'S. K. Sarker', self: false },
     ]);
   });
+  test('does not match a different initial layout', () => {
+    expect(splitAuthors(['Mo Rashid', 'M. Orashid'], 'M. O. Rashid')).toEqual([
+      { name: 'Mo Rashid', self: false },
+      { name: 'M. Orashid', self: false },
+    ]);
+  });
 });

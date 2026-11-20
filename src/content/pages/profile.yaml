@@ -1,16 +1,15 @@
-profile:
-  name: TODO(Mamun)
-  pub_name: TODO(Mamun)
-  title: TODO(Mamun)
-  affiliation: TODO(Mamun)
-  location: TODO(Mamun)
-  email: TODO(Mamun)
-  photo: TODO(Mamun)
-  photo_alt: TODO(Mamun)
-  bio: TODO(Mamun)
-  interests:
-    - TODO(Mamun)
-  skills:
-    - label: TODO(Mamun)
-      items:
-        - TODO(Mamun)
+name: TODO(Mamun)
+pub_name: TODO(Mamun)
+title: TODO(Mamun)
+affiliation: TODO(Mamun)
+location: TODO(Mamun)
+email: TODO(Mamun)
+photo: TODO(Mamun)
+photo_alt: TODO(Mamun)
+bio: TODO(Mamun)
+interests:
+  - TODO(Mamun)
+skills:
+  - label: TODO(Mamun)
+    items:
+      - TODO(Mamun)

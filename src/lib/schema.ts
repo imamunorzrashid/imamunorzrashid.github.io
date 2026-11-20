@@ -1,15 +1,22 @@
 import { z } from 'astro/zod';
 
-// CMS sends '' or null for empty fields; treat them as missing.
-export const opt = <T extends z.ZodType>(s: T) =>
-  z.preprocess((v) => (v === '' || v === null ? undefined : v), s.optional());
+// CMS sends '' or null for empty fields; treat them as missing so defaults apply.
+export const blank = <T extends z.ZodType>(s: T) =>
+  z.preprocess((v) => (v === '' || v === null ? undefined : v), s);
 
-export const ym = z.string().regex(/^\d{4}(-\d{2})?$/);
+export const opt = <T extends z.ZodType>(s: T) => blank(s.optional());
+
+export const ym = z
+  .string()
+  .regex(/^\d{4}(-\d{2})?$/)
+  .refine((v) => v.length === 4 || (Number(v.slice(5)) >= 1 && Number(v.slice(5)) <= 12), {
+    message: 'month must be 01–12',
+  });
 
 const str = z.string();
 const url = z.url();
-const bool = z.boolean().default(false);
-const list = z.array(z.string()).default([]);
+const bool = blank(z.boolean().default(false));
+const list = blank(z.array(z.string()).default([]));
 
 export const profile = z.object({
   name: str,
@@ -77,7 +84,7 @@ export const publication = z
 export const project = z
   .object({
     title: str,
-    order: z.number().default(100),
+    order: blank(z.number().default(100)),
     start: opt(ym),
     end: opt(ym),
     summary: str,
