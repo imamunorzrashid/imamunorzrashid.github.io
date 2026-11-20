@@ -14,6 +14,10 @@ describe('dates', () => {
   test('formatRange with end', () => {
     expect(formatRange('2021', '2025')).toBe('2021 – 2025');
   });
+  test('formatRange collapses a same-value range to one date', () => {
+    expect(formatRange('2026', '2026')).toBe('2026');
+    expect(formatRange('2023-03', '2023-03')).toBe('Mar 2023');
+  });
   test('ymSortKey orders months and years', () => {
     expect(ymSortKey('2023-03')).toBe(202303);
     expect(ymSortKey('2023')).toBe(202300);

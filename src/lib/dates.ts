@@ -7,6 +7,7 @@ export function formatYm(ym: string): string {
 }
 
 export function formatRange(start: string, end?: string): string {
+  if (end === start) return formatYm(start);
   return `${formatYm(start)} – ${end ? formatYm(end) : 'Present'}`;
 }
 
