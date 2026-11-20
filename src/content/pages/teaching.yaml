@@ -1,28 +1,28 @@
-statement: 'TODO(Mamun)'
+statement: 'I would like to teach the circuits, electronics, control and computing courses that mechatronics is built on, from Electric Circuits and Power Electronics to programming, digital logic and machine learning. My work so far combines control, power electronics, embedded systems and machine learning, so when I teach one of these I can show students where it ends up: on a lab bench or in a research problem.'
 course_groups:
-  - department: 'Electrical & Electronic Engineering'
+  - department: Electrical & Electronic Engineering
     courses:
-      - 'Electric Circuits I & II'
-      - 'Circuit Simulation Lab'
-      - 'Electronics I & II'
-      - 'Electrical Machines I & II'
-      - 'Digital Electronics'
-      - 'Power Systems I'
-      - 'Control Systems'
-      - 'Microprocessor and Microcontroller'
-      - 'Digital Signal Processing'
-      - 'Power Electronics'
-  - department: 'Computer Science & Engineering'
+      - Electric Circuits I & II
+      - Circuit Simulation Lab
+      - Electronics I & II
+      - Electrical Machines I & II
+      - Digital Electronics
+      - Power Systems I
+      - Control Systems
+      - Microprocessor and Microcontroller
+      - Digital Signal Processing
+      - Power Electronics
+  - department: Computer Science & Engineering
     courses:
-      - 'Computer Fundamentals and Programming'
-      - 'Artificial Intelligence'
-      - 'Machine Learning'
-      - 'Digital Logic Design'
-      - 'Microprocessor and Microcontroller'
-  - department: 'Mechatronics & Mechanical Engineering'
+      - Computer Fundamentals and Programming
+      - Artificial Intelligence
+      - Machine Learning
+      - Digital Logic Design
+      - Microprocessor and Microcontroller
+  - department: Mechatronics Engineering
     courses:
-      - 'Robotics'
-      - 'Machine Vision'
-      - 'Mechatronics System Design'
-      - 'Embedded Systems'
-      - 'Measurement and Instrumentation'
+      - Robotics
+      - Machine Vision
+      - Mechatronics System Design
+      - Embedded Systems
+      - Measurement and Instrumentation
