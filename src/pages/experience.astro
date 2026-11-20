@@ -37,7 +37,8 @@ const activities = recentFirst(
         {s.items.map((e) => (
           <li>
             <Entry heading={e.role} sub={[e.org, e.location].filter(Boolean).join(', ')} range={rangeOf(e)}>
-              {e.points.length > 0 && (
+              {e.points.length === 1 && <p>{e.points[0]}</p>}
+              {e.points.length > 1 && (
                 <ul class="points">
                   {e.points.map((pt) => (
                     <li>{pt}</li>

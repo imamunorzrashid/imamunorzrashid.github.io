@@ -13,7 +13,14 @@ const yamlIn = <T>(name: string): T[] => {
 type Profile = { skills: { label: string; items: string[] }[] };
 const profile = load(readFileSync(new URL('../../src/content/pages/profile.yaml', import.meta.url), 'utf8')) as Profile;
 
-type Experience = { role: string; kind: 'research' | 'industry' | 'leadership'; start: string; end?: string; link?: string };
+type Experience = {
+  role: string;
+  kind: 'research' | 'industry' | 'leadership';
+  start: string;
+  end?: string;
+  link?: string;
+  points: string[];
+};
 type Education = { degree: string; start?: string; end?: string };
 type Award = { title: string; category: 'academic' | 'international'; date: string; end?: string };
 type Activity = { title: string; date: string };
@@ -102,6 +109,26 @@ test.describe('Experience page', () => {
     await expect(sectionOf(page, 'Industry Experience').locator('h3')).toHaveText(ofKind('industry').map((e) => e.role));
     await expect(sectionOf(page, 'Leadership').locator('h3')).toHaveText(ofKind('leadership').map((e) => e.role));
     await expect(sectionOf(page, 'Talks and Service').locator('h3')).toHaveText(activitiesSorted.map((a) => a.title));
+  });
+
+  test('an experience entry with one point renders it as a paragraph, not a list item', async ({ page }) => {
+    await page.goto('/experience/');
+    for (const [heading, kind] of [
+      ['Research Experience', 'research'],
+      ['Industry Experience', 'industry'],
+      ['Leadership', 'leadership'],
+    ] as const) {
+      for (const [i, e] of ofKind(kind).entries()) {
+        const entry = sectionOf(page, heading).locator('ul.entries > li').nth(i);
+        if (e.points.length === 1) {
+          const [pt] = e.points;
+          await expect(entry.locator('p', { hasText: pt })).toHaveText(pt);
+          await expect(entry.locator('li', { hasText: pt })).toHaveCount(0);
+        } else if (e.points.length > 1) {
+          await expect(entry.locator('ul.points li')).toHaveText(e.points);
+        }
+      }
+    }
   });
 
   test('Website links render only for experience with a link, in display order', async ({ page }) => {

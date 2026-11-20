@@ -28,6 +28,16 @@ test('header nav has the nine main links in order', async ({ page }) => {
   ]);
 });
 
+test('at 1280px the nav is one row, level with the site name', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.goto('/');
+  const tops = await page.locator('header nav a').evaluateAll((els) => els.map((el) => el.getBoundingClientRect().top));
+  expect(tops).toHaveLength(9);
+  for (const y of tops) expect(Math.abs(y - tops[0])).toBeLessThan(1);
+  const nameTop = await page.locator('header .site-name').evaluate((el) => el.getBoundingClientRect().top);
+  expect(Math.abs(nameTop - tops[0])).toBeLessThan(8);
+});
+
 test('home does not scroll horizontally at 375px', async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 800 });
   await page.goto('/');
