@@ -85,7 +85,7 @@ ol {
   list-style: none;
 }
 
-.entries li {
+.entries > li {
   margin-top: 2rem;
 }
 
