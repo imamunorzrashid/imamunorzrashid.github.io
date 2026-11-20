@@ -1,0 +1,77 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Entry from '../components/Entry.astro';
+import { formatRange, formatYm, recentFirst } from '../lib/dates';
+
+const rangeOf = (d: { start?: string; end?: string }) =>
+  d.start ? formatRange(d.start, d.end) : d.end ? formatYm(d.end) : undefined;
+
+const experience = (await getCollection('experience')).map((e) => e.data);
+const experienceSections = [
+  { heading: 'Research Experience', kind: 'research' },
+  { heading: 'Industry Experience', kind: 'industry' },
+  { heading: 'Leadership', kind: 'leadership' },
+]
+  .map((s) => ({
+    heading: s.heading,
+    items: recentFirst(
+      experience.filter((e) => e.kind === s.kind),
+      (e) => e.role,
+    ),
+  }))
+  .filter((s) => s.items.length > 0);
+
+const activities = recentFirst(
+  (await getCollection('activities')).map((e) => ({ ...e.data, start: e.data.date, end: e.data.date })),
+  (a) => a.title,
+);
+---
+<Base title="Experience">
+  <h1>Experience</h1>
+
+  {experienceSections.map((s) => (
+    <section class="section">
+      <h2>{s.heading}</h2>
+      <ul class="entries">
+        {s.items.map((e) => (
+          <li>
+            <Entry heading={e.role} sub={[e.org, e.location].filter(Boolean).join(', ')} range={rangeOf(e)}>
+              {e.points.length > 0 && (
+                <ul class="points">
+                  {e.points.map((pt) => (
+                    <li>{pt}</li>
+                  ))}
+                </ul>
+              )}
+              {e.link && (
+                <p class="meta">
+                  <a href={e.link}>Website</a>
+                </p>
+              )}
+            </Entry>
+          </li>
+        ))}
+      </ul>
+    </section>
+  ))}
+
+  {activities.length > 0 && (
+    <section class="section">
+      <h2>Talks and Service</h2>
+      <ul class="entries">
+        {activities.map((a) => (
+          <li>
+            <Entry heading={a.title} sub={[a.event, a.location].filter(Boolean).join(', ')} range={formatYm(a.date)}>
+              {a.link && (
+                <p class="meta">
+                  <a href={a.link}>Link</a>
+                </p>
+              )}
+            </Entry>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+</Base>

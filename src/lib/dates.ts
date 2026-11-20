@@ -16,3 +16,13 @@ export function ymSortKey(ym?: string): number {
   const month = ym.length === 7 ? Number(ym.slice(5, 7)) : 0;
   return Number(ym.slice(0, 4)) * 100 + month;
 }
+
+type Dated = { start?: string; end?: string };
+
+// Ongoing items (no end) sort first; ties fall back to start, then name. Returns a new array.
+export function recentFirst<T extends Dated>(items: T[], name: (t: T) => string): T[] {
+  return [...items].sort(
+    (a, b) =>
+      ymSortKey(b.end) - ymSortKey(a.end) || ymSortKey(b.start) - ymSortKey(a.start) || name(a).localeCompare(name(b)),
+  );
+}

@@ -36,11 +36,11 @@ const shownLinks = links.filter((l): l is { label: string; href: string } => Boo
         '#publications': '/publications/',
         '#projects': '/projects/',
         '#gallery': '/gallery/',
-        '#education': '/cv/',
-        '#leadership': '/cv/',
-        '#industry': '/cv/',
-        '#honors': '/cv/',
-        '#certifications': '/cv/',
+        '#education': '/academics/',
+        '#leadership': '/experience/',
+        '#industry': '/experience/',
+        '#honors': '/achievements/',
+        '#certifications': '/achievements/',
       };
       const target = oldHashes[location.hash];
       if (target) location.replace(target);

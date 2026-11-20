@@ -13,9 +13,19 @@ test('home has exactly one h1 with the profile name', async ({ page }) => {
   await expect(h1).toHaveText(profile.name);
 });
 
-test('header nav has the six main links in order', async ({ page }) => {
+test('header nav has the nine main links in order', async ({ page }) => {
   await page.goto('/');
-  await expect(page.locator('header nav a')).toHaveText(['Home', 'Research', 'Publications', 'Projects', 'Teaching', 'CV']);
+  await expect(page.locator('header nav a')).toHaveText([
+    'Home',
+    'Research',
+    'Publications',
+    'Projects',
+    'Academics',
+    'Experience',
+    'Achievements',
+    'Teaching',
+    'CV',
+  ]);
 });
 
 test('home does not scroll horizontally at 375px', async ({ page }) => {
@@ -30,11 +40,11 @@ const redirects: [string, RegExp][] = [
   ['#publications', /\/publications\/$/],
   ['#projects', /\/projects\/$/],
   ['#gallery', /\/gallery\/$/],
-  ['#education', /\/cv\/$/],
-  ['#leadership', /\/cv\/$/],
-  ['#industry', /\/cv\/$/],
-  ['#honors', /\/cv\/$/],
-  ['#certifications', /\/cv\/$/],
+  ['#education', /\/academics\/$/],
+  ['#leadership', /\/experience\/$/],
+  ['#industry', /\/experience\/$/],
+  ['#honors', /\/achievements\/$/],
+  ['#certifications', /\/achievements\/$/],
 ];
 
 for (const [hash, target] of redirects) {

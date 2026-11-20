@@ -1,6 +1,17 @@
 import { test, expect } from '@playwright/test';
 
-const routes = ['/', '/research/', '/publications/', '/projects/', '/teaching/', '/cv/', '/gallery/'];
+const routes = [
+  '/',
+  '/research/',
+  '/publications/',
+  '/projects/',
+  '/academics/',
+  '/experience/',
+  '/achievements/',
+  '/teaching/',
+  '/cv/',
+  '/gallery/',
+];
 
 for (const route of routes) {
   test(`${route} returns 200 with exactly one h1`, async ({ page }) => {
