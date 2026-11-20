@@ -1,7 +1,9 @@
-role: 'Undergraduate Researcher'
-org: 'Collaboration with Dr. Md. Rabiul Islam, University of Wollongong (remote)'
+role: Undergraduate Researcher
+org: Collaboration with Dr. Md. Rabiul Islam, University of Wollongong (remote)
 kind: research
 start: '2025'
 end: '2025'
+location: ''
+link: ''
 points:
-  - 'Built the simulation models, analysed the results, wrote the first draft and prepared the reviewer responses for an optimized PWM scheme for a transformerless PV inverter. Second author, IEEE ICM 2025.'
+  - Built the simulation models, analysed the results, wrote the first draft and prepared the reviewer responses for an optimized PWM scheme for a transformerless PV inverter.

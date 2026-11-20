@@ -1,8 +1,9 @@
-role: 'Industrial Attachment'
-org: 'Walton Hi-Tech Industries PLC'
+role: Industrial Attachment
+org: Walton Hi-Tech Industries PLC
 kind: industry
-start: '2023-03'
-end: '2023-04'
-location: 'Gazipur, Bangladesh'
+start: 2023-03
+end: 2023-04
+location: Gazipur, Bangladesh
+link: ''
 points:
-  - 'Hands-on exposure to SolidWorks-based design, manufacturing processes, industrial robotics and PLC systems, with project work and technical presentations on site.'
+  - Hands-on exposure to SolidWorks-based design, manufacturing processes, industrial robotics and PLC systems, with project work and technical presentations on site.

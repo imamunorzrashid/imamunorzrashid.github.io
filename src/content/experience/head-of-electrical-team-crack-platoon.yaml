@@ -1,8 +1,9 @@
-role: 'Head of Electrical'
-org: 'Team Crack Platoon'
+role: Head of Electrical
+org: Team Crack Platoon
 kind: leadership
-start: '2026-05'
-end: '2026-07'
-link: 'https://teamcrackplatoon.com/'
+start: 2026-05
+end: 2026-07
+location: ''
+link: https://teamcrackplatoon.com/
 points:
-  - 'Led the 20-member electrical division, ran the recruitment that selected 40+ members from about 300 applicants, and trained 11 recruits in BSPD design and electrical safety.'
+  - Led the 20-member electrical division, ran the recruitment that selected 40+ members from about 300 applicants, and trained 11 recruits in BSPD design and electrical safety.
