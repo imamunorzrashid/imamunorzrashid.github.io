@@ -1,8 +1,15 @@
-title: 'Electrical System – Formula SAE Electric Vehicle'
+title: Electrical System – Formula SAE Electric Vehicle
 order: 1
 start: '2023'
 end: '2025'
-summary: 'I designed the 72 V, 54 Ah (20s2p Li-ion) HV accumulator and the BSPD for a Formula SAE EV, and prepared the FMEA and Electrical System Form (ESF) documentation for the accumulator and wiring harness. The car cleared electrical inspection on the first attempt at Formula SAE Japan 2025.'
-tags: []
+summary: Designed the 72 V, 54 Ah (20s2p Li-ion) HV accumulator and the BSPD of a Formula SAE EV; prepared FMEA and Electrical System Form (ESF) documentation for the accumulator and wiring harness. Achieved first-attempt electrical inspection clearance at Formula SAE Japan 2025.
+tags:
+  - FSAE
+  - FSAE JAPAN 2025
 links:
-  demo: 'https://www.facebook.com/watch/?v=1127887169236901'
+  code: ''
+  paper: ''
+  demo: https://www.facebook.com/watch/?v=1127887169236901
+image: ''
+image_alt: ''
+featured: false
