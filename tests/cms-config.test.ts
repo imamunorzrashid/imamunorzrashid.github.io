@@ -10,6 +10,7 @@ const root = fileURLToPath(new URL('..', import.meta.url));
 type Field = {
   name: string;
   widget?: string;
+  required?: boolean;
   fields?: Field[];
   field?: Field;
   media_folder?: string;
@@ -163,6 +164,15 @@ describe('cms config', () => {
       for (const f of c.files ?? []) check(`${c.name}/${f.name}`, f.fields, inherited);
     }
     expect(missing).toEqual([]);
+  });
+
+  test('teaching course_groups is a list of department + courses, both required', () => {
+    const teaching = fileCollections.flatMap((c) => c.files ?? []).find((f) => f.name === 'teaching');
+    const groups = teaching?.fields.find((f) => f.name === 'course_groups');
+    expect(groups?.widget).toBe('list');
+    const sub = groups?.fields ?? [];
+    expect(sub.map((f) => f.name).sort()).toEqual(['courses', 'department']);
+    for (const f of sub) expect(f.required, f.name).not.toBe(false);
   });
 
   test('every select field lists exactly the options of its schema enum', () => {

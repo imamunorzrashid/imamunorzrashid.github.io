@@ -24,8 +24,7 @@ const teachingEntries = existsSync(teachingDir) ? yamlIn<Teaching>(teachingDir) 
 const byRecency = (a: Teaching, b: Teaching) =>
   ymSortKey(b.end) - ymSortKey(a.end) || ymSortKey(b.start) - ymSortKey(a.start);
 const teachingPage = load(readFileSync(new URL('../../src/content/pages/teaching.yaml', import.meta.url), 'utf8')) as {
-  courses_primary: string[];
-  courses_also: string[];
+  course_groups: { department: string; courses: string[] }[];
 };
 
 const entryOf = (page: import('@playwright/test').Page, title: string) =>
@@ -105,29 +104,19 @@ test('teaching experience h2 appears exactly when the collection has entries', a
   }
 });
 
-test('courses h2 appears exactly when a course list is non-empty', async ({ page }) => {
+test('courses h2 appears exactly when course_groups is non-empty', async ({ page }) => {
   await page.goto('/teaching/');
   const section = sectionOf(page, 'Courses I Can Teach');
-  const any = teachingPage.courses_primary.length > 0 || teachingPage.courses_also.length > 0;
-  await expect(section).toHaveCount(any ? 1 : 0);
+  await expect(section).toHaveCount(teachingPage.course_groups.length > 0 ? 1 : 0);
 });
 
-test('primary course list is shown exactly when non-empty', async ({ page }) => {
+test('course groups: one h3 per department in order, each with its courses joined by " · "', async ({ page }) => {
   await page.goto('/teaching/');
-  const list = sectionOf(page, 'Courses I Can Teach').locator('ul li');
-  if (teachingPage.courses_primary.length > 0) {
-    await expect(list).toHaveText(teachingPage.courses_primary);
+  const section = sectionOf(page, 'Courses I Can Teach');
+  if (teachingPage.course_groups.length > 0) {
+    await expect(section.locator('h3')).toHaveText(teachingPage.course_groups.map((g) => g.department));
+    await expect(section.locator('p')).toHaveText(teachingPage.course_groups.map((g) => g.courses.join(' · ')));
   } else {
-    await expect(list).toHaveCount(0);
-  }
-});
-
-test('"Also prepared to teach" line is shown exactly when non-empty', async ({ page }) => {
-  await page.goto('/teaching/');
-  const line = sectionOf(page, 'Courses I Can Teach').getByText(/^Also prepared to teach:/);
-  if (teachingPage.courses_also.length > 0) {
-    await expect(line).toHaveText(`Also prepared to teach: ${teachingPage.courses_also.join(', ')}`);
-  } else {
-    await expect(line).toHaveCount(0);
+    await expect(section.locator('h3')).toHaveCount(0);
   }
 });

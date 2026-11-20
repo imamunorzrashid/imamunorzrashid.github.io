@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 import { z } from 'astro/zod';
-import { opt, ym, education, publication, project } from '../../src/lib/schema';
+import { opt, ym, education, publication, project, teachingPage } from '../../src/lib/schema';
 
 describe('opt', () => {
   test('maps empty string to undefined', () => {
@@ -42,6 +42,18 @@ describe('project', () => {
   });
   test('image with image_alt passes', () => {
     expect(project.safeParse({ ...base, image: 'a.webp', image_alt: 'A' }).success).toBe(true);
+  });
+});
+
+describe('teachingPage course_groups', () => {
+  const base = { statement: 'S' };
+  test('a group with an empty courses list fails', () => {
+    const r = teachingPage.safeParse({ ...base, course_groups: [{ department: 'D', courses: [] }] });
+    expect(r.success).toBe(false);
+  });
+  test('a group with at least one course passes', () => {
+    const r = teachingPage.safeParse({ ...base, course_groups: [{ department: 'D', courses: ['C'] }] });
+    expect(r.success).toBe(true);
   });
 });
 

@@ -51,8 +51,9 @@ export const researchPage = z.object({
 
 export const teachingPage = z.object({
   statement: str,
-  courses_primary: list,
-  courses_also: list,
+  course_groups: z
+    .array(z.object({ department: str, courses: z.array(str).min(1) }))
+    .default([]),
 });
 
 export const news = z.object({

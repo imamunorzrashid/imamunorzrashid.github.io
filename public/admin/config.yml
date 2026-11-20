@@ -73,8 +73,13 @@ collections:
         file: src/content/pages/teaching.yaml
         fields:
           - { name: statement, label: Teaching statement, widget: markdown }
-          - { name: courses_primary, label: Courses ready to teach, widget: list, required: false }
-          - { name: courses_also, label: Other courses, widget: list, required: false }
+          - name: course_groups
+            label: Courses I can teach (by department)
+            widget: list
+            required: false
+            fields:
+              - { name: department, label: Department, widget: string }
+              - { name: courses, label: Courses, widget: list }
 
   - name: news
     label: News

@@ -14,7 +14,7 @@ const roles = (await getCollection('teaching'))
   // Ongoing roles (no end) sort first: ymSortKey(undefined) is Infinity, and Infinity - Infinity is NaN, so the start tie-break applies.
   .sort((a, b) => ymSortKey(b.end) - ymSortKey(a.end) || ymSortKey(b.start) - ymSortKey(a.start));
 
-const hasCourses = t.courses_primary.length > 0 || t.courses_also.length > 0;
+const hasCourses = t.course_groups.length > 0;
 ---
 <Base title="Teaching">
   <h1>Teaching</h1>
@@ -43,22 +43,12 @@ const hasCourses = t.courses_primary.length > 0 || t.courses_also.length > 0;
   {hasCourses && (
     <section class="section">
       <h2>Courses I Can Teach</h2>
-      {t.courses_primary.length > 0 && (
-        <ul class="courses">
-          {t.courses_primary.map((c) => (
-            <li>{c}</li>
-          ))}
-        </ul>
-      )}
-      {t.courses_also.length > 0 && <p>Also prepared to teach: {t.courses_also.join(', ')}</p>}
+      {t.course_groups.map((g) => (
+        <>
+          <h3>{g.department}</h3>
+          <p>{g.courses.join(' · ')}</p>
+        </>
+      ))}
     </section>
   )}
-
-  <style>
-    .courses {
-      list-style: disc;
-      padding-left: 1.25rem;
-      margin-bottom: 1em;
-    }
-  </style>
 </Base>
