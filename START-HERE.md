@@ -34,11 +34,11 @@ Expected: `implementer` (haiku), `reviewer` (opus), plus the playwright and cont
 ## Where you come in
 - **Web CVs:** export versions of both CVs with "References available on request" and no phone number, and save them as `docs\sources\cv-academic-web.pdf` and `docs\sources\cv-lecturer-web.pdf`. The full versions are never published.
 - **After Task 3:** answer what's left in `docs\content-todo.md`.
-- **Task 8:** try the forms: in the session's **Terminal** (Ctrl+`), run `npm run dev`, then open `http://localhost:4321/admin` in **Chrome or Edge** → "Work with Local Repository" → pick the repo folder.
+- **Task 8:** try the forms: in the session's **Terminal** (Ctrl+`), run `npm run dev`, then open `http://localhost:4321/admin/index.html` in **Chrome or Edge** → "Work with Local Repository" → pick the repo folder.
 - **Task 10:** preview and approve. **Before** the merge, switch GitHub → Settings → Pages → Source to **GitHub Actions**.
 
 ## Updating content later
-In a terminal in the repo folder, run `npm run dev`. Open `localhost:4321/admin` in Chrome or Edge, edit and save, then run:
+In a terminal in the repo folder, run `npm run dev`. Open `localhost:4321/admin/index.html` in Chrome or Edge, edit and save, then run:
 ```powershell
 git add -A; git commit -m "content: update"; git push
 ```

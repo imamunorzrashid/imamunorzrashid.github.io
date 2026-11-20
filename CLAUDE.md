@@ -23,7 +23,7 @@ Personal academic site for Mamun Or Rashid. It serves two audiences: PhD supervi
 
 ## Commands
 
-- `npm run dev`: dev server (Windows; run in the session Terminal) at http://localhost:4321 (CMS at `/admin`, Chrome or Edge only)
+- `npm run dev`: dev server (Windows; run in the session Terminal) at http://localhost:4321 (CMS at `/admin/index.html`, Chrome or Edge only)
 - `npm test`: Vitest (helpers, content lint, CMS config)
 - `npm run e2e`: Playwright (builds and previews first)
 - `npm run check && npm run build`: type check and static build

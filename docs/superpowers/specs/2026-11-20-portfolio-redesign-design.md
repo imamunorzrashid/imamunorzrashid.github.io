@@ -39,7 +39,7 @@ Content edits must not require touching code. Mamun fills a form for a section, 
 2. `docs/sources/cv-lecturer.pdf` (lecturer CV, Nov 2026). This is the only source for teaching interests, the HSC/SSC entries and the research & teaching profile paragraph.
 3. `legacy/index.html` (the old site, Aug 2026). Used only for gallery captions and for items the CVs don't mention, and those items go to Mamun to decide (see the plan, Task 3).
 
-Mamun's decisions (2026-11-20): B.Sc. started **2022**; Head of Electrical is **2026** only; the PADV review (in preparation), the Walton Hi-Tech industrial attachment, the EV-motors technical session, the IoT health monitor project and the "Advanced PCB / KiCad 9" certificate **stay on the site**; the public CV PDFs are web versions without references (and without his phone number).
+Mamun's decisions (2026-11-20): B.Sc. started **2022**; Head of Electrical is **May – July 2026**; the Walton Hi-Tech industrial attachment, the EV-motors technical session, the IoT health monitor project and the "Advanced PCB / KiCad 9" certificate **stay on the site**; the public CV PDFs are web versions without references (and without his phone number). Later decisions (2026-11-20/21): the PADV review is removed for now; /cv/ shows only the CV download links.
 
 Where the two CVs differ in wording, use the more specific one. Where they differ on a **fact** (a date or a number), don't pick one. Mark it `TODO(Mamun)`.
 
@@ -55,7 +55,7 @@ The website does **not** show his phone number or the referees' contact details.
 ## Constraints
 
 - Stack: Astro (current stable) with the content layer (`src/content.config.ts`, `glob()` and `file()` loaders) and TypeScript strict. Static output.
-- CMS: Sveltia CMS loaded from its CDN in `public/admin/index.html`, with `public/admin/config.yml`. It uses the **local repository workflow**: open `http://localhost:4321/admin` in Chrome or Edge while `npm run dev` is running, click "Work with Local Repository", and pick the repo folder. No proxy server is needed. Firefox can't do this. If Chrome or Edge isn't available, the fallback is Decap CMS with `local_backend: true` and `npx decap-server`.
+- CMS: Sveltia CMS loaded from its CDN in `public/admin/index.html`, with `public/admin/config.yml`. It uses the **local repository workflow**: open `http://localhost:4321/admin/index.html` in Chrome or Edge while `npm run dev` is running, click "Work with Local Repository", and pick the repo folder. No proxy server is needed. Firefox can't do this. If Chrome or Edge isn't available, the fallback is Decap CMS with `local_backend: true` and `npx decap-server`.
 - Tests: Vitest for helpers and content checks, and Playwright for page checks.
 - Fonts are self-hosted through Fontsource: **Source Serif 4** (variable) for body and headings, and **IBM Plex Sans** (400, 500, 600) for the nav, metadata, labels and buttons.
 - Colours: `--ink #1b1b1b`, `--muted #5c5c5c`, `--rule #e3e3e3`, `--bg #ffffff`, `--accent #1f4e79`, `--accent-hover #163a5a`. One accent colour only.
@@ -85,7 +85,7 @@ The website does **not** show his phone number or the referees' contact details.
 | `/publications/` | Grouped and numbered: Journal Articles [J], Conference Papers [C], Accepted [S], Under Review [U], In Preparation [P]. Reverse chronological within each group, with Mamun's name in bold (`publications`, `profile.pub_name`) |
 | `/projects/` | Title, period, summary, tags, links (`projects`) |
 | `/teaching/` | Teaching statement, teaching experience, courses he's ready to teach (`teachingPage`, `teaching`) |
-| `/cv/` | Download links for the Academic CV and the Teaching CV; Education (B.Sc., HSC, SSC); Research Experience; Industry Experience; Leadership; Awards and Honours (h3 Academic / International); Talks and Service; Certificates; Technical Skills (`education`, `experience`, `awards`, `activities`, `certificates`, `profile`) |
+| `/cv/` | Download links for the Academic CV and the Teaching CV only (Mamun, 2026-11-21). Education, experience, awards, activities, certificates and skills stay in YAML and the CMS but aren't shown (`profile`) |
 | `/gallery/` | Captioned photos (`gallery`) |
 | `/admin/` | Sveltia CMS (development only) |
 
@@ -97,7 +97,7 @@ Shorthand used below: `str`, `str?` (optional, and an empty string from the CMS 
 
 - **profile** (`src/content/pages/profile.yaml`, single): `name`, `pub_name` (`"M. O. Rashid"`), `title`, `affiliation`, `location`, `email`, `photo`, `photo_alt`, `bio: md`, `seeking: str?`, `interests: [str]`, `links: {scholar?, orcid?, github?, linkedin?, researchgate?}`, `cv_academic: str?`, `cv_lecturer: str?`, `skills: [{label, items: [str]}]`
 - **researchPage** (`src/content/pages/research.yaml`, single): `statement: md`, `themes: [{title, summary: md}]`
-- **teachingPage** (`src/content/pages/teaching.yaml`, single): `statement: md`, `courses_primary: [str]`, `courses_also: [str]`
+- **teachingPage** (`src/content/pages/teaching.yaml`, single): `statement: md`, `course_groups: [{department, courses: [str] (at least one)}]`
 - **news** (`src/content/news/*.yaml`): `date: ym`, `text: md`, `link: str?`
 - **publications** (`src/content/publications/*.yaml`): `title`, `authors: [str]`, `venue`, `type: journal|conference|preprint|thesis`, `status: published|accepted|under_review|in_preparation` (groups: Journal Articles [J], Conference Papers [C], Accepted [S], Under Review [U], In Preparation [P], following the CV's numbering), `year: number?` (required unless the status is `in_preparation`), `doi?`, `url?`, `pdf?`, `code?`, `featured: bool = false`, `note?`
 - **projects** (`src/content/projects/*.yaml`): `title`, `order: number = 100`, `start: ym?`, `end: ym?`, `summary: md`, `tags: [str]`, `links: {code?, paper?, demo?}`, `image?`, `image_alt?` (required if `image` is set), `featured: bool = false`
@@ -114,7 +114,7 @@ A missing `end` renders as "Present". CMS uploads go to `public/images/uploads/`
 ## Edit workflow
 
 1. `npm run dev`
-2. In Chrome or Edge, open `localhost:4321/admin`, click "Work with Local Repository", and choose the repo folder (first time only).
+2. In Chrome or Edge, open `localhost:4321/admin/index.html`, click "Work with Local Repository", and choose the repo folder (first time only).
 3. Edit and save. Sveltia writes the YAML into the folder, and the dev server shows the change live.
 4. `git add -A && git commit -m "content: …" && git push`. GitHub Actions rebuilds and deploys in about a minute.
 
