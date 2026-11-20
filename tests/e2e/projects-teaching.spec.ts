@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { load } from 'js-yaml';
+import { formatRange, formatYm, ymSortKey } from '../../src/lib/dates';
 
 type Project = {
   title: string;
@@ -17,7 +18,11 @@ const yamlIn = <T>(dir: URL): T[] =>
 
 const projects = yamlIn<Project>(new URL('../../src/content/projects/', import.meta.url));
 const teachingDir = new URL('../../src/content/teaching/', import.meta.url);
-const teachingEntries = existsSync(teachingDir) ? yamlIn<{ role: string }>(teachingDir) : [];
+type Teaching = { role: string; start: string; end?: string };
+const teachingEntries = existsSync(teachingDir) ? yamlIn<Teaching>(teachingDir) : [];
+// Same order as teaching.astro: ongoing first, then most recent end, then most recent start.
+const byRecency = (a: Teaching, b: Teaching) =>
+  ymSortKey(b.end) - ymSortKey(a.end) || ymSortKey(b.start) - ymSortKey(a.start);
 const teachingPage = load(readFileSync(new URL('../../src/content/pages/teaching.yaml', import.meta.url), 'utf8')) as {
   courses_primary: string[];
   courses_also: string[];
@@ -27,7 +32,7 @@ const entryOf = (page: import('@playwright/test').Page, title: string) =>
   page.locator('li').filter({ has: page.getByRole('heading', { name: title, exact: true }) });
 
 const sectionOf = (page: import('@playwright/test').Page, heading: string) =>
-  page.locator('section').filter({ has: page.getByRole('heading', { name: heading, exact: true }) });
+  page.locator('section').filter({ has: page.getByRole('heading', { name: heading, level: 2, exact: true }) });
 
 test('projects has one h1 "Projects"', async ({ page }) => {
   await page.goto('/projects/');
@@ -66,14 +71,11 @@ test('dated projects show their range; undated projects never show "Present"', a
   for (const p of projects) {
     const text = await entryOf(page, p.title).innerText();
     if (p.start) {
-      expect(text).toContain(p.start);
-      if (p.end) {
-        expect(text).toContain(p.end);
-        expect(text).not.toContain('Present');
-      } else {
-        expect(text).toContain('Present');
-      }
-    } else if (!p.end) {
+      expect(text).toContain(formatRange(p.start, p.end));
+    } else if (p.end) {
+      expect(text).toContain(formatYm(p.end));
+      expect(text).not.toContain('Present');
+    } else {
       expect(text).not.toContain('Present');
     }
   }
@@ -96,7 +98,8 @@ test('teaching experience h2 appears exactly when the collection has entries', a
   const section = sectionOf(page, 'Teaching Experience');
   if (teachingEntries.length > 0) {
     await expect(section).toHaveCount(1);
-    await expect(section.locator('h3')).toHaveText(teachingEntries.map((e) => e.role));
+    const expected = [...teachingEntries].sort(byRecency).map((e) => e.role);
+    await expect(section.locator('h3')).toHaveText(expected);
   } else {
     await expect(section).toHaveCount(0);
   }

@@ -11,7 +11,8 @@ const t = page.data;
 
 const roles = (await getCollection('teaching'))
   .map((e) => e.data)
-  .sort((a, b) => ymSortKey(b.start) - ymSortKey(a.start));
+  // Ongoing roles (no end) sort first: ymSortKey(undefined) is Infinity, and Infinity - Infinity is NaN, so the start tie-break applies.
+  .sort((a, b) => ymSortKey(b.end) - ymSortKey(a.end) || ymSortKey(b.start) - ymSortKey(a.start));
 
 const hasCourses = t.courses_primary.length > 0 || t.courses_also.length > 0;
 ---
@@ -54,14 +55,6 @@ const hasCourses = t.courses_primary.length > 0 || t.courses_also.length > 0;
   )}
 
   <style>
-    .entries {
-      list-style: none;
-    }
-
-    .entries li {
-      margin-top: 2rem;
-    }
-
     .courses {
       list-style: disc;
       padding-left: 1.25rem;

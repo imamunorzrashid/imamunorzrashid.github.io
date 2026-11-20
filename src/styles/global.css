@@ -81,6 +81,14 @@ ol {
   margin-top: 3rem;
 }
 
+.entries {
+  list-style: none;
+}
+
+.entries li {
+  margin-top: 2rem;
+}
+
 .text-links {
   font-family: var(--font-sans);
   font-size: 0.95rem;

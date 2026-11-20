@@ -8,7 +8,7 @@ interface Props {
 const { heading, sub, range } = Astro.props;
 const meta = [sub, range].filter(Boolean).join(' · ');
 ---
-<div class="entry">
+<div>
   <h3>{heading}</h3>
   {meta && <p class="meta">{meta}</p>}
   <slot />
