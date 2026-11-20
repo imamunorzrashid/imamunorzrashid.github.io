@@ -8,7 +8,7 @@ Every `TODO(Mamun)` in `src/content/` is listed here with its file and what is n
 - [ ] `src/content/pages/research.yaml` `statement`: the old site has no Research section. Provide the research statement.
 - [ ] `src/content/pages/research.yaml` `themes`: left as an empty list. Provide research themes (title and summary each), or leave empty.
 - [ ] `src/content/pages/teaching.yaml` `statement`: provide the teaching statement.
-- [ ] KiCad 9 certificate: issuer, date and URL taken from the certificate image (legacy/assets/images/certificates/advanced-pcb-kicad9.png); confirm.
+- [ ] KiCad 9 certificate (`src/content/certificates/advanced-pcb-design-kicad-9.yaml`): issuer, date and URL taken from the certificate image (legacy/assets/images/certificates/advanced-pcb-kicad9.png); confirm.
 - [ ] `src/content/publications/physics-aware-dynamic-virtualization-review.yaml` `venue`: the target venue is unknown. Provide it.
 - [ ] Same file, `type`: set to `journal` as an assumption (`# TODO(Mamun): confirm journal or preprint`). Confirm.
 - [ ] Same file, `authors`: the old site lists only "M. O. Rashid, et al.". Provide the full author list, or confirm `et al.` stays.

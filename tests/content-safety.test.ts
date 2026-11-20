@@ -16,7 +16,7 @@ function yamlFiles(dir: string): string[] {
 
 // Patterns, not literal numbers, so no real phone number or referee email is stored in this public repo.
 const forbidden: { name: string; pattern: RegExp }[] = [
-  { name: 'Bangladeshi phone number', pattern: /(?:\+?880[-\s]?)?\b1[3-9]\d{2}-?\d{6}\b/ },
+  { name: 'Bangladeshi phone number', pattern: /(?<!\d)(?:\+?880[-\s]?|0)?1[3-9]\d{2}[-\s]?\d{6}(?!\d)/ },
   { name: 'referee email domain', pattern: /@(?:mte|me)\.ruet\.ac\.bd/i },
   { name: 'country code +880', pattern: /\+880/ },
 ];
@@ -36,6 +36,9 @@ describe('content-safety', () => {
   test('patterns catch fabricated samples of each kind', () => {
     expect(forbidden[0].pattern.test('+880 1999-000000')).toBe(true);
     expect(forbidden[0].pattern.test('1999000000')).toBe(true);
+    expect(forbidden[0].pattern.test('01999-000000')).toBe(true);
+    expect(forbidden[0].pattern.test('01999000000')).toBe(true);
+    expect(forbidden[0].pattern.test('+880 1999 000000')).toBe(true);
     expect(forbidden[1].pattern.test('0000000000@mte.ruet.ac.bd')).toBe(true);
     expect(forbidden[1].pattern.test('0000000000@me.ruet.ac.bd')).toBe(true);
     expect(forbidden[2].pattern.test('+880 0000')).toBe(true);
