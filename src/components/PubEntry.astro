@@ -1,22 +1,56 @@
 ---
-// Placeholder for the publication entry; Task 5 finishes the numbering and links.
 import { splitAuthors, type Pub } from '../lib/pubs';
 
 interface Props {
   pub: Pub;
   selfName: string;
+  label?: string;
 }
 
-const { pub, selfName } = Astro.props;
+const { pub, selfName, label } = Astro.props;
 const authors = splitAuthors(pub.authors, selfName);
+
+const STATUS: Partial<Record<Pub['status'], string>> = {
+  accepted: 'Accepted',
+  under_review: 'Under review',
+  in_preparation: 'In preparation',
+};
+
+const metaItems: { label: string; href?: string }[] = [];
+const status = STATUS[pub.status];
+if (status) metaItems.push({ label: status });
+if (pub.doi) metaItems.push({ label: 'DOI', href: `https://doi.org/${pub.doi}` });
+if (pub.pdf) metaItems.push({ label: 'PDF', href: pub.pdf });
+if (pub.code) metaItems.push({ label: 'Code', href: pub.code });
+
+const tail = `${pub.note ? `, ${pub.note}` : ''}${pub.year !== undefined ? `, ${pub.year}` : ''}`;
 ---
 <span class="pub">
-  {authors.map((a, i) => (
+  {label ? `[${label}] ` : ''}{authors.map((a, i) => (
     <>
       {i > 0 && ', '}
       {a.self ? <strong>{a.name}</strong> : a.name}
     </>
-  ))}
-  . {pub.title}.{' '}
-  <em>{pub.venue}</em>{pub.year !== undefined && ` (${pub.year})`}
+  ))}, “{pub.title},” <em>{pub.venue}</em>{tail}.
+  {metaItems.length > 0 && (
+    <span class="meta">
+      {metaItems.map((m, i) => (
+        <>
+          {i > 0 && ' · '}
+          {m.href ? <a href={m.href}>{m.label}</a> : m.label}
+        </>
+      ))}
+    </span>
+  )}
 </span>
+
+<style>
+  .pub {
+    display: block;
+  }
+
+  .pub .meta {
+    display: block;
+    margin-top: 0.15rem;
+  }
+</style>

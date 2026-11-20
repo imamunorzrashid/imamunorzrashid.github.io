@@ -1,0 +1,51 @@
+---
+import { getCollection, getEntry } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import PubEntry from '../components/PubEntry.astro';
+import { groupPublications } from '../lib/pubs';
+
+const profile = await getEntry('profile', 'profile');
+if (!profile) throw new Error('Missing src/content/pages/profile.yaml (collection "profile", id "profile")');
+const p = profile.data;
+
+const groups = groupPublications((await getCollection('publications')).map((e) => e.data));
+
+const links: { label: string; href: string }[] = [
+  { label: 'Google Scholar', href: p.links?.scholar },
+  { label: 'ORCID', href: p.links?.orcid },
+].filter((l): l is { label: string; href: string } => Boolean(l.href));
+---
+<Base title="Publications">
+  <h1>Publications</h1>
+  <p class="text-links">
+    {links.map((l, i) => (
+      <>
+        {i > 0 && ' · '}
+        <a href={l.href}>{l.label}</a>
+      </>
+    ))}
+  </p>
+
+  {groups.map((g) => (
+    <section class="section">
+      <h2>{g.label}</h2>
+      <ul class="pubs">
+        {g.items.map((pub, i) => (
+          <li>
+            <PubEntry pub={pub} selfName={p.pub_name} label={`${g.prefix}${g.items.length - i}`} />
+          </li>
+        ))}
+      </ul>
+    </section>
+  ))}
+
+  <style>
+    .pubs {
+      list-style: none;
+    }
+
+    .pubs li {
+      margin-bottom: 1.25rem;
+    }
+  </style>
+</Base>

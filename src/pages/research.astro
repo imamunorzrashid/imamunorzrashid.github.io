@@ -1,0 +1,22 @@
+---
+import { getEntry } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Prose from '../components/Prose.astro';
+
+const research = await getEntry('researchPage', 'researchPage');
+if (!research) throw new Error('Missing src/content/pages/research.yaml (collection "researchPage", id "researchPage")');
+const r = research.data;
+---
+<Base title="Research">
+  <h1>Research</h1>
+  <section class="section">
+    <Prose md={r.statement} />
+  </section>
+
+  {r.themes.map((t) => (
+    <section class="section">
+      <h2>{t.title}</h2>
+      <Prose md={t.summary} />
+    </section>
+  ))}
+</Base>
