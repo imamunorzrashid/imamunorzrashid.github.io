@@ -40,7 +40,7 @@ Every `TODO(Mamun)` in `src/content/` is listed here with its file and what is n
 - The Flag Counter is dropped.
 - The old Google Drive CV link and `legacy/assets/Mamun_Or_Rashid_CV.pdf` are superseded and not copied.
 - CV downloads: `cv_academic` and `cv_lecturer` link to Google Drive. Mamun replaced both files' contents with web versions that have no References and no phone number, and checked that the links open the new versions. (Mamun, 2026-11-20)
-- The profile photo is the GitHub avatar at 460 px (`public/images/profile.jpg`).
+- Profile photo: Mamun's upload `/images/uploads/passport-size-photo.webp`. (Mamun, 2026-11-20)
 - Profile title and affiliation: title `B.Sc. in Mechatronics Engineering`; affiliation `Rajshahi University of Engineering & Technology (RUET)`. He has graduated, so the "Department of …" wording no longer fits. (Mamun, 2026-11-20)
 - Seeking line: "Open to PhD positions starting in Fall 2027". Mamun added it. (Mamun, 2026-11-20) This replaces the earlier decision that it was not wanted.
 - VC's List and Technical Scholarship 2021 – 2024: both are correct. The academic session is 2020-21 to 2023-24, and classes started in 2022 because of COVID. Keep 2021 – 2024. (Mamun, 2026-11-20)

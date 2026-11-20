@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs';
 import { load } from 'js-yaml';
 
 const research = load(readFileSync(new URL('../../src/content/pages/research.yaml', import.meta.url), 'utf8')) as {
-  themes: { title: string }[];
+  themes?: { title: string }[];
 };
 
 const ORDER = ['Journal Articles', 'Conference Papers', 'Accepted', 'Under Review', 'In Preparation'];
@@ -64,9 +64,10 @@ test('research has one h1 "Research"', async ({ page }) => {
 });
 
 test('research has one h2 per theme, in order', async ({ page }) => {
-  test.skip(research.themes.length === 0, 'research themes empty until Task 9');
+  const themes = research.themes ?? [];
+  test.skip(themes.length === 0, 'research themes empty until Task 9');
   await page.goto('/research/');
   const h2s = page.locator('main h2');
-  await expect(h2s).toHaveCount(research.themes.length);
-  await expect(h2s).toHaveText(research.themes.map((t) => t.title));
+  await expect(h2s).toHaveCount(themes.length);
+  await expect(h2s).toHaveText(themes.map((t) => t.title));
 });
