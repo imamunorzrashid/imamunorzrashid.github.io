@@ -44,11 +44,13 @@ for (const [hash, target] of redirects) {
   });
 }
 
-test('/#contact stays on the home page', async ({ page }) => {
-  await page.goto('/#contact');
-  await expect(page).toHaveURL(/\/#contact$/);
-  expect(new URL(page.url()).pathname).toBe('/');
-});
+for (const hash of ['#home', '#contact']) {
+  test(`/${hash} stays on the home page`, async ({ page }) => {
+    await page.goto(`/${hash}`);
+    await expect(page).toHaveURL(new RegExp(`/${hash}$`));
+    expect(new URL(page.url()).pathname).toBe('/');
+  });
+}
 
 test('footer shows the last updated line', async ({ page }) => {
   await page.goto('/');
@@ -58,5 +60,5 @@ test('footer shows the last updated line', async ({ page }) => {
 test('body uses Source Serif 4', async ({ page }) => {
   await page.goto('/');
   const fontFamily = await page.evaluate(() => getComputedStyle(document.body).fontFamily);
-  expect(fontFamily).toContain('Source Serif 4');
+  expect(fontFamily).toContain('Source Serif 4 Variable');
 });

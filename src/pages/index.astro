@@ -29,20 +29,22 @@ const shownLinks = links.filter((l): l is { label: string; href: string } => Boo
 ---
 <Base title={p.name} description={`${p.title}, ${p.affiliation}`}>
   <script is:inline>
-    // Old one-page anchors (possibly in sent emails) map to their new pages. location.replace keeps the back button usable.
-    const oldHashes = {
-      '#research': '/research/',
-      '#publications': '/publications/',
-      '#projects': '/projects/',
-      '#gallery': '/gallery/',
-      '#education': '/cv/',
-      '#leadership': '/cv/',
-      '#industry': '/cv/',
-      '#honors': '/cv/',
-      '#certifications': '/cv/',
-    };
-    const target = oldHashes[location.hash];
-    if (target) location.replace(target);
+    {
+      // Old one-page anchors (possibly in sent emails) map to their new pages. location.replace keeps the back button usable.
+      const oldHashes = {
+        '#research': '/research/',
+        '#publications': '/publications/',
+        '#projects': '/projects/',
+        '#gallery': '/gallery/',
+        '#education': '/cv/',
+        '#leadership': '/cv/',
+        '#industry': '/cv/',
+        '#honors': '/cv/',
+        '#certifications': '/cv/',
+      };
+      const target = oldHashes[location.hash];
+      if (target) location.replace(target);
+    }
   </script>
 
   <section class="intro">
@@ -126,6 +128,11 @@ const shownLinks = links.filter((l): l is { label: string; href: string } => Boo
         flex-direction: row;
         align-items: flex-start;
       }
+    }
+
+    .news,
+    .pubs {
+      list-style: none;
     }
 
     .news li,

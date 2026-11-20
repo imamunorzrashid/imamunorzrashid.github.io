@@ -17,6 +17,6 @@ const authors = splitAuthors(pub.authors, selfName);
       {a.self ? <strong>{a.name}</strong> : a.name}
     </>
   ))}
-  . {pub.title}.
+  . {pub.title}.{' '}
   <em>{pub.venue}</em>{pub.year !== undefined && ` (${pub.year})`}
 </span>

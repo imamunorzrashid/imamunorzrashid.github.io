@@ -1,6 +1,7 @@
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { load } from 'js-yaml';
 import { describe, expect, test } from 'vitest';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
@@ -30,6 +31,17 @@ describe('content-lint', () => {
       const text = readFileSync(file, 'utf8').toLowerCase();
       for (const phrase of banned) {
         if (text.includes(phrase)) hits.push(`${relative(root, file)} contains banned phrase "${phrase}"`);
+      }
+    }
+    expect(hits).toEqual([]);
+  });
+
+  test('news with a link has no Markdown link inside its text (the item link would nest anchors)', () => {
+    const hits: string[] = [];
+    for (const file of yamlFiles(join(contentDir, 'news'))) {
+      const data = load(readFileSync(file, 'utf8')) as { link?: string; text?: string };
+      if (data.link && data.text?.includes('](')) {
+        hits.push(`${relative(root, file)} has a Markdown link in text while link is set`);
       }
     }
     expect(hits).toEqual([]);
