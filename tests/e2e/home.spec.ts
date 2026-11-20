@@ -4,6 +4,9 @@ import { load } from 'js-yaml';
 
 const profile = load(readFileSync(new URL('../../src/content/pages/profile.yaml', import.meta.url), 'utf8')) as {
   name: string;
+  email: string;
+  cv_academic: string;
+  links: { scholar: string; researchgate: string };
 };
 
 test('home has exactly one h1 with the profile name', async ({ page }) => {
@@ -75,6 +78,62 @@ for (const hash of ['#home', '#contact']) {
 test('footer shows the last updated line', async ({ page }) => {
   await page.goto('/');
   await expect(page.locator('footer')).toContainText('Last updated');
+});
+
+test('home links row: each link shows an aria-hidden icon before its text label', async ({ page }) => {
+  await page.goto('/');
+  const row = page.locator('.text-links').first();
+  await expect(row.locator('a')).toHaveText([
+    'Email',
+    'Google Scholar',
+    'ORCID',
+    'ResearchGate',
+    'GitHub',
+    'LinkedIn',
+    'Academic CV',
+  ]);
+  const links = row.locator('a');
+  const count = await links.count();
+  for (let i = 0; i < count; i++) {
+    const a = links.nth(i);
+    await expect(a.locator(':scope > svg')).toHaveCount(1);
+    await expect(a.locator(':scope > svg')).toHaveAttribute('aria-hidden', 'true');
+    expect(await a.evaluate((el) => el.firstElementChild?.tagName.toLowerCase())).toBe('svg');
+  }
+});
+
+test('home links row: accessible names equal the text labels and hrefs match the profile', async ({ page }) => {
+  await page.goto('/');
+  const link = (name: string) => page.locator('.text-links').first().getByRole('link', { name, exact: true });
+  await expect(link('ResearchGate')).toHaveAttribute('href', profile.links.researchgate);
+  await expect(link('Academic CV')).toHaveAttribute('href', profile.cv_academic);
+  await expect(link('Google Scholar')).toHaveAttribute('href', profile.links.scholar);
+});
+
+test('footer links: icons on social links, ResearchGate listed, Gallery has no icon', async ({ page }) => {
+  await page.goto('/');
+  const footerLinksLocator = page.locator('footer > p').first().locator('a');
+  await expect(footerLinksLocator).toHaveText([
+    profile.email,
+    'Google Scholar',
+    'ORCID',
+    'ResearchGate',
+    'GitHub',
+    'LinkedIn',
+    'Gallery',
+  ]);
+  const count = await footerLinksLocator.count();
+  for (let i = 0; i < count; i++) {
+    const a = footerLinksLocator.nth(i);
+    const hasIcon = (await a.locator(':scope > svg').count()) === 1;
+    expect(hasIcon, await a.innerText()).toBe(i < count - 1);
+    if (hasIcon) await expect(a.locator(':scope > svg')).toHaveAttribute('aria-hidden', 'true');
+  }
+});
+
+test('footer Academic CV is absent', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.locator('footer').getByRole('link', { name: 'Academic CV' })).toHaveCount(0);
 });
 
 test('body uses Source Serif 4', async ({ page }) => {

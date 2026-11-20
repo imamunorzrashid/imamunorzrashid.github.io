@@ -103,6 +103,12 @@ main {
   font-size: 0.95rem;
 }
 
+.with-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+}
+
 .points {
   list-style: disc;
   padding-left: 1.25rem;

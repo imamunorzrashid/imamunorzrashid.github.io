@@ -1,19 +1,13 @@
 ---
 import { getEntry } from 'astro:content';
+import { footerLinks } from '../lib/links';
+import LinkIcon from './LinkIcon.astro';
 
 const profile = await getEntry('profile', 'profile');
 if (!profile) throw new Error('Missing src/content/pages/profile.yaml (collection "profile", id "profile")');
 const p = profile.data;
 
-const links: { label: string; href: string | undefined }[] = [
-  { label: p.email, href: `mailto:${p.email}` },
-  { label: 'Google Scholar', href: p.links?.scholar },
-  { label: 'ORCID', href: p.links?.orcid },
-  { label: 'GitHub', href: p.links?.github },
-  { label: 'LinkedIn', href: p.links?.linkedin },
-  { label: 'Gallery', href: '/gallery/' },
-];
-const shown = links.filter((l): l is { label: string; href: string } => Boolean(l.href));
+const shown = footerLinks(p);
 const buildDate = new Date().toISOString().slice(0, 10);
 ---
 <footer class="site-footer wrap">
@@ -21,7 +15,7 @@ const buildDate = new Date().toISOString().slice(0, 10);
     {shown.map((l, i) => (
       <>
         {i > 0 && ' · '}
-        <a href={l.href}>{l.label}</a>
+        <a href={l.href} class:list={[l.icon && 'with-icon']}>{l.icon && <LinkIcon name={l.icon} />} {l.label}</a>
       </>
     ))}
   </p>
