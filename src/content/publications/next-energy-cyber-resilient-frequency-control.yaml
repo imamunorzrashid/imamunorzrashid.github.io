@@ -1,6 +1,18 @@
 title: 'Enhancing Cyber-resilient Frequency Control of Isolated Microgrids Under Composite Noise: A Collaborative Learning-Based Distributed Framework'
-authors: ['M. O. Rashid', 'T. Sultana', 'M. O. Islam', 'S. Billah', 'S. K. Sarker']
-venue: 'Next Energy'
+authors:
+  - M. O. Rashid
+  - T. Sultana
+  - M. O. Islam
+  - S. Billah
+  - S. K. Sarker
+venue: Next Energy
 type: journal
 status: accepted
+year: null
+doi: ''
+url: ''
+pdf: ''
+code: ''
 featured: true
+note: ''
+abstract: Isolated interconnected microgrids depend on communication-based secondary control for frequency restoration, exposing them to false data injection attacks that corrupt area control error signals. Existing data-driven detectors require extensive attack data and degrade under realistic communication noise, while prior transfer-learning defenses rarely couple detection with real-time mitigation under simultaneous noise and data limitation. This paper proposes a distributed attack detection and mitigation framework in which each microgrid unit deploys a local autoregressive dynamic neural network estimator to predict nominal frequency dynamics from distributed energy resource measurements. Estimation residuals drive a proportional-integral controller that reconstructs and neutralizes injected attacks in real time. A Bayesian regularization-based transfer learning strategy adapts a source-domain model to noisy, data-scarce targets under 10% data limitation, converging within 49s without retraining from scratch. On a two-area isolated microgrid under composite noise, packet loss, and escalating noise intensities, the framework detects and mitigates constant and bounded time-varying attacks while maintaining settling time within 2% of nominal; a six-unit multi-area extension demonstrates scalability to simultaneous, spatially distributed attacks. Compared with a state-of-the-art LSTM-based detector, the proposed framework reduces frequency nadir deviation by up to 86.2% and settling time by 93.8%, with integral error improvements exceeding 99%.

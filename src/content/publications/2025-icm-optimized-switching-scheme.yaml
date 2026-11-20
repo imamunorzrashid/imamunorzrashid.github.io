@@ -1,8 +1,17 @@
-title: 'An Optimized Switching Scheme to Reduce the Leakage Current and Power Loss of Transformerless Inverter'
-authors: ['S. Mondal', 'M. O. Rashid', 'S. P. Biswas', 'M. R. Islam']
-venue: 'Proc. 2025 IEEE International Conference on Mechatronics (ICM), Wollongong, Australia'
+title: An Optimized Switching Scheme to Reduce the Leakage Current and Power Loss of Transformerless Inverter
+authors:
+  - S. Mondal
+  - M. O. Rashid
+  - S. P. Biswas
+  - M. R. Islam
+venue: Proc. 2025 IEEE International Conference on Mechatronics (ICM), Wollongong, Australia
 type: conference
 status: published
 year: 2025
-doi: '10.1109/ICM62621.2025.10934771'
-note: 'pp. 1–6'
+doi: 10.1109/ICM62621.2025.10934771
+url: ''
+pdf: ''
+code: ''
+featured: false
+note: pp. 1–6
+abstract: Transformer-less grid-connected inverters gained its popularity in recent times due to their compact design, lower cost, lower weight and overall higher efficiency compared to transformer-based systems. However, among the other issues of the transformer-less solution, leakage current caused by common-mode (CM) voltage fluctuations remains a significant problem, impacting power output, system safety. This paper proposes an optimized switching scheme for a modified H7 transformerless photovoltaic (TLPV) inverter to address the issue by reducing the leakage current and increasing the power quality. Moreover, an optimized unipolar pulse width modulation (UPPWM) strategy is also presented to maintain fairly constant common mode voltage (CMV), effectively suppressing leakage current further. The modified H7 TLPV along with the optimized UPPWM strategy also ensures lower semiconductor power loss and overall better efficiency. The total harmonic distortion (THD) of the grid voltage and current with the optimized pulse width modulation (PWM) strategy found satisfactory which met the standards of IEEE-519. Simulation is conducted in the MATLAB/Simulink environment to validate the performance criteria over the other TLPV structures, feasibility of leakage current reduction and overall power loss. This novel strategy provides an efficient and minimal solution for the next generation TLPV.

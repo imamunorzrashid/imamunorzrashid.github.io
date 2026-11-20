@@ -1,9 +1,18 @@
-title: 'Domain-guided Intelligent Distributed Control for Enhancing Frequency Resilience in Multi-Microgrids under Limited and Noisy Data'
-authors: ['M. O. Rashid', 'M. O. Islam', 'S. Billah', 'S. Tasnim', 'S. K. Sarker']
+title: Domain-guided Intelligent Distributed Control for Enhancing Frequency Resilience in Multi-Microgrids under Limited and Noisy Data
+authors:
+  - M. O. Rashid
+  - M. O. Islam
+  - S. Billah
+  - S. Tasnim
+  - S. K. Sarker
 venue: 'Energy Conversion and Management: X'
 type: journal
 status: published
 year: 2026
-doi: '10.1016/j.ecmx.2026.101896'
-note: 'vol. 30, Art. no. 101896'
+doi: 10.1016/j.ecmx.2026.101896
+url: ''
+pdf: ''
+code: ''
 featured: true
+note: vol. 30, Art. no. 101896
+abstract: 'This paper proposes a domain adaptation-aided intelligent distributed control framework for enhancing frequency resilience in multi-microgrids (MMGs) under noisy environments with limited data availability. While several existing methods achieve accurate frequency resilience by leveraging high-fidelity data, their performance often degrades in practical scenarios due to measurement noise, data scarcity, and variations in operating conditions. In addition, the limited availability of high-quality data often restricts the performance of existing data-driven approaches for frequency regulation of MMGs. To resolve these issues, the work in hand integrates a domain with the intelligent distributed control strategy, enabling knowledge transfer across different operating domains and enhancing robustness under noisy and data-limited conditions. The proposed framework adopts a two-phase adaptation strategy: first, the input-to-hidden weights of a source network trained on clean data are frozen and then the entire network is fine-tuned using a limited number of noisy target samples. This approach preserves generalizable features without catastrophic forgetting while simultaneously reducing the data requirements. The efficacy of the proposed framework is validated on the two-area interconnected load frequency control of MMGs under various scenarios. The results demonstrate that the proposed method achieves efficient frequency regulation while requiring less training data and exhibiting greater robustness compared to existing methods. Furthermore, a real-time simulation study using the OPAL-RT (OP5700) platform is conducted to validate its effectiveness under practical real-time operating conditions.'
