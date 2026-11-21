@@ -24,6 +24,8 @@ if (pub.doi) metaItems.push({ label: 'DOI', href: `https://doi.org/${pub.doi}` }
 if (pub.url) metaItems.push({ label: 'Link', href: pub.url });
 if (pub.pdf) metaItems.push({ label: 'PDF', href: pub.pdf });
 if (pub.code) metaItems.push({ label: 'Code', href: pub.code });
+if (pub.slides) metaItems.push({ label: 'Slides', href: pub.slides });
+if (pub.video) metaItems.push({ label: 'Video', href: pub.video });
 
 const tail = `${pub.note ? `, ${pub.note}` : ''}${pub.year !== undefined ? `, ${pub.year}` : ''}`;
 ---
@@ -34,6 +36,7 @@ const tail = `${pub.note ? `, ${pub.note}` : ''}${pub.year !== undefined ? `, ${
       {a.self ? <strong>{a.name}</strong> : a.name}
     </>
   ))}, “{pub.title},” <em>{pub.venue}</em>{tail}.{' '}
+  {pub.plain && <span class="plain">{pub.plain}</span>}
   {metaItems.length > 0 && (
     <span class="meta">
       {metaItems.map((m, i) => (
@@ -53,9 +56,14 @@ const tail = `${pub.note ? `, ${pub.note}` : ''}${pub.year !== undefined ? `, ${
 </div>
 
 <style>
-  .pub .meta {
+  .pub .meta,
+  .pub .plain {
     display: block;
     margin-top: 0.15rem;
+  }
+
+  .pub .plain {
+    color: var(--muted);
   }
 
   /* Summary looks like .meta but keeps its default display, so the disclosure marker still shows. */

@@ -3,6 +3,7 @@ import { readFileSync, readdirSync } from 'node:fs';
 import { load } from 'js-yaml';
 
 const research = load(readFileSync(new URL('../../src/content/pages/research.yaml', import.meta.url), 'utf8')) as {
+  questions?: string[];
   themes?: { title: string }[];
 };
 
@@ -75,6 +76,27 @@ test('each publication shows an Abstract fold-out only when its YAML has an abst
   }
 });
 
+test('plain line, Slides and Video show only when the YAML sets them', async ({ page }) => {
+  await page.goto('/publications/');
+  const dir = new URL('../../src/content/publications/', import.meta.url);
+  const pubs = readdirSync(dir)
+    .filter((f) => f.endsWith('.yaml'))
+    .map((f) => load(readFileSync(new URL(f, dir), 'utf8')) as { title: string; plain?: string; slides?: string; video?: string });
+  for (const pub of pubs) {
+    const entry = page.locator('li').filter({ hasText: pub.title });
+    await expect(entry).toHaveCount(1);
+    const plain = entry.locator('.plain');
+    if (pub.plain) await expect(plain).toHaveText(pub.plain);
+    else await expect(plain).toHaveCount(0);
+    const slides = entry.getByRole('link', { name: 'Slides', exact: true });
+    if (pub.slides) await expect(slides).toHaveAttribute('href', pub.slides);
+    else await expect(slides).toHaveCount(0);
+    const video = entry.getByRole('link', { name: 'Video', exact: true });
+    if (pub.video) await expect(video).toHaveAttribute('href', pub.video);
+    else await expect(video).toHaveCount(0);
+  }
+});
+
 test('research has one h1 "Research"', async ({ page }) => {
   await page.goto('/research/');
   const h1 = page.locator('h1');
@@ -82,11 +104,15 @@ test('research has one h1 "Research"', async ({ page }) => {
   await expect(h1).toHaveText('Research');
 });
 
-test('research has one h2 per theme, in order', async ({ page }) => {
+test('research has one h2 per theme, in order, after the questions h2 when there are questions', async ({ page }) => {
   const themes = research.themes ?? [];
   test.skip(themes.length === 0, 'research themes empty until Task 9');
   await page.goto('/research/');
+  const headings = [
+    ...((research.questions ?? []).length > 0 ? ["Questions I'm working on"] : []),
+    ...themes.map((t) => t.title),
+  ];
   const h2s = page.locator('main h2');
-  await expect(h2s).toHaveCount(themes.length);
-  await expect(h2s).toHaveText(themes.map((t) => t.title));
+  await expect(h2s).toHaveCount(headings.length);
+  await expect(h2s).toHaveText(headings);
 });
