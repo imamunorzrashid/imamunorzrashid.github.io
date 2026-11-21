@@ -102,7 +102,7 @@ const linksOf = (x: { link?: string; links: { label: string; url: string }[] }) 
       {education.map((e) =>
         isCompact(e) ? (
           <div class="item entry compact">
-            {e.logo && <img class="logo" src={e.logo} alt="" height="40" />}
+            {e.logo && <img class="org-logo" src={e.logo} alt="" />}
             <p class="compact-line">{[e.degree, e.institution, rangeOf(e), ...e.details].filter(Boolean).join(' · ')}</p>
           </div>
         ) : (
@@ -178,7 +178,7 @@ const linksOf = (x: { link?: string; links: { label: string; url: string }[] }) 
             <div class="item award">
               <p class="year">{formatRange(a.date, a.end)}</p>
               <div class="award-main">
-                {a.logo && <img class="award-logo" src={a.logo} alt="" height="40" />}
+                {a.logo && <img class="org-logo" src={a.logo} alt="" />}
                 <div>
                   <p class="award-title">{a.link ? <a href={a.link}>{a.title}<LinkIcon name="external" /></a> : a.title}</p>
                   <p class="meta">{a.issuer}</p>
@@ -312,12 +312,6 @@ const linksOf = (x: { link?: string; links: { label: string; url: string }[] }) 
       align-items: flex-start;
     }
 
-    .award-logo {
-      flex: none;
-      height: 40px;
-      width: auto;
-    }
-
     .award-title {
       margin: 0 0 0.15rem;
       font-size: 1.125rem;
@@ -348,12 +342,6 @@ const linksOf = (x: { link?: string; links: { label: string; url: string }[] }) 
       display: flex;
       gap: 1rem;
       align-items: center;
-    }
-
-    .compact .logo {
-      flex: none;
-      height: 40px;
-      width: auto;
     }
 
     .compact-line {

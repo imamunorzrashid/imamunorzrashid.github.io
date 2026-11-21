@@ -13,7 +13,7 @@ const meta = [sub, range].filter(Boolean).join(' · ');
 <div class="entry">
   {date && <p class="margin-date">{date}</p>}
   <div class:list={['entry-main', logo && 'has-logo']}>
-    {logo && <img class="logo" src={logo} alt="" height="40" />}
+    {logo && <img class="org-logo" src={logo} alt="" />}
     <div>
       <h3>{heading}</h3>
       {meta && <p class="meta">{meta}</p>}
@@ -31,12 +31,6 @@ const meta = [sub, range].filter(Boolean).join(' · ');
     display: flex;
     gap: 1rem;
     align-items: flex-start;
-  }
-
-  .logo {
-    flex: none;
-    height: 40px;
-    width: auto;
   }
 
   h3 {

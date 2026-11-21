@@ -27,6 +27,7 @@ type Experience = {
   link?: string;
   points: string[];
   links?: Link[];
+  logo?: string;
 };
 type Education = {
   degree: string;
@@ -205,6 +206,17 @@ test.describe('About page', () => {
       if (!e.logo) continue;
       await expect(section.locator('.entry').nth(i).locator('img[alt=""]')).toHaveCount(1);
     }
+  });
+
+  test('every logo on About renders at the same height, within 1px', async ({ page }) => {
+    await page.goto('/about/');
+    const expected = [...eduSorted, ...workOrder, ...awardOrder].filter((x) => x.logo).length;
+    expect(expected).toBeGreaterThan(0);
+    const logos = page.locator('img[src^="/images/logos/"]');
+    await expect(logos).toHaveCount(expected);
+    const heights: number[] = [];
+    for (let i = 0; i < expected; i++) heights.push((await logos.nth(i).boundingBox())!.height);
+    for (const h of heights) expect(Math.abs(h - heights[0])).toBeLessThanOrEqual(1);
   });
 
   test('a thesis title links to its story when the education entry has one', async ({ page }) => {

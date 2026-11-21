@@ -135,6 +135,15 @@ main {
   }
 }
 
+/* Entry and award logos share one height; very wide marks are capped in width and letterboxed. */
+.org-logo {
+  flex: none;
+  height: 2.25rem;
+  width: auto;
+  max-width: 6rem;
+  object-fit: contain;
+}
+
 figure {
   margin: 0 0 1.5rem;
 }
