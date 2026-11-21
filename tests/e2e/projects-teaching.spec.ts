@@ -10,6 +10,8 @@ type Project = {
   start?: string;
   end?: string;
   links?: { label: string; url: string }[];
+  story?: string;
+  draft?: boolean;
 };
 
 const yamlIn = <T>(dir: URL): T[] =>
@@ -20,6 +22,7 @@ const yamlIn = <T>(dir: URL): T[] =>
 // Projects lists only build projects; research projects live on the Research page. A missing kind means build.
 const allProjects = yamlIn<Project>(new URL('../../src/content/projects/', import.meta.url));
 const projects = allProjects.filter((p) => (p.kind ?? 'build') === 'build');
+const researchProjects = allProjects.filter((p) => p.kind === 'research');
 
 const entryOf = (page: import('@playwright/test').Page, title: string) =>
   page.locator('li').filter({ has: page.getByRole('heading', { name: title, exact: true }) });
@@ -31,12 +34,22 @@ test('projects has one h1 "Projects"', async ({ page }) => {
   await expect(h1).toHaveText('Projects');
 });
 
-test('research projects are not listed on Projects', async ({ page }) => {
-  await page.goto('/projects/');
-  const research = allProjects.filter((p) => p.kind === 'research');
-  expect(research.length).toBeGreaterThan(0);
-  for (const p of research) {
-    await expect(page.getByRole('heading', { name: p.title, exact: true })).toHaveCount(0);
+test('research projects are not listed on Projects or the home page', async ({ page }) => {
+  test.skip(researchProjects.length === 0, 'no research projects yet');
+  for (const path of ['/projects/', '/']) {
+    await page.goto(path);
+    for (const p of researchProjects) {
+      await expect(page.getByRole('heading', { name: p.title, exact: true })).toHaveCount(0);
+    }
+  }
+});
+
+test('the Research page links to the story of each published research project', async ({ page }) => {
+  const published = researchProjects.filter((p) => p.story && !p.draft);
+  test.skip(published.length === 0, 'no research project has a published story yet');
+  await page.goto('/research/');
+  for (const p of published) {
+    await expect(page.locator(`a[href="/projects/${p.story}/"]`).first()).toHaveCount(1);
   }
 });
 
