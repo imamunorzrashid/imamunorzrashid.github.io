@@ -1,0 +1,282 @@
+---
+import { getCollection, getEntry } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Entry from '../components/Entry.astro';
+import Figure from '../components/Figure.astro';
+import Prose from '../components/Prose.astro';
+import Video from '../components/Video.astro';
+import { formatRange, formatYm, recentFirst } from '../lib/dates';
+import { buildTimeline } from '../lib/timeline';
+
+const profile = await getEntry('profile', 'profile');
+if (!profile) throw new Error('Missing src/content/pages/profile.yaml (collection "profile", id "profile")');
+const p = profile.data;
+
+const rangeOf = (d: { start?: string; end?: string }) =>
+  d.start ? formatRange(d.start, d.end) : d.end ? formatYm(d.end) : undefined;
+
+const education = recentFirst(
+  (await getCollection('education')).map((e) => e.data),
+  (e) => e.degree,
+);
+
+const experience = recentFirst(
+  (await getCollection('experience')).map((e) => e.data),
+  (e) => e.role,
+);
+
+// Awards sort by their end (or date if none), then date.
+const awards = recentFirst(
+  (await getCollection('awards')).map((e) => ({ ...e.data, start: e.data.date, end: e.data.end ?? e.data.date })),
+  (a) => a.title,
+);
+
+const certificates = recentFirst(
+  (await getCollection('certificates')).map((e) => ({ ...e.data, start: e.data.date, end: e.data.date })),
+  (c) => c.title,
+);
+
+const activities = recentFirst(
+  (await getCollection('activities')).map((e) => ({ ...e.data, start: e.data.date, end: e.data.date })),
+  (a) => a.title,
+);
+
+// Same rule as the story pages: drafts have no page in production, so no timeline link either.
+const stories = (
+  await getCollection('projects', (e) => !!e.data.story && (import.meta.env.DEV || !e.data.draft))
+).map((e) => ({ slug: e.id, title: e.data.title, end: e.data.end, outcome: e.data.outcome }));
+
+const publications = (await getCollection('publications')).map((e) => e.data);
+
+const timeline = buildTimeline({ education, experience, awards, publications, stories });
+const skills = p.skills.filter((s) => s.items.length > 0);
+
+// The old single `link` field shows as Website, first, then the links list in the order given.
+const linksOf = (x: { link?: string; links: { label: string; url: string }[] }) => [
+  ...(x.link ? [{ label: 'Website', url: x.link }] : []),
+  ...x.links,
+];
+---
+<Base title="About">
+  <h1>About</h1>
+
+  {p.about_opening && <Prose md={p.about_opening} />}
+
+  {timeline.length > 0 && (
+    <section class="section">
+      <h2>Timeline</h2>
+      {timeline.map((g) => (
+        <div class="year-group">
+          <p class="year">{g.year}</p>
+          <ul class="timeline-list">
+            {g.items.map((i) => (
+              <li><a href={i.href}>{i.text}</a></li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </section>
+  )}
+
+  {education.length > 0 && (
+    <section class="section" id="education">
+      <h2>Education</h2>
+      {education.map((e) => (
+        <div class="item">
+          <Entry
+            heading={e.degree}
+            sub={[e.institution, e.location].filter(Boolean).join(', ')}
+            date={rangeOf(e)}
+            logo={e.logo}
+          >
+            {e.thesis_title && (
+              <p>
+                Thesis: {e.story ? <a href={`/projects/${e.story}/`}>{e.thesis_title}</a> : e.thesis_title}
+              </p>
+            )}
+            {e.supervisor && <p class="meta">Supervisor: {e.supervisor}</p>}
+            {e.details.length > 0 && <p class="meta">{e.details.join(' · ')}</p>}
+            {e.links.length > 0 && (
+              <p class="meta">
+                {e.links.map((l, i) => (
+                  <>
+                    {i > 0 && ' · '}
+                    <a href={l.url}>{l.label}</a>
+                  </>
+                ))}
+              </p>
+            )}
+          </Entry>
+        </div>
+      ))}
+    </section>
+  )}
+
+  {experience.length > 0 && (
+    <section class="section" id="work">
+      <h2>Work</h2>
+      {experience.map((x) => (
+        <div class="item">
+          <Entry heading={x.role} sub={[x.org, x.location].filter(Boolean).join(', ')} date={rangeOf(x)} logo={x.logo}>
+            {x.points.map((pt) => (
+              <p>{pt}</p>
+            ))}
+            {x.image && <Figure src={x.image.src} alt={x.image.alt} caption={x.image.caption} />}
+            {linksOf(x).length > 0 && (
+              <p class="meta">
+                {linksOf(x).map((l, i) => (
+                  <>
+                    {i > 0 && ' · '}
+                    <a href={l.url}>{l.label}</a>
+                  </>
+                ))}
+              </p>
+            )}
+          </Entry>
+        </div>
+      ))}
+    </section>
+  )}
+
+  {(awards.length > 0 || certificates.length > 0) && (
+    <section class="section" id="recognition">
+      <h2>Recognition</h2>
+      {awards.map((a) => (
+        <div class="item">
+          <Entry heading={a.title} sub={a.issuer} date={formatRange(a.date, a.end)}>
+            {a.description && <p>{a.description}</p>}
+            {a.image && (
+              <div class="thumb">
+                <Figure src={a.image.src} alt={a.image.alt} caption={a.image.caption} />
+              </div>
+            )}
+            {a.story && (
+              <p class="meta">
+                <a href={`/projects/${a.story}/`}>Related story</a>
+              </p>
+            )}
+            {a.link && (
+              <p class="meta">
+                <a href={a.link}>Link</a>
+              </p>
+            )}
+          </Entry>
+        </div>
+      ))}
+      {certificates.length > 0 && (
+        <>
+          <h3>Certificates</h3>
+          <ul class="certs">
+            {certificates.map((c) => (
+              <li>
+                <p class="meta">
+                  {[c.title, c.issuer, formatYm(c.date)].join(' · ')}
+                  {c.credential_url && (
+                    <>
+                      {' · '}
+                      <a href={c.credential_url}>Credential</a>
+                    </>
+                  )}
+                </p>
+                {c.image && (
+                  <div class="thumb">
+                    <Figure src={c.image.src} alt={c.image.alt} caption={c.image.caption} />
+                  </div>
+                )}
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
+    </section>
+  )}
+
+  {skills.length > 0 && (
+    <section class="section" id="skills">
+      <h2>Skills</h2>
+      {skills.map((s) => (
+        <p>
+          <strong>{s.label}:</strong> {s.items.join(' · ')}
+        </p>
+      ))}
+    </section>
+  )}
+
+  {activities.length > 0 && (
+    <section class="section" id="talks">
+      <h2>Talks and service</h2>
+      {activities.map((a) => (
+        <div class="item">
+          <Entry heading={a.title} sub={[a.event, a.location].filter(Boolean).join(', ')} date={formatYm(a.date)}>
+            {a.video && <Video url={a.video} title={a.title} />}
+            {a.link && (
+              <p class="meta">
+                <a href={a.link}>Link</a>
+              </p>
+            )}
+          </Entry>
+        </div>
+      ))}
+    </section>
+  )}
+
+  <style>
+    .item {
+      margin-top: 2rem;
+    }
+
+    .item:first-of-type {
+      margin-top: 0.75rem;
+    }
+
+    .year-group {
+      position: relative;
+      margin-top: 1rem;
+    }
+
+    .year {
+      margin: 0 0 0.15rem;
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      font-variant-numeric: tabular-nums;
+      color: var(--muted);
+    }
+
+    .timeline-list {
+      list-style: none;
+    }
+
+    .timeline-list li + li {
+      margin-top: 0.25rem;
+    }
+
+    .certs {
+      list-style: none;
+    }
+
+    .certs li + li {
+      margin-top: 1rem;
+    }
+
+    .thumb {
+      margin: 0.5rem 0 0.75rem;
+    }
+
+    .thumb :global(img) {
+      width: 11rem;
+      height: auto;
+    }
+
+    /* Below 64rem the year sits inline above the list. */
+    @media (min-width: 64rem) {
+      .year {
+        position: absolute;
+        top: 0.3rem;
+        right: 100%;
+        width: 8rem;
+        margin: 0 1.25rem 0 0;
+        text-align: right;
+      }
+    }
+  </style>
+</Base>

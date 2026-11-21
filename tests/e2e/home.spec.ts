@@ -23,26 +23,16 @@ test('home has exactly one h1 with the profile name', async ({ page }) => {
   await expect(h1).toHaveText(profile.name);
 });
 
-test('header nav has the nine main links in order', async ({ page }) => {
+test('header nav has the six main links in order', async ({ page }) => {
   await page.goto('/');
-  await expect(page.locator('header nav a')).toHaveText([
-    'Home',
-    'Research',
-    'Publications',
-    'Projects',
-    'Academics',
-    'Experience',
-    'Achievements',
-    'Teaching',
-    'CV',
-  ]);
+  await expect(page.locator('header nav a')).toHaveText(['Research', 'Projects', 'Publications', 'Teaching', 'About', 'CV']);
 });
 
 test('at 1280px the nav is one row, level with the site name', async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto('/');
   const tops = await page.locator('header nav a').evaluateAll((els) => els.map((el) => el.getBoundingClientRect().top));
-  expect(tops).toHaveLength(9);
+  expect(tops).toHaveLength(6);
   for (const y of tops) expect(Math.abs(y - tops[0])).toBeLessThan(1);
   const nameTop = await page.locator('header .site-name').evaluate((el) => el.getBoundingClientRect().top);
   expect(Math.abs(nameTop - tops[0])).toBeLessThan(8);
@@ -60,11 +50,11 @@ const redirects: [string, RegExp][] = [
   ['#publications', /\/publications\/$/],
   ['#projects', /\/projects\/$/],
   ['#gallery', /\/gallery\/$/],
-  ['#education', /\/academics\/$/],
-  ['#leadership', /\/experience\/$/],
-  ['#industry', /\/experience\/$/],
-  ['#honors', /\/achievements\/$/],
-  ['#certifications', /\/achievements\/$/],
+  ['#education', /\/about\/#education$/],
+  ['#leadership', /\/about\/#work$/],
+  ['#industry', /\/about\/#work$/],
+  ['#honors', /\/about\/#recognition$/],
+  ['#certifications', /\/about\/#recognition$/],
 ];
 
 for (const [hash, target] of redirects) {

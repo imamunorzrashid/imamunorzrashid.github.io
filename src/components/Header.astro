@@ -5,14 +5,11 @@ const profile = await getEntry('profile', 'profile');
 if (!profile) throw new Error('Missing src/content/pages/profile.yaml (collection "profile", id "profile")');
 
 const nav = [
-  { label: 'Home', href: '/' },
   { label: 'Research', href: '/research/' },
-  { label: 'Publications', href: '/publications/' },
   { label: 'Projects', href: '/projects/' },
-  { label: 'Academics', href: '/academics/' },
-  { label: 'Experience', href: '/experience/' },
-  { label: 'Achievements', href: '/achievements/' },
+  { label: 'Publications', href: '/publications/' },
   { label: 'Teaching', href: '/teaching/' },
+  { label: 'About', href: '/about/' },
   { label: 'CV', href: '/cv/' },
 ];
 ---
@@ -40,7 +37,7 @@ const nav = [
     border-bottom: 1px solid var(--rule);
   }
 
-  /* Wide enough for name and all nine links on one row; below this the nav wraps. */
+  /* Wide enough for name and all six links on one row; below this the nav wraps. */
   @media (min-width: 60rem) {
     .site-header {
       max-width: 60rem;

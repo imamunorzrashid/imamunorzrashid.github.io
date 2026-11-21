@@ -5,13 +5,16 @@ const routes = [
   '/research/',
   '/publications/',
   '/projects/',
-  '/academics/',
-  '/experience/',
-  '/achievements/',
   '/teaching/',
+  '/about/',
   '/cv/',
   '/gallery/',
 ];
+
+test('header nav labels are exactly the six main links, in order', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.locator('header nav a')).toHaveText(['Research', 'Projects', 'Publications', 'Teaching', 'About', 'CV']);
+});
 
 for (const route of routes) {
   test(`${route} returns 200 with exactly one h1`, async ({ page }) => {
