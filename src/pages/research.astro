@@ -2,6 +2,7 @@
 import { getCollection, getEntry } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Prose from '../components/Prose.astro';
+import Figure from '../components/Figure.astro';
 
 const research = await getEntry('researchPage', 'researchPage');
 if (!research) throw new Error('Missing src/content/pages/research.yaml (collection "researchPage", id "researchPage")');
@@ -17,9 +18,21 @@ const stories = new Set(
     <Prose md={r.statement} />
   </section>
 
+  {r.questions.length > 0 && (
+    <section class="section">
+      <h2>Questions I'm working on</h2>
+      <ul>
+        {r.questions.map((q) => (
+          <li>{q}</li>
+        ))}
+      </ul>
+    </section>
+  )}
+
   {r.themes.map((t) => (
     <section class="section">
       <h2>{t.title}</h2>
+      {t.image && <Figure src={t.image.src} alt={t.image.alt} caption={t.image.caption} />}
       <Prose md={t.summary} />
       {t.story && stories.has(t.story) && (
         <p class="meta"><a href={`/projects/${t.story}/`}>Read the story</a></p>
