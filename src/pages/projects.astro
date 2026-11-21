@@ -5,7 +5,7 @@ import Entry from '../components/Entry.astro';
 import Prose from '../components/Prose.astro';
 import { formatRange, formatYm } from '../lib/dates';
 
-// Research projects (kind: research) are listed on the Research page, so this page lists build projects only.
+// Research projects (kind: research) are not listed here. Their stories are linked from the Research page, so this page lists build projects only.
 const projects = (await getCollection('projects'))
   .map((e) => e.data)
   .filter((p) => p.kind === 'build')

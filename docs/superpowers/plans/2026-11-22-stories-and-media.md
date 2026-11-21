@@ -10,6 +10,8 @@
 
 **Spec:** `docs/superpowers/specs/2026-11-22-stories-and-media-design.md` (builds on `docs/superpowers/specs/2026-11-20-portfolio-redesign-design.md`)
 
+> **Note (2026-11-22): the Teaching page was removed.** The nav is now Home, Research, Projects, Publications, About, CV, and `/teaching/` returns 404 with no redirect. The tasks below that mention Teaching are kept as written for history. See the spec's "Decisions this reverses" table (the Teaching row). Teaching content stays in the CMS.
+
 ## Global Constraints
 
 - Work on branch `redesign`. Never push to `main`. Commit after each task with a conventional message ending `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>`. Run `git status` before each commit: Mamun edits in the CMS, and only the task's files go in the commit.
