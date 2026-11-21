@@ -29,7 +29,16 @@ type Experience = {
   points: string[];
   links?: Link[];
 };
-type Education = { degree: string; start?: string; end?: string; logo?: string; story?: string; thesis_title?: string };
+type Education = {
+  degree: string;
+  institution: string;
+  start?: string;
+  end?: string;
+  logo?: string;
+  story?: string;
+  thesis_title?: string;
+  details: string[];
+};
 type Award = { title: string; category: string; date: string; end?: string; story?: string };
 type Activity = { title: string; date: string; video?: string };
 type Certificate = { title: string; date: string };
@@ -116,7 +125,35 @@ test.describe('About page', () => {
 
   test('education entries are ordered by recency', async ({ page }) => {
     await page.goto('/about/');
-    await expect(sectionOf(page, 'Education').locator('h3')).toHaveText(eduSorted.map((e) => e.degree));
+    // Compact entries have no h3, so check each item (full or compact) in order.
+    const items = sectionOf(page, 'Education').locator('.item');
+    await expect(items).toHaveCount(eduSorted.length);
+    for (const [i, e] of eduSorted.entries()) await expect(items.nth(i)).toContainText(e.degree);
+  });
+
+  test('HSC and SSC each render as one compact line with institution and year, and no heading', async ({ page }) => {
+    await page.goto('/about/');
+    const section = sectionOf(page, 'Education');
+    for (const degree of [/Higher Secondary Certificate/, /Secondary School Certificate/]) {
+      const e = education.find((x) => degree.test(x.degree));
+      expect(e, `education entry matching ${degree}`).toBeDefined();
+      const line = section.locator('.compact-line', { hasText: e!.degree });
+      await expect(line).toHaveCount(1);
+      await expect(line.locator('h3')).toHaveCount(0);
+      await expect(line).toContainText(e!.institution);
+      await expect(line).toContainText(e!.end!.slice(0, 4));
+      for (const d of e!.details) await expect(line).toContainText(d);
+    }
+  });
+
+  test('the B.Sc. keeps the full layout, with a heading and its thesis', async ({ page }) => {
+    await page.goto('/about/');
+    const section = sectionOf(page, 'Education');
+    const bsc = education.find((x) => /B\.Sc\./.test(x.degree));
+    expect(bsc, 'B.Sc. entry').toBeDefined();
+    const entry = section.locator('.entry', { hasText: bsc!.degree });
+    await expect(entry.locator('h3')).toHaveText(bsc!.degree);
+    await expect(entry).toContainText(bsc!.thesis_title!);
   });
 
   test('an education entry with a logo shows an empty-alt image inside that entry', async ({ page }) => {
@@ -152,7 +189,8 @@ test.describe('About page', () => {
   test('Website and other work links render in display order, one per link', async ({ page }) => {
     await page.goto('/about/');
     const expected = work.flatMap(linksOf);
-    const links = sectionOf(page, 'Work').locator('a');
+    // Only the meta-line links: Figure wraps every image in an anchor too.
+    const links = sectionOf(page, 'Work').locator('.meta a');
     await expect(links).toHaveCount(expected.length);
     for (const [i, l] of expected.entries()) {
       await expect(links.nth(i)).toHaveText(l.label);

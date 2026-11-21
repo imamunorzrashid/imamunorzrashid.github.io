@@ -20,6 +20,10 @@ const education = recentFirst(
   (e) => e.degree,
 );
 
+// Reviewer's rule (not in the schema): no thesis, supervisor or story, and at most two details items.
+const isCompact = (e: (typeof education)[number]) =>
+  !e.thesis_title && !e.supervisor && !e.story && e.details.length <= 2;
+
 const experience = recentFirst(
   (await getCollection('experience')).map((e) => e.data),
   (e) => e.role,
@@ -81,34 +85,41 @@ const linksOf = (x: { link?: string; links: { label: string; url: string }[] }) 
   {education.length > 0 && (
     <section class="section" id="education">
       <h2>Education</h2>
-      {education.map((e) => (
-        <div class="item">
-          <Entry
-            heading={e.degree}
-            sub={[e.institution, e.location].filter(Boolean).join(', ')}
-            date={rangeOf(e)}
-            logo={e.logo}
-          >
-            {e.thesis_title && (
-              <p>
-                Thesis: {e.story ? <a href={`/projects/${e.story}/`}>{e.thesis_title}</a> : e.thesis_title}
-              </p>
-            )}
-            {e.supervisor && <p class="meta">Supervisor: {e.supervisor}</p>}
-            {e.details.length > 0 && <p class="meta">{e.details.join(' · ')}</p>}
-            {e.links.length > 0 && (
-              <p class="meta">
-                {e.links.map((l, i) => (
-                  <>
-                    {i > 0 && ' · '}
-                    <a href={l.url}>{l.label}</a>
-                  </>
-                ))}
-              </p>
-            )}
-          </Entry>
-        </div>
-      ))}
+      {education.map((e) =>
+        isCompact(e) ? (
+          <div class="item entry compact">
+            {e.logo && <img class="logo" src={e.logo} alt="" height="40" />}
+            <p class="compact-line">{[e.degree, e.institution, rangeOf(e), ...e.details].filter(Boolean).join(' · ')}</p>
+          </div>
+        ) : (
+          <div class="item">
+            <Entry
+              heading={e.degree}
+              sub={[e.institution, e.location].filter(Boolean).join(', ')}
+              date={rangeOf(e)}
+              logo={e.logo}
+            >
+              {e.thesis_title && (
+                <p>
+                  Thesis: {e.story ? <a href={`/projects/${e.story}/`}>{e.thesis_title}</a> : e.thesis_title}
+                </p>
+              )}
+              {e.supervisor && <p class="meta">Supervisor: {e.supervisor}</p>}
+              {e.details.length > 0 && <p class="meta">{e.details.join(' · ')}</p>}
+              {e.links.length > 0 && (
+                <p class="meta">
+                  {e.links.map((l, i) => (
+                    <>
+                      {i > 0 && ' · '}
+                      <a href={l.url}>{l.label}</a>
+                    </>
+                  ))}
+                </p>
+              )}
+            </Entry>
+          </div>
+        ),
+      )}
     </section>
   )}
 
@@ -256,6 +267,22 @@ const linksOf = (x: { link?: string; links: { label: string; url: string }[] }) 
 
     .certs li + li {
       margin-top: 1rem;
+    }
+
+    .compact {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .compact .logo {
+      flex: none;
+      height: 40px;
+      width: auto;
+    }
+
+    .compact-line {
+      margin: 0;
     }
 
     .thumb {
