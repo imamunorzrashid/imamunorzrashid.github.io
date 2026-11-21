@@ -96,14 +96,6 @@ collections:
             fields:
               - { name: department, label: Department, widget: string }
               - { name: courses, label: Courses, widget: list }
-          - name: videos
-            label: Videos
-            widget: list
-            required: false
-            fields:
-              - { name: url, label: Video URL, widget: string, pattern: ['^https?://', 'Use a full URL starting with https://'] }
-              - { name: title, label: Title, widget: string }
-              - { name: poster, label: Poster image, widget: image, required: false }
 
   - name: news
     label: News
@@ -192,7 +184,6 @@ collections:
           - { name: poster, label: Poster image, widget: image, required: false }
       - { name: image, label: Image, widget: image, required: false }
       - { name: image_alt, label: Image alt text (required if an image is set), widget: string, required: false }
-      - { name: featured, label: Featured, widget: boolean, default: false }
 
   - name: education
     label: Education

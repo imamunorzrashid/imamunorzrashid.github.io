@@ -81,7 +81,6 @@ export const teachingPage = z.object({
   course_groups: z
     .array(z.object({ department: str, courses: z.array(str).min(1) }))
     .default([]),
-  videos: blank(z.array(video).default([])),
 });
 
 export const news = z.object({
@@ -135,7 +134,6 @@ export const project = z
     image_alt: opt(str),
     images: blank(z.array(img).default([])),
     videos: blank(z.array(video).default([])),
-    featured: bool,
   })
   .refine((p) => !p.image || !!p.image_alt, {
     message: 'image_alt is required when image is set',

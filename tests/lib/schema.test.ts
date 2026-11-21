@@ -34,9 +34,6 @@ describe('project', () => {
   test("order '' from the CMS defaults to 100", () => {
     expect(project.parse({ ...base, order: '' }).order).toBe(100);
   });
-  test('featured null defaults to false', () => {
-    expect(project.parse({ ...base, featured: null }).featured).toBe(false);
-  });
   test('image without image_alt fails', () => {
     expect(project.safeParse({ ...base, image: 'a.webp' }).success).toBe(false);
   });
