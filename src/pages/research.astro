@@ -1,11 +1,15 @@
 ---
-import { getEntry } from 'astro:content';
+import { getCollection, getEntry } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Prose from '../components/Prose.astro';
 
 const research = await getEntry('researchPage', 'researchPage');
 if (!research) throw new Error('Missing src/content/pages/research.yaml (collection "researchPage", id "researchPage")');
 const r = research.data;
+// Same rule as projects/[slug].astro: a story exists only if it has one and is not a draft (drafts show in dev).
+const stories = new Set(
+  (await getCollection('projects', (e) => !!e.data.story && (import.meta.env.DEV || !e.data.draft))).map((e) => e.id),
+);
 ---
 <Base title="Research">
   <h1>Research</h1>
@@ -17,6 +21,9 @@ const r = research.data;
     <section class="section">
       <h2>{t.title}</h2>
       <Prose md={t.summary} />
+      {t.story && stories.has(t.story) && (
+        <p class="meta"><a href={`/projects/${t.story}/`}>Read the story</a></p>
+      )}
     </section>
   ))}
 </Base>

@@ -147,13 +147,25 @@ test.describe('About page', () => {
     }
   });
 
-  test('timeline lines have no underline and an external-link icon beside the title', async ({ page }) => {
+  test('timeline lines have no underline and an icon beside the title', async ({ page }) => {
     test.skip(timeline.length === 0, 'no dated items yet');
     await page.goto('/about/');
     const links = sectionOf(page, 'Timeline').locator('a');
     for (const i of timelineLines.keys()) {
       await expect(links.nth(i).locator(':scope > svg')).toHaveCount(1);
       expect(await links.nth(i).evaluate((el) => getComputedStyle(el).textDecorationLine)).toBe('none');
+    }
+  });
+
+  test('timeline lines use the chain icon, since every timeline link is internal', async ({ page }) => {
+    test.skip(timeline.length === 0, 'no dated items yet');
+    const src = readFileSync(new URL('../../src/components/LinkIcon.astro', import.meta.url), 'utf8');
+    const chain = src.match(/chain:\s*'([^']+)'/)?.[1];
+    expect(chain).toBeTruthy();
+    await page.goto('/about/');
+    const links = sectionOf(page, 'Timeline').locator('a');
+    for (const i of timelineLines.keys()) {
+      await expect(links.nth(i).locator('svg path')).toHaveAttribute('d', chain!);
     }
   });
 

@@ -87,7 +87,7 @@ const linksOf = (x: { link?: string; links: { label: string; url: string }[] }) 
           <p class="year">{g.year}</p>
           <ul class="timeline-list">
             {g.items.map((i) => (
-              <li><a href={i.href}>{i.text}<LinkIcon name="external" /></a></li>
+              <li><a href={i.href}>{i.text}<LinkIcon name="chain" /></a></li>
             ))}
           </ul>
         </div>
@@ -177,7 +177,7 @@ const linksOf = (x: { link?: string; links: { label: string; url: string }[] }) 
             <div class="item award">
               <p class="year">{formatRange(a.date, a.end)}</p>
               <div class="award-main">
-                {a.logo && <img class="award-logo" src={a.logo} alt="" height="32" />}
+                {a.logo && <img class="award-logo" src={a.logo} alt="" height="40" />}
                 <div>
                   <p class="award-title">{a.link ? <a href={a.link}>{a.title}<LinkIcon name="external" /></a> : a.title}</p>
                   <p class="meta">{a.issuer}</p>
@@ -312,7 +312,7 @@ const linksOf = (x: { link?: string; links: { label: string; url: string }[] }) 
 
     .award-logo {
       flex: none;
-      height: 32px;
+      height: 40px;
       width: auto;
     }
 
