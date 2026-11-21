@@ -61,7 +61,7 @@ Redirects (Astro `redirects` config; check the current API with Context7): `/aca
 ## Story page (approach C)
 
 The first three stories, chosen because they carry the most material and matter most to the two audiences:
-1. **The B.Sc. thesis**, cyber-resilient frequency support (`kind: research`). Thesis PDF, defence slides, the pre-defence photo already in the gallery.
+1. **Defending microgrids against false data injection** (`kind: research`, slug `false-data-injection`). One story for the Next Energy paper and the B.Sc. thesis that extends it (Mamun, 2026-11-22). It opens with the paper's framework and results, then covers how the thesis took it from frequency regulation up to economic dispatch. Paper link, thesis PDF, defence slides, the pre-defence photo already in the gallery.
 2. **Transfer learning for frequency control**, the ECMX paper (`kind: research`). Methodology figure (`public/images/research/ecmx-methodology.webp`, currently unused), OPAL-RT setup photo, paper link.
 3. **The electrical system of the Formula SAE EV** (`kind: build`). Car and accumulator photos, the FSAE Japan 2025 video, FMEA/ESF documents if they can be shared.
 
@@ -105,7 +105,7 @@ Replaces Academics, Experience and Achievements. It covers the same facts, order
 
 1. **Opening** (2–3 sentences, written with Mamun: where he comes from and how he got into control and energy systems. TODO(Mamun): his own words, no invented facts).
 2. **Timeline** (generated, no extra content): one line per dated item across education, experience, awards and publications, grouped by year, newest first. Each line links to its entry below or to its story. For example: `2025 · Passed electrical inspection at FSAE Japan on the first attempt → story`.
-3. **Education** (`#education`): logo, degree, institution, years, thesis title linking to the thesis story, supervisor, CGPA and rank, and links (thesis PDF, curriculum). HSC and SSC each take one compact line, with a logo if one is provided.
+3. **Education** (`#education`): logo, degree, institution, years, thesis title linking to the false-data-injection story, supervisor, CGPA and rank, and links (thesis PDF, curriculum). HSC and SSC each take one compact line, with a logo if one is provided.
 4. **Work** (`#work`): research, team and industry roles. Logo, role, organisation, years, 1–3 sentences of prose (not bullets), optional photo, links.
 5. **Recognition** (`#recognition`): awards with the year in the margin, an optional photo thumbnail (e.g. `public/images/awards/irdc.webp`, currently unused), and a link to the related story when set. Certificates follow as a short list, with a thumbnail when an image is set (the four existing `public/images/certificates/*.webp`).
 6. **Skills**: the existing skills groups, as compact lines.
@@ -160,7 +160,7 @@ Shorthand as in the 2026-11-20 spec. New shared shapes:
 | **researchPage** | add `questions: [str]`; each theme gains `image: img?` and `story: str?` (a project slug) |
 | **teachingPage** | add `videos: [video]` |
 | **projects** | add `kind: research\|build` (default `build`), `role: str?`, `team: str?`, `tools: [str]`, `outcome: str?`, `standfirst: str?`, `story: md?`, `images: [img]`, `videos: [video]`. **`links` changes from `{code?, paper?, demo?}` to `[link]`**; migrate the 4 existing files. The old `image`/`image_alt` become the thumbnail and lead image (kept as fields). |
-| **education** | add `logo: str?`, `links: [link]`, `story: str?` (slug of the thesis story) |
+| **education** | add `logo: str?`, `links: [link]`, `story: str?` (slug of the story, here `false-data-injection`) |
 | **experience** | add `logo: str?`, `image: img?`, `links: [link]`. `points` stays (rendered as prose sentences, not bullets). |
 | **publications** | add `plain: str?`, `slides: str?`, `video: url?` |
 | **awards** | add `image: img?`, `story: str?` |
@@ -182,7 +182,7 @@ The CMS (`public/admin/config.yml`) gets a form field for every new field, with 
 
 ## Calls settled after the builder check (orchestrator's calls, Mamun can overrule)
 
-1. **Research project files and the checkpoint sample.** Step 1 creates `projects` entries for the thesis and the ECMX paper (`kind: research`). Their `summary` and at-a-glance fields come only from facts already in the repo (the thesis title, supervisor and dates in `education`; the ECMX theme in `research.yaml`, written by Mamun; the publication entry). `story` stays empty until Mamun answers the story questions, so neither has a story page yet. The checkpoint sample is the **ECMX story**: its body is built from Mamun's own research-theme text plus the methodology figure, and is marked as a layout draft. The story is not published until Mamun approves its copy in step 5.
+1. **Research project files and the checkpoint sample.** Step 1 creates `projects` entries for the false-data-injection story (Next Energy paper and thesis) and the ECMX paper (`kind: research`). Their `summary` and at-a-glance fields come only from facts already in the repo (the thesis title, supervisor and dates in `education`; the two themes in `research.yaml`, written by Mamun; the publication entries). `story` stays empty until Mamun answers the story questions, so neither has a story page yet. The checkpoint sample is the **ECMX story**: its body is built from Mamun's own research-theme text plus the methodology figure, and is marked as a layout draft. The story is not published until Mamun approves its copy in step 5.
 2. **The CV-overlap test runs locally only.** `docs/sources/` is git-ignored on purpose (the CVs hold his phone number), so the test skips with a console note when the CV `.txt` files are missing. CI never sees them. Every content commit is made on this laptop with `npm test`, which is where the guard runs. Shortcut: switch to committed hashed 10-word fingerprints if editing ever moves off this laptop.
 3. **Release in one merge.** All work happens on `redesign` and ships to `main` once, after Mamun approves the whole thing. Mamun may keep editing in the CMS during the build (those edits land on `main`). Before shipping, `main` is merged into `redesign`, and any CMS edits to project `links` are migrated by hand. After the release, Mamun closes every CMS tab and reopens it, because a stale tab would save the old `links` shape.
 4. **Timeline sources.** One line per item:
