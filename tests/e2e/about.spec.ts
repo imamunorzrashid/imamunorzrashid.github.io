@@ -296,6 +296,15 @@ test.describe('About page', () => {
     }
   });
 
+  test('clicking a talk video moves keyboard focus to its iframe', async ({ page }) => {
+    await page.route(/youtube-nocookie\.com|facebook\.com\/plugins/, (route) => route.abort());
+    await page.goto('/about/');
+    const box = page.locator('a.video-box').first();
+    test.skip((await box.count()) === 0, 'no playable talk video yet');
+    await box.click();
+    await expect(page.locator('iframe.video-embed')).toBeFocused();
+  });
+
   test('the EV-motors talk shows its photo under the talk line', async ({ page }) => {
     await page.goto('/about/');
     const talk = sectionOf(page, 'Talks and service').locator('.item', { hasText: 'Driving Innovation' });

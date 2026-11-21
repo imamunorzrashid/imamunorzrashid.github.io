@@ -17,10 +17,10 @@ const playable = video.kind === 'youtube' || (video.kind === 'facebook' && !!pos
   playable ? (
     <a class="video-box" href={url} data-embed={video.embed} data-title={title}>
       {poster && <img src={poster} alt="" loading="lazy" />}
-      <span class="video-label">▶ Play: {title}</span>
+      <span class="video-label"><span aria-hidden="true">▶</span> Play: {title}</span>
     </a>
   ) : (
-    <p><a href={url}>▶ {title}</a></p>
+    <p><a href={url}><span aria-hidden="true">▶</span> {title}</a></p>
   )
 }
 
@@ -35,6 +35,8 @@ const playable = video.kind === 'youtube' || (video.kind === 'facebook' && !!pos
       frame.title = a.dataset.title ?? '';
       frame.allow = 'autoplay; fullscreen';
       a.replaceWith(frame);
+      // The link is gone once replaced, so move focus to the player for keyboard users.
+      frame.focus();
     });
   });
 </script>
