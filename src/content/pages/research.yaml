@@ -21,7 +21,7 @@ themes:
       caption: ''
     story: ''
   - title: Low-leakage transformerless PV inverters
-    summary: I worked on an optimized unipolar PWM scheme for a modified H7 transformerless PV inverter. The scheme brought leakage current down to 7.14 mA, against 32.5 mA for the conventional H7, at 98.37% efficiency with THD within IEEE 519 limits. I built the MATLAB/Simulink models, analyzed the results, wrote the first draft and prepared the reviewer responses. [(IEEE ICM 2025)](https://ieeexplore.ieee.org/document/10934771)
+    summary: Transformerless PV inverters avoid a bulky transformer, but the parasitic capacitance between the panels and ground lets a leakage current flow. I was the second author of a paper, with Sudipto Mondal as first author, that proposes an optimized unipolar PWM scheme for a modified H7 inverter to keep the common-mode voltage nearly constant. I built the MATLAB/Simulink models, analyzed the results, wrote the first draft and prepared the reviewer responses. The scheme cuts the leakage current to 7.14 mA, against 32.5 mA for the conventional H7, at a maximum efficiency of 98.37%, with grid current THD at 1.89%, within the IEEE 519 limit. [(IEEE ICM 2025)](https://ieeexplore.ieee.org/document/10934771)
     image:
       src: /images/uploads/picture1.webp
       alt: Circuit diagram of a transformerless PV inverter, with the PV cell and its parasitic capacitances on the left, switches S1 to S7 in the inverter in the centre, and an LC filter on the right.
