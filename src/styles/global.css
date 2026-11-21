@@ -144,6 +144,11 @@ main {
   object-fit: contain;
 }
 
+/* RUET's seal is tall and thin, so at the shared height it looks much smaller than the wide marks; 3.5rem balances them by eye. */
+.org-logo[src*="ruet-logo"] {
+  height: 3.5rem;
+}
+
 figure {
   margin: 0 0 1.5rem;
 }

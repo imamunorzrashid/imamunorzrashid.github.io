@@ -208,14 +208,19 @@ test.describe('About page', () => {
     }
   });
 
-  test('every logo on About renders at the same height, within 1px', async ({ page }) => {
+  test('logos on About share one height within 1px, except the tall RUET seal, which renders at 3.5rem (56px)', async ({ page }) => {
     await page.goto('/about/');
-    const expected = [...eduSorted, ...workOrder, ...awardOrder].filter((x) => x.logo).length;
-    expect(expected).toBeGreaterThan(0);
+    const all = [...eduSorted, ...workOrder, ...awardOrder].filter((x) => x.logo);
+    expect(all.length).toBeGreaterThan(0);
     const logos = page.locator('img[src^="/images/logos/"]');
-    await expect(logos).toHaveCount(expected);
+    await expect(logos).toHaveCount(all.length);
     const heights: number[] = [];
-    for (let i = 0; i < expected; i++) heights.push((await logos.nth(i).boundingBox())!.height);
+    for (const [i, x] of all.entries()) {
+      const h = (await logos.nth(i).boundingBox())!.height;
+      if (x.logo!.includes('ruet-logo')) expect(Math.abs(h - 56)).toBeLessThanOrEqual(1);
+      else heights.push(h);
+    }
+    expect(heights.length).toBeGreaterThan(0);
     for (const h of heights) expect(Math.abs(h - heights[0])).toBeLessThanOrEqual(1);
   });
 
