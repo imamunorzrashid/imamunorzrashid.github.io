@@ -1,10 +1,12 @@
 role: Undergraduate Researcher
 org: 'EPIC Research Group, RUET (Supervisor: Subrata Kumar Sarker)'
 kind: research
-start: '2025'
+start: '2026'
 end: '2026'
 location: ''
 link: ''
 points:
   - 'Developed data-efficient distributed frequency controllers for multi-microgrids using transfer learning, and extended them to detect and mitigate false data injection attacks, with real-time validation on OPAL-RT. Two first-author papers: Energy Conversion and Management: X (2026) and Next Energy (accepted).'
 logo: /images/logos/epic-logo.webp
+image: null
+links: []

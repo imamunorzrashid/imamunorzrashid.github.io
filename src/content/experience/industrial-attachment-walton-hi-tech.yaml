@@ -1,8 +1,8 @@
 role: Industrial Attachment
 org: Walton Hi-Tech Industries PLC
 kind: industry
-start: 2023-03
-end: 2023-04
+start: '2023'
+end: '2023'
 location: Gazipur, Bangladesh
 link: ''
 points:
@@ -10,6 +10,6 @@ points:
 logo: /images/logos/walton-logo.png
 image:
   src: ''
-  alt: A presenter beside a projected slide titled "Project in Action 1", showing a fish feed extruder design with RUET and Walton logos.
+  alt: ''
   caption: ''
 links: []

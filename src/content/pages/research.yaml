@@ -1,7 +1,7 @@
 statement: |-
   Power grids are moving toward networks of small microgrids that run on renewable sources and depend on communication between their controllers. More of these controllers are now learned from data, and in practice that data is limited, noisy and open to cyberattacks. My research asks how a distributed controller can stay reliable under those conditions without being retrained from scratch for every new system.
 
-  So far I have approached this with transfer learning. A controller learned on clean data is adapted to degraded conditions in a few steps, which saves both data and training time. I have applied the same idea to detecting and correcting false data injection attacks, first at the frequency control layer and, in my thesis, at the economic dispatch layer above it. I test the controllers in simulation and in real time on an OPAL-RT OP5700.
+  So far I have approached this with transfer learning. A controller learned on clean data is adapted to degraded conditions in a few steps, which saves both data and training time. I have applied the same idea to detecting and correcting false data injection attacks, first at the frequency control layer and, in my thesis, at the economic dispatch layer above it. 
 
   Next, I want to build physical models of the grid more directly into these learning methods, so that the controllers need less data and fail in more predictable ways.
 questions: []

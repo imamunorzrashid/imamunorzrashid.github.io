@@ -1,8 +1,8 @@
 degree: B.Sc. in Mechatronics Engineering
 institution: Rajshahi University of Engineering & Technology (RUET)
 location: Rajshahi, Bangladesh
-start: 2022-03
-end: 2026-08
+start: '2022'
+end: '2026'
 thesis_title: A Data-Driven Distributed Framework for Cyber-Resilient Frequency Support of Isolated Networked Microgrids
 supervisor: Subrata Kumar Sarker
 details:

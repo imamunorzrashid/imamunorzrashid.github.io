@@ -1,9 +1,9 @@
 role: Head of Electrical
 org: Team Crack Platoon
 kind: leadership
-start: 2026-05
-end: 2026-07
-location: ''
+start: '2026'
+end: '2026'
+location: Rajshahi
 link: https://teamcrackplatoon.com/
 points:
   - Led the 20-member electrical division, ran the recruitment that selected 40+ members from about 300 applicants, and trained recruits in BSPD design and electrical safety.
