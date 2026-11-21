@@ -1,4 +1,4 @@
-export type IconName = 'email' | 'scholar' | 'orcid' | 'github' | 'linkedin' | 'researchgate' | 'cv';
+export type IconName = 'email' | 'scholar' | 'orcid' | 'github' | 'linkedin' | 'researchgate' | 'cv' | 'external';
 
 export type SiteLink = { label: string; href: string; icon?: IconName };
 

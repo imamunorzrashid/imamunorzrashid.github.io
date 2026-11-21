@@ -4,3 +4,4 @@ end: '2017'
 details:
   - 'GPA: 5.00'
   - 'Group: Science'
+hidden: true

@@ -220,6 +220,7 @@ collections:
           - { name: label, label: Label, widget: string }
           - { name: url, label: URL or PDF, widget: file, media_folder: /public/docs, public_folder: /docs, accept: application/pdf, hint: "Paste a full https:// link, or upload a PDF (10 MB max)" }
       - { name: story, label: Story (project file name), widget: string, required: false, hint: "The file name of the project that tells the story, without .yaml" }
+      - { name: hidden, label: Hide on the site, widget: boolean, default: false, hint: "Hides this entry on the About page and its timeline. The entry stays in the content" }
 
   - name: experience
     label: Experience
@@ -297,6 +298,7 @@ collections:
           - { name: caption, label: Caption, widget: string, required: false }
       - { name: story, label: Story (project file name), widget: string, required: false, hint: "The file name of the project that tells the story, without .yaml" }
       - { name: link, label: Link, widget: string, required: false, pattern: ['^https?://', 'Use a full URL starting with https://'] }
+      - { name: logo, label: Logo, widget: image, media_folder: /public/images/logos, public_folder: /images/logos, required: false, hint: "Shown small to the left of the award. Leave empty for no logo" }
 
   - name: activities
     label: Talks and service

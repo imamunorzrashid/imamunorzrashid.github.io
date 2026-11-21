@@ -3,6 +3,7 @@ import { getCollection, getEntry } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Entry from '../components/Entry.astro';
 import Figure from '../components/Figure.astro';
+import LinkIcon from '../components/LinkIcon.astro';
 import Prose from '../components/Prose.astro';
 import Video from '../components/Video.astro';
 import { formatRange, formatYm, recentFirst } from '../lib/dates';
@@ -15,8 +16,9 @@ const p = profile.data;
 const rangeOf = (d: { start?: string; end?: string }) =>
   d.start ? formatRange(d.start, d.end) : d.end ? formatYm(d.end) : undefined;
 
+// Hidden entries (hidden: true) stay in the content but are not listed here or in the timeline.
 const education = recentFirst(
-  (await getCollection('education')).map((e) => e.data),
+  (await getCollection('education')).map((e) => e.data).filter((e) => !e.hidden),
   (e) => e.degree,
 );
 
@@ -29,11 +31,23 @@ const experience = recentFirst(
   (e) => e.role,
 );
 
+// Work groups: undergraduate research first, then leadership and attachment (leadership and industry).
+const workGroups = [
+  { label: 'Undergraduate research', items: experience.filter((x) => x.kind === 'research') },
+  { label: 'Leadership and attachment', items: experience.filter((x) => x.kind !== 'research') },
+].filter((g) => g.items.length > 0);
+
 // Awards sort by their end (or date if none), then date.
 const awards = recentFirst(
   (await getCollection('awards')).map((e) => ({ ...e.data, start: e.data.date, end: e.data.end ?? e.data.date })),
   (a) => a.title,
 );
+
+// Recognition groups: academic first, then international.
+const awardGroups = [
+  { label: 'Academic achievements', items: awards.filter((a) => a.category === 'academic') },
+  { label: 'International achievements', items: awards.filter((a) => a.category === 'international') },
+].filter((g) => g.items.length > 0);
 
 const certificates = recentFirst(
   (await getCollection('certificates')).map((e) => ({ ...e.data, start: e.data.date, end: e.data.date })),
@@ -53,7 +67,6 @@ const stories = (
 const publications = (await getCollection('publications')).map((e) => e.data);
 
 const timeline = buildTimeline({ education, experience, awards, publications, stories });
-const skills = p.skills.filter((s) => s.items.length > 0);
 
 // The old single `link` field shows as Website, first, then the links list in the order given.
 const linksOf = (x: { link?: string; links: { label: string; url: string }[] }) => [
@@ -74,7 +87,7 @@ const linksOf = (x: { link?: string; links: { label: string; url: string }[] }) 
           <p class="year">{g.year}</p>
           <ul class="timeline-list">
             {g.items.map((i) => (
-              <li><a href={i.href}>{i.text}</a></li>
+              <li><a href={i.href}>{i.text}<LinkIcon name="external" /></a></li>
             ))}
           </ul>
         </div>
@@ -123,56 +136,66 @@ const linksOf = (x: { link?: string; links: { label: string; url: string }[] }) 
     </section>
   )}
 
-  {experience.length > 0 && (
+  {workGroups.length > 0 && (
     <section class="section" id="work">
       <h2>Work</h2>
-      {experience.map((x) => (
-        <div class="item">
-          <Entry heading={x.role} sub={[x.org, x.location].filter(Boolean).join(', ')} date={rangeOf(x)} logo={x.logo}>
-            {x.points.map((pt) => (
-              <p>{pt}</p>
-            ))}
-            {x.image && <Figure src={x.image.src} alt={x.image.alt} caption={x.image.caption} />}
-            {linksOf(x).length > 0 && (
-              <p class="meta">
-                {linksOf(x).map((l, i) => (
-                  <>
-                    {i > 0 && ' · '}
-                    <a href={l.url}>{l.label}</a>
-                  </>
+      {workGroups.map((g) => (
+        <>
+          <h3 class="group-label">{g.label}</h3>
+          {g.items.map((x) => (
+            <div class="item">
+              <Entry heading={x.role} sub={[x.org, x.location].filter(Boolean).join(', ')} date={rangeOf(x)} logo={x.logo}>
+                {x.points.map((pt) => (
+                  <p>{pt}</p>
                 ))}
-              </p>
-            )}
-          </Entry>
-        </div>
+                {x.image && <Figure src={x.image.src} alt={x.image.alt} caption={x.image.caption} />}
+                {linksOf(x).length > 0 && (
+                  <p class="meta">
+                    {linksOf(x).map((l, i) => (
+                      <>
+                        {i > 0 && ' · '}
+                        <a href={l.url}>{l.label}</a>
+                      </>
+                    ))}
+                  </p>
+                )}
+              </Entry>
+            </div>
+          ))}
+        </>
       ))}
     </section>
   )}
 
-  {(awards.length > 0 || certificates.length > 0) && (
+  {(awardGroups.length > 0 || certificates.length > 0) && (
     <section class="section" id="recognition">
       <h2>Recognition</h2>
-      {awards.map((a) => (
-        <div class="item">
-          <Entry heading={a.title} sub={a.issuer} date={formatRange(a.date, a.end)}>
-            {a.description && <p>{a.description}</p>}
-            {a.image && (
-              <div class="thumb">
-                <Figure src={a.image.src} alt={a.image.alt} caption={a.image.caption} />
+      {awardGroups.map((g) => (
+        <>
+          <h3 class="group-label">{g.label}</h3>
+          {g.items.map((a) => (
+            <div class="item award">
+              <p class="year">{formatRange(a.date, a.end)}</p>
+              <div class="award-main">
+                {a.logo && <img class="award-logo" src={a.logo} alt="" height="32" />}
+                <div>
+                  <p class="award-title">{a.link ? <a href={a.link}>{a.title}<LinkIcon name="external" /></a> : a.title}</p>
+                  <p class="meta">{a.issuer}</p>
+                  {a.image && (
+                    <div class="thumb">
+                      <Figure src={a.image.src} alt={a.image.alt} caption={a.image.caption} />
+                    </div>
+                  )}
+                  {a.story && (
+                    <p class="meta">
+                      <a href={`/projects/${a.story}/`}>Related story</a>
+                    </p>
+                  )}
+                </div>
               </div>
-            )}
-            {a.story && (
-              <p class="meta">
-                <a href={`/projects/${a.story}/`}>Related story</a>
-              </p>
-            )}
-            {a.link && (
-              <p class="meta">
-                <a href={a.link}>Link</a>
-              </p>
-            )}
-          </Entry>
-        </div>
+            </div>
+          ))}
+        </>
       ))}
       {certificates.length > 0 && (
         <>
@@ -199,17 +222,6 @@ const linksOf = (x: { link?: string; links: { label: string; url: string }[] }) 
           </ul>
         </>
       )}
-    </section>
-  )}
-
-  {skills.length > 0 && (
-    <section class="section" id="skills">
-      <h2>Skills</h2>
-      {skills.map((s) => (
-        <p>
-          <strong>{s.label}:</strong> {s.items.join(' · ')}
-        </p>
-      ))}
     </section>
   )}
 
@@ -240,6 +252,22 @@ const linksOf = (x: { link?: string; links: { label: string; url: string }[] }) 
       margin-top: 0.75rem;
     }
 
+    .group-label {
+      margin: 1.5rem 0 0;
+      font-family: var(--font-sans);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--muted);
+    }
+
+    h2 + .group-label {
+      margin-top: 0;
+    }
+
+    .group-label + .item {
+      margin-top: 0.75rem;
+    }
+
     .year-group {
       position: relative;
       margin-top: 1rem;
@@ -259,6 +287,51 @@ const linksOf = (x: { link?: string; links: { label: string; url: string }[] }) 
 
     .timeline-list li + li {
       margin-top: 0.25rem;
+    }
+
+    .timeline-list a {
+      text-decoration: none;
+    }
+
+    .timeline-list a :global(svg) {
+      width: 0.8em;
+      height: 0.8em;
+      margin-left: 0.3em;
+      vertical-align: -0.1em;
+    }
+
+    .award {
+      position: relative;
+    }
+
+    .award-main {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+
+    .award-logo {
+      flex: none;
+      height: 32px;
+      width: auto;
+    }
+
+    .award-title {
+      margin: 0 0 0.15rem;
+      font-size: 1.125rem;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+
+    .award-title a {
+      text-decoration: none;
+    }
+
+    .award-title :global(svg) {
+      width: 0.8em;
+      height: 0.8em;
+      margin-left: 0.3em;
+      vertical-align: -0.1em;
     }
 
     .certs {

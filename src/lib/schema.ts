@@ -154,6 +154,7 @@ export const education = z.object({
   logo: opt(str),
   links,
   story: opt(str),
+  hidden: bool,
 });
 
 export const experience = z.object({
@@ -190,6 +191,7 @@ export const award = z.object({
   link: opt(url),
   image: optImg,
   story: opt(str),
+  logo: opt(str),
 });
 
 export const activity = z.object({
