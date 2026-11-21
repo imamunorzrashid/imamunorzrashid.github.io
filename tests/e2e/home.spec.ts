@@ -151,6 +151,14 @@ test('home links row and footer first paragraph: each accessible name equals its
   }
 });
 
+test('link rows keep a non-breaking space before each separator dot', async ({ page }) => {
+  await page.goto('/');
+  for (const row of [page.locator('.text-links').first(), page.locator('footer > p').first()]) {
+    if ((await row.locator('a').count()) < 2) continue;
+    expect(await row.evaluate((el) => el.textContent ?? '')).toContain(' ·');
+  }
+});
+
 test('footer links: icons on social links, ResearchGate listed, Gallery has no icon', async ({ page }) => {
   await page.goto('/');
   const footerLinksLocator = page.locator('footer > p').first().locator('a');

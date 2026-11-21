@@ -66,7 +66,7 @@ const shownLinks = homeLinks(p);
     <p class="text-links">
       {shownLinks.map((l, i) => (
         <>
-          {i > 0 && ' · '}
+          {i > 0 && ' · '}
           <a href={l.href} class="with-icon">{l.icon && <LinkIcon name={l.icon} />} {l.label}</a>
         </>
       ))}
