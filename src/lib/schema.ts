@@ -202,6 +202,7 @@ export const activity = z.object({
   location: opt(str),
   link: opt(url),
   video: opt(url),
+  images: blank(z.array(img).default([])),
 });
 
 export const certificate = z.object({

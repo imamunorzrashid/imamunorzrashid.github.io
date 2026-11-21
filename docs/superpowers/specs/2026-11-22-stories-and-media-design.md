@@ -41,6 +41,7 @@ All anti-goals from the 2026-11-20 spec still apply (gradients, shadows, card gr
 | Third-party widgets: Flag Counter only. | Click-to-play YouTube (`youtube-nocookie.com`) and Facebook video embeds are allowed. Nothing loads from those services until the reader clicks play. YouTube poster thumbnails (`i.ytimg.com`) may load with the page. |
 | 9-item nav: Home, Research, Publications, Projects, Academics, Experience, Achievements, Teaching, CV. | 6 items: Research, Projects, Publications, Teaching, About, CV. The name in the header links home. Gallery stays in the footer. |
 | `/academics/`, `/experience/`, `/achievements/` pages. | Merged into `/about/`. The old URLs redirect to its sections. |
+| Teaching page at `/teaching/`, and "Teaching" in the nav (6-item nav above). | Removed for now (Mamun, 2026-11-22). Its content stays in the CMS (`teachingPage` and `teaching`). `/teaching/` returns 404, with no redirect. |
 
 ## Information architecture
 

@@ -2,8 +2,7 @@
 import { getCollection, getEntry } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Prose from '../components/Prose.astro';
-import WorkRow from '../components/WorkRow.astro';
-import { formatRange, formatYm, ymSortKey } from '../lib/dates';
+import { formatYm, ymSortKey } from '../lib/dates';
 import { homeLinks } from '../lib/links';
 import LinkIcon from '../components/LinkIcon.astro';
 
@@ -14,20 +13,6 @@ const p = profile.data;
 const news = (await getCollection('news'))
   .sort((a, b) => ymSortKey(b.data.date) - ymSortKey(a.data.date))
   .slice(0, 5);
-
-// Same order as projects.astro. Only featured build projects appear here; research projects are on the Research page.
-const selectedWork = (await getCollection('projects'))
-  .filter((e) => e.data.featured && e.data.kind === 'build')
-  .sort((a, b) => a.data.order - b.data.order || a.data.title.localeCompare(b.data.title))
-  .map((e) => ({ ...e.data, slug: e.id }));
-
-// Same draft rule as projects/[slug].astro: production skips drafts, dev shows them.
-const rowHref = (w: (typeof selectedWork)[number]) =>
-  w.story && (import.meta.env.DEV || !w.draft) ? `/projects/${w.slug}/` : w.links[0]?.url;
-const rowMeta = (w: (typeof selectedWork)[number]) => {
-  const range = w.start ? formatRange(w.start, w.end) : w.end ? formatYm(w.end) : undefined;
-  return [w.role, range].filter(Boolean).join(' · ') || undefined;
-};
 
 const shownLinks = homeLinks(p);
 ---
@@ -90,17 +75,6 @@ const shownLinks = homeLinks(p);
       <h2>Now</h2>
       {p.now_date && <p class="meta">As of {formatYm(p.now_date)}</p>}
       <Prose md={p.now} />
-    </section>
-  )}
-
-  {selectedWork.length > 0 && (
-    <section class="section">
-      <h2>Selected work</h2>
-      {selectedWork.map((w) => (
-        <WorkRow heading={w.title} href={rowHref(w)} meta={rowMeta(w)} image={w.image} imageAlt={w.image_alt}>
-          <Prose md={w.summary} />
-        </WorkRow>
-      ))}
     </section>
   )}
 

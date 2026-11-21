@@ -316,6 +316,14 @@ collections:
       - { name: date, label: Date (YYYY or YYYY-MM), widget: string, pattern: ['^\d{4}(-(0[1-9]|1[0-2]))?$', 'Use YYYY or YYYY-MM'] }
       - { name: location, label: Location, widget: string, required: false }
       - { name: link, label: Link, widget: string, required: false, pattern: ['^https?://', 'Use a full URL starting with https://'] }
+      - name: images
+        label: Photos
+        widget: list
+        required: false
+        fields:
+          - { name: src, label: Image, widget: image }
+          - { name: alt, label: Alt text, widget: string }
+          - { name: caption, label: Caption, widget: string, required: false }
 
   - name: certificates
     label: Certificates

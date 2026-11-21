@@ -5,15 +5,14 @@ const routes = [
   '/research/',
   '/publications/',
   '/projects/',
-  '/teaching/',
   '/about/',
   '/cv/',
   '/gallery/',
 ];
 
-test('header nav labels are exactly the six main links, in order', async ({ page }) => {
+test('header nav labels are exactly the five main links, in order', async ({ page }) => {
   await page.goto('/');
-  await expect(page.locator('header nav a')).toHaveText(['Research', 'Projects', 'Publications', 'Teaching', 'About', 'CV']);
+  await expect(page.locator('header nav a')).toHaveText(['Research', 'Projects', 'Publications', 'About', 'CV']);
 });
 
 for (const route of routes) {

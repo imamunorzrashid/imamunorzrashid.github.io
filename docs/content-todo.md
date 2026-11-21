@@ -8,6 +8,7 @@ Every `TODO(Mamun)` in `src/content/` is listed here with its file and what is n
 - [ ] ECMX story (`src/content/projects/ecmx-transfer-learning.yaml`): `TODO(Mamun)` answers to the story questions. The story is the research theme text plus a layout draft, and the project stays `draft: true` until Mamun approves the copy.
 - [ ] Project roles (`src/content/projects/ecmx-transfer-learning.yaml` and `false-data-injection.yaml`): both are set to "First author", with team "EPIC Research Group, RUET". Confirm both.
 - [ ] About opening (`about_opening` in `src/content/pages/profile.yaml`): `TODO(Mamun)` 2–3 sentences in his own words on where he comes from and how he got into control and energy systems. The field is empty, so nothing shows at the top of `/about/` until it is written.
+- [ ] Talk photo caption (`images` on `src/content/activities/driving-innovation-ev-motors.yaml`): `TODO(Mamun)` a caption for the seminar photo, saying where and when it was taken. It is empty, so the photo shows only its figure label.
 - [ ] About logos (`logo` on education and work entries): RUET, University of Wollongong, Team Crack Platoon and Walton, PNG or SVG; optionally the HSC and SSC schools. Each entry shows no logo until its field is set.
 - [ ] Education story link (`story` on the B.Sc. entry in `src/content/education/bsc-mechatronics-engineering.yaml`): empty until the false-data-injection story is written, so the thesis title is not yet linked.
 

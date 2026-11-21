@@ -50,7 +50,7 @@ type Award = {
   story?: string;
   logo?: string;
 };
-type Activity = { title: string; date: string; video?: string };
+type Activity = { title: string; date: string; video?: string; images?: { src: string; alt: string }[] };
 type Certificate = { title: string; date: string };
 type Publication = { title: string; year?: number | null };
 type Project = { title: string; story?: string; draft?: boolean; end?: string; outcome?: string };
@@ -293,6 +293,27 @@ test.describe('About page', () => {
     for (const a of activities) {
       if (!a.video) continue;
       await expect(section.locator(`a[href="${a.video}"]`).first()).toHaveCount(1);
+    }
+  });
+
+  test('the EV-motors talk shows its photo under the talk line', async ({ page }) => {
+    await page.goto('/about/');
+    const talk = sectionOf(page, 'Talks and service').locator('.item', { hasText: 'Driving Innovation' });
+    await expect(talk.locator('figure')).toHaveCount(1);
+    await expect(talk.locator('figure img')).toHaveAttribute('src', '/images/activities/seminar.jpg');
+    await expect(talk.locator('figure img')).toHaveAttribute('alt', /EV Powertrain/);
+  });
+
+  test('talk photos render one figure per image, and talks without photos render none', async ({ page }) => {
+    await page.goto('/about/');
+    const items = sectionOf(page, 'Talks and service').locator('.item');
+    for (const [i, a] of activitiesSorted.entries()) {
+      const figures = items.nth(i).locator('figure');
+      await expect(figures).toHaveCount(a.images?.length ?? 0);
+      for (const [j, img] of (a.images ?? []).entries()) {
+        await expect(figures.nth(j).locator('img')).toHaveAttribute('src', img.src);
+        await expect(figures.nth(j).locator('img')).toHaveAttribute('alt', img.alt);
+      }
     }
   });
 

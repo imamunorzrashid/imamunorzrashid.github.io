@@ -19,24 +19,6 @@ const yamlIn = <T>(dir: URL) =>
     .filter((f) => f.endsWith('.yaml'))
     .map((f) => ({ slug: f.replace(/\.yaml$/, ''), ...(load(readFileSync(new URL(f, dir), 'utf8')) as T) }));
 
-type Project = {
-  title: string;
-  kind?: string;
-  order?: number;
-  draft?: boolean;
-  story?: string;
-  role?: string;
-  start?: string;
-  end?: string;
-  image?: string;
-  image_alt?: string;
-  links?: { label: string; url: string }[];
-  featured?: boolean;
-};
-// Same order as index.astro: order, then title. Selected work shows build projects only.
-const featuredProjects = yamlIn<Project>(new URL('../../src/content/projects/', import.meta.url))
-  .filter((p) => p.featured && (p.kind ?? 'build') === 'build')
-  .sort((a, b) => (a.order ?? 100) - (b.order ?? 100) || a.title.localeCompare(b.title));
 const featuredPubs = yamlIn<{ title: string; featured?: boolean }>(new URL('../../src/content/publications/', import.meta.url)).filter(
   (p) => p.featured,
 );
@@ -60,16 +42,16 @@ test('home has exactly one h1 with the profile name', async ({ page }) => {
   await expect(h1).toHaveText(profile.name);
 });
 
-test('header nav has the six main links in order', async ({ page }) => {
+test('header nav has the five main links in order', async ({ page }) => {
   await page.goto('/');
-  await expect(page.locator('header nav a')).toHaveText(['Research', 'Projects', 'Publications', 'Teaching', 'About', 'CV']);
+  await expect(page.locator('header nav a')).toHaveText(['Research', 'Projects', 'Publications', 'About', 'CV']);
 });
 
 test('at 1280px the nav is one row, level with the site name', async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto('/');
   const tops = await page.locator('header nav a').evaluateAll((els) => els.map((el) => el.getBoundingClientRect().top));
-  expect(tops).toHaveLength(6);
+  expect(tops).toHaveLength(5);
   for (const y of tops) expect(Math.abs(y - tops[0])).toBeLessThan(1);
   const nameTop = await page.locator('header .site-name').evaluate((el) => el.getBoundingClientRect().top);
   expect(Math.abs(nameTop - tops[0])).toBeLessThan(8);
@@ -221,29 +203,9 @@ test('audience line renders only when audience_line is set', async ({ page }) =>
   await expect(page.locator('.audience')).toHaveCount(profile.audience_line ? 1 : 0);
 });
 
-test('Selected work lists featured projects by order, each linked and thumbnailed as its content allows', async ({ page }) => {
+test('home has no Selected work section', async ({ page }) => {
   await page.goto('/');
-  const section = sectionOf(page, 'Selected work');
-  if (featuredProjects.length === 0) {
-    await expect(section).toHaveCount(0);
-    return;
-  }
-  await expect(section).toHaveCount(1);
-  const rows = section.locator('.work-row');
-  await expect(rows.locator('h3')).toHaveText(featuredProjects.map((p) => p.title));
-  for (const [i, p] of featuredProjects.entries()) {
-    const row = rows.nth(i);
-    const link = row.locator('h3').getByRole('link');
-    // Production skips drafts, so only a published story gets its story page.
-    if (p.story && !p.draft) {
-      await expect(link).toHaveAttribute('href', `/projects/${p.slug}/`);
-    } else if (p.links?.length) {
-      await expect(link).toHaveAttribute('href', p.links[0].url);
-    } else {
-      await expect(link).toHaveCount(0);
-    }
-    await expect(row.locator('img')).toHaveCount(p.image ? 1 : 0);
-  }
+  await expect(page.getByRole('heading', { name: 'Selected work' })).toHaveCount(0);
 });
 
 test('featured publications do not appear on the home page', async ({ page }) => {

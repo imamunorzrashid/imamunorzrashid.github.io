@@ -3,3 +3,7 @@ kind: talk
 event: 'Team Crack Platoon Recruitment 5.0'
 date: '2024-12'
 location: 'Rajshahi'
+images:
+  - src: /images/activities/seminar.jpg
+    alt: 'A presenter at the front of a lecture hall beside a projected slide that reads "EV Powertrain", with students seated in rows'
+    caption: ''

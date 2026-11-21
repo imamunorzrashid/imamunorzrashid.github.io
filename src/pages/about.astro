@@ -4,6 +4,7 @@ import Base from '../layouts/Base.astro';
 import Entry from '../components/Entry.astro';
 import Figure from '../components/Figure.astro';
 import LinkIcon from '../components/LinkIcon.astro';
+import PhotoStrip from '../components/PhotoStrip.astro';
 import Prose from '../components/Prose.astro';
 import Video from '../components/Video.astro';
 import { formatRange, formatYm, recentFirst } from '../lib/dates';
@@ -231,6 +232,7 @@ const linksOf = (x: { link?: string; links: { label: string; url: string }[] }) 
       {activities.map((a) => (
         <div class="item">
           <Entry heading={a.title} sub={[a.event, a.location].filter(Boolean).join(', ')} date={formatYm(a.date)}>
+            <PhotoStrip images={a.images} />
             {a.video && <Video url={a.video} title={a.title} />}
             {a.link && (
               <p class="meta">
