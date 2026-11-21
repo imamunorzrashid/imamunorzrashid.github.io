@@ -5,6 +5,7 @@
   --bg: #ffffff;
   --accent: #1f4e79;
   --accent-hover: #163a5a;
+  --figure-bg: #f5f5f3;
   --font-serif: 'Source Serif 4 Variable', 'Source Serif 4', Georgia, serif;
   --font-sans: 'IBM Plex Sans', system-ui, sans-serif;
 }
@@ -124,4 +125,39 @@ main {
 
 .group + .entries > li:first-child {
   margin-top: 0.75rem;
+}
+
+/* Wide figures break out of the 44rem column to 60rem, centred. wrap is 44rem with 16px padding. */
+@media (min-width: 64rem) {
+  .wide {
+    width: 60rem;
+    margin-inline: -9rem;
+  }
+}
+
+figure {
+  margin: 0 0 1.5rem;
+}
+
+figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: var(--figure-bg);
+}
+
+figcaption {
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  line-height: 1.45;
+  color: var(--muted);
+  margin-top: 0.5rem;
+}
+
+.video-embed {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 0;
+  margin: 0 0 1.5rem;
 }

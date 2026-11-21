@@ -1,0 +1,50 @@
+---
+interface Props {
+  items: { label: string; value?: string }[];
+}
+
+const items = Astro.props.items.filter((i) => i.value && i.value.trim() !== '');
+---
+{
+  items.length > 0 && (
+    <dl class="at-a-glance">
+      {items.map((i) => (
+        <>
+          <dt>{i.label}</dt>
+          <dd>{i.value}</dd>
+        </>
+      ))}
+    </dl>
+  )
+}
+
+<style>
+  .at-a-glance {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.25rem 1rem;
+    margin: 0 0 1.5rem;
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+  }
+
+  dt {
+    color: var(--muted);
+  }
+
+  dd {
+    margin: 0;
+  }
+
+  /* Sits in the right margin of the 44rem column: 10rem box, its margin reaching back over 11rem. */
+  @media (min-width: 64rem) {
+    .at-a-glance {
+      float: right;
+      width: 10rem;
+      margin: 0.35rem -11rem 1rem 1.5rem;
+      padding-left: 0.75rem;
+      border-left: 1px solid var(--rule);
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

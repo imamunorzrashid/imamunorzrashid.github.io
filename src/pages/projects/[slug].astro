@@ -1,0 +1,111 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Figure from '../../components/Figure.astro';
+import PhotoStrip from '../../components/PhotoStrip.astro';
+import Video from '../../components/Video.astro';
+import AtAGlance from '../../components/AtAGlance.astro';
+import Prose from '../../components/Prose.astro';
+import { formatRange, formatYm } from '../../lib/dates';
+
+// Production builds skip drafts. Dev builds show them so they can be checked.
+// Neighbours are computed here, because Astro hoists getStaticPaths out of the component scope.
+export async function getStaticPaths() {
+  const stories = (
+    await getCollection('projects', (e) => !!e.data.story && (import.meta.env.DEV || !e.data.draft))
+  ).sort((a, b) => a.data.order - b.data.order || a.data.title.localeCompare(b.data.title));
+  return stories.map((entry, i) => ({
+    params: { slug: entry.id },
+    props: {
+      entry,
+      prev: i > 0 ? stories[i - 1] : undefined,
+      next: i < stories.length - 1 ? stories[i + 1] : undefined,
+    },
+  }));
+}
+
+const { entry, prev, next } = Astro.props;
+const d = entry.data;
+const range = d.start ? formatRange(d.start, d.end) : d.end ? formatYm(d.end) : undefined;
+// Figures are numbered in document order: the lead image is Fig. 1, the strip continues from there.
+const stripStart = d.image ? 2 : 1;
+---
+<Base title={d.title}>
+  <p class="meta"><a href="/projects/">← All projects</a></p>
+  <h1>{d.title}</h1>
+  {d.standfirst && <p class="standfirst">{d.standfirst}</p>}
+  {d.image && <Figure src={d.image} alt={d.image_alt ?? ''} number={1} wide />}
+  <AtAGlance
+    items={[
+      { label: 'Role', value: d.role },
+      { label: 'Team', value: d.team },
+      { label: 'Period', value: range },
+      { label: 'Tools', value: d.tools.join(', ') },
+      { label: 'Outcome', value: d.outcome },
+    ]}
+  />
+  {d.story && <Prose md={d.story} />}
+  <PhotoStrip images={d.images} startNumber={stripStart} />
+  {d.videos.map((v) => (
+    <Video url={v.url} title={v.title} poster={v.poster} />
+  ))}
+  {d.links.length > 0 && (
+    <p class="meta">
+      Documents and links:{' '}
+      {d.links.map((l, n) => (
+        <>
+          {n > 0 && ' · '}
+          <a href={l.url}>{l.label}</a>
+        </>
+      ))}
+    </p>
+  )}
+  <nav class="story-nav" aria-label="Stories">
+    {prev && (
+      <a rel="prev" href={`/projects/${prev.id}/`}>
+        <span class="nav-label">← Previous story</span>
+        {prev.data.title}
+      </a>
+    )}
+    {next && (
+      <a class="next" rel="next" href={`/projects/${next.id}/`}>
+        <span class="nav-label">Next story →</span>
+        {next.data.title}
+      </a>
+    )}
+  </nav>
+</Base>
+
+<style>
+  .standfirst {
+    color: var(--muted);
+    font-size: 1.2rem;
+    line-height: 1.5;
+  }
+
+  .story-nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1rem 1.5rem;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--rule);
+  }
+
+  .story-nav a {
+    max-width: 20rem;
+  }
+
+  .story-nav .next {
+    margin-left: auto;
+    text-align: right;
+  }
+
+  .nav-label {
+    display: block;
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+</style>

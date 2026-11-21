@@ -1,0 +1,80 @@
+---
+import { parseVideo } from '../lib/video';
+
+interface Props {
+  url: string;
+  title: string;
+  poster?: string;
+}
+
+const { url, title } = Astro.props;
+const video = parseVideo(url);
+const poster = Astro.props.poster ?? video.poster;
+// Facebook needs a poster to be a box; without one it stays a text link. Nothing loads until click.
+const playable = video.kind === 'youtube' || (video.kind === 'facebook' && !!poster);
+---
+{
+  playable ? (
+    <a class="video-box" href={url} data-embed={video.embed} data-title={title}>
+      {poster && <img src={poster} alt="" loading="lazy" />}
+      <span class="video-label">▶ Play: {title}</span>
+    </a>
+  ) : (
+    <p><a href={url}>▶ {title}</a></p>
+  )
+}
+
+<script>
+  // One handler for every video on the page. Without JavaScript the link opens the original page.
+  document.querySelectorAll<HTMLAnchorElement>('a[data-embed]').forEach((a) => {
+    a.addEventListener('click', (e) => {
+      e.preventDefault();
+      const frame = document.createElement('iframe');
+      frame.className = 'video-embed';
+      frame.src = a.dataset.embed ?? '';
+      frame.title = a.dataset.title ?? '';
+      frame.allow = 'autoplay; fullscreen';
+      a.replaceWith(frame);
+    });
+  });
+</script>
+
+<style>
+  .video-box {
+    position: relative;
+    display: block;
+    aspect-ratio: 16 / 9;
+    margin: 0 0 1.5rem;
+    overflow: hidden;
+    background: var(--figure-bg);
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .video-box:hover {
+    color: var(--ink);
+  }
+
+  .video-box img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .video-label {
+    position: absolute;
+    left: 0.75rem;
+    bottom: 0.75rem;
+    padding: 0.25rem 0.6rem;
+    background: var(--bg);
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+  }
+
+  .video-box:hover .video-label {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+</style>

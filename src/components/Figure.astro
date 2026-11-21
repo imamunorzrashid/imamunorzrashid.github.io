@@ -1,0 +1,16 @@
+---
+interface Props {
+  src: string;
+  alt: string;
+  caption?: string;
+  number?: number;
+  wide?: boolean;
+}
+
+const { src, alt, caption, number, wide = false } = Astro.props;
+const label = [number !== undefined ? `Fig. ${number}.` : undefined, caption].filter(Boolean).join(' ');
+---
+<figure class:list={[wide && 'wide']}>
+  <a href={src}><img src={src} alt={alt} loading="lazy" /></a>
+  {label && <figcaption>{label}</figcaption>}
+</figure>

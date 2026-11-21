@@ -3,18 +3,42 @@ interface Props {
   heading: string;
   sub?: string;
   range?: string;
+  logo?: string;
+  date?: string;
 }
 
-const { heading, sub, range } = Astro.props;
+const { heading, sub, range, logo, date } = Astro.props;
 const meta = [sub, range].filter(Boolean).join(' · ');
 ---
-<div>
-  <h3>{heading}</h3>
-  {meta && <p class="meta">{meta}</p>}
-  <slot />
+<div class="entry">
+  {date && <p class="margin-date">{date}</p>}
+  <div class:list={['entry-main', logo && 'has-logo']}>
+    {logo && <img class="logo" src={logo} alt="" height="40" />}
+    <div>
+      <h3>{heading}</h3>
+      {meta && <p class="meta">{meta}</p>}
+      <slot />
+    </div>
+  </div>
 </div>
 
 <style>
+  .entry {
+    position: relative;
+  }
+
+  .entry-main {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .logo {
+    flex: none;
+    height: 40px;
+    width: auto;
+  }
+
   h3 {
     font-size: 1.125rem;
     font-weight: 600;
@@ -24,5 +48,25 @@ const meta = [sub, range].filter(Boolean).join(' · ');
 
   .meta {
     margin: 0 0 0.5rem;
+  }
+
+  .margin-date {
+    margin: 0 0 0.15rem;
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    font-variant-numeric: tabular-nums;
+    color: var(--muted);
+  }
+
+  /* Below 64rem the date sits inline above the heading. */
+  @media (min-width: 64rem) {
+    .margin-date {
+      position: absolute;
+      top: 0.3rem;
+      right: 100%;
+      width: 8rem;
+      margin: 0 1.25rem 0 0;
+      text-align: right;
+    }
   }
 </style>

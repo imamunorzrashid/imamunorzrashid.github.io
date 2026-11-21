@@ -1,0 +1,33 @@
+---
+import Figure from './Figure.astro';
+import type { z } from 'astro/zod';
+import type { img } from '../lib/schema';
+
+interface Props {
+  images: z.infer<typeof img>[];
+  startNumber?: number;
+}
+
+const { images, startNumber = 1 } = Astro.props;
+---
+{images.length > 0 && (
+  <div class="photo-strip wide">
+    {images.map((i, n) => (
+      <Figure src={i.src} alt={i.alt} caption={i.caption} number={startNumber + n} />
+    ))}
+  </div>
+)}
+
+<style>
+  .photo-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .photo-strip :global(figure) {
+    flex: 1 1 11rem;
+    max-width: 22rem;
+    margin: 0;
+  }
+</style>
