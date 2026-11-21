@@ -5,6 +5,8 @@ Every `TODO(Mamun)` in `src/content/` is listed here with its file and what is n
 ## Content to add
 
 - [ ] Abstracts: paste each paper's abstract into its Abstract field in the CMS (Publications); it appears as a fold-out under the paper.
+- [ ] ECMX story (`src/content/projects/ecmx-transfer-learning.yaml`): `TODO(Mamun)` answers to the story questions. The story is the research theme text plus a layout draft, and the project stays `draft: true` until Mamun approves the copy.
+- [ ] Project roles (`src/content/projects/ecmx-transfer-learning.yaml` and `false-data-injection.yaml`): both are set to "First author", with team "EPIC Research Group, RUET". Confirm both.
 
 ## Files and assets
 

@@ -1,4 +1,5 @@
 title: Brake System Plausibility Device (BSPD)
+kind: build
 order: 2
 start: ''
 end: ''
@@ -8,9 +9,8 @@ tags:
   - Analog Electronics
   - Fault Detection
 links:
-  code: https://github.com/imamunorzrashid/Break-System-Plausibility-Device
-  paper: ''
-  demo: ''
+  - label: Code
+    url: https://github.com/imamunorzrashid/Break-System-Plausibility-Device
 image: /images/projects/bspd.webp
 image_alt: Brake System Plausibility Device schematic and PCB design
 featured: false

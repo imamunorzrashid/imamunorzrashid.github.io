@@ -8,7 +8,7 @@ type Project = {
   order?: number;
   start?: string;
   end?: string;
-  links?: { code?: string; paper?: string; demo?: string };
+  links?: { label: string; url: string }[];
 };
 
 const yamlIn = <T>(dir: URL): T[] =>
@@ -48,20 +48,14 @@ test('every project title is an h3, sorted by order then title', async ({ page }
   await expect(page.locator('h3')).toHaveText(expected);
 });
 
-test('each project shows only the links it has, with the right href', async ({ page }) => {
+test('each project shows exactly its links, with the right labels and hrefs', async ({ page }) => {
   await page.goto('/projects/');
   for (const p of projects) {
     const entry = entryOf(page, p.title);
-    for (const [label, key] of [
-      ['Code', 'code'],
-      ['Paper', 'paper'],
-      ['Demo', 'demo'],
-    ] as const) {
-      const link = entry.getByRole('link', { name: label, exact: true });
-      const href = p.links?.[key];
-      if (href) await expect(link).toHaveAttribute('href', href);
-      else await expect(link).toHaveCount(0);
+    for (const l of p.links ?? []) {
+      await expect(entry.getByRole('link', { name: l.label, exact: true })).toHaveAttribute('href', l.url);
     }
+    await expect(entry.getByRole('link')).toHaveCount(p.links?.length ?? 0);
   }
 });
 

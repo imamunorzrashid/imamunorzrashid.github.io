@@ -1,4 +1,5 @@
 title: Electrical System – Formula SAE Electric Vehicle
+kind: build
 order: 1
 start: '2023'
 end: '2025'
@@ -7,9 +8,8 @@ tags:
   - FSAE
   - FSAE JAPAN 2025
 links:
-  code: ''
-  paper: ''
-  demo: https://www.facebook.com/watch/?v=1127887169236901
+  - label: Demo
+    url: https://www.facebook.com/watch/?v=1127887169236901
 image: ''
 image_alt: ''
-featured: false
+featured: true

@@ -188,7 +188,9 @@ describe('cms config', () => {
     const check = (where: string, fields: Field[], schema: Shaped) => {
       for (const f of walk(fields)) {
         if (f.widget !== 'select') continue;
-        const enumField = schema.shape[f.name] as { options?: readonly unknown[] } | undefined;
+        // A field with a default (kind) wraps its enum; compare the enum inside it.
+        const raw = schema.shape[f.name] as { unwrap?: () => unknown } | undefined;
+        const enumField = (raw?.unwrap ? raw.unwrap() : raw) as { options?: readonly unknown[] } | undefined;
         const expected = enumField?.options;
         if (!Array.isArray(expected)) {
           problems.push(`${where}.${f.name}: schema field is not an enum`);

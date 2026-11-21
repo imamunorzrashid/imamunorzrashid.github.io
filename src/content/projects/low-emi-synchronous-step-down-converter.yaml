@@ -1,4 +1,5 @@
 title: Low-EMI Synchronous Step-Down Converter (LMQ61460-Q1)
+kind: build
 order: 3
 start: ''
 end: ''
@@ -8,9 +9,8 @@ tags:
   - LMQ61460-Q1
   - Synchronous Step-Down Converter
 links:
-  code: https://github.com/imamunorzrashid/synchronous-step-down-converter
-  paper: ''
-  demo: ''
+  - label: Code
+    url: https://github.com/imamunorzrashid/synchronous-step-down-converter
 image: /images/projects/lowemi.webp
 image_alt: Low-EMI synchronous step-down converter PCB render
 featured: false

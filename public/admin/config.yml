@@ -36,6 +36,10 @@ collections:
           - { name: photo, label: Photo, widget: image }
           - { name: photo_alt, label: Photo alt text, widget: string }
           - { name: bio, label: Bio, widget: markdown }
+          - { name: now, label: Now, widget: markdown, required: false }
+          - { name: now_date, label: Now date (YYYY or YYYY-MM), widget: string, required: false, pattern: ['^\d{4}(-(0[1-9]|1[0-2]))?$', 'Use YYYY or YYYY-MM'] }
+          - { name: about_opening, label: About page opening, widget: markdown, required: false }
+          - { name: audience_line, label: Audience line (home page), widget: markdown, required: false, hint: "Leave empty to show nothing on the home page" }
           - { name: seeking, label: Seeking, widget: string, required: false }
           - { name: interests, label: Research interests, widget: list, required: false }
           - name: links
@@ -63,6 +67,7 @@ collections:
         file: src/content/pages/research.yaml
         fields:
           - { name: statement, label: Research statement, widget: markdown }
+          - { name: questions, label: "Questions I'm working on", widget: list, required: false, hint: "2 to 4 open questions in plain words" }
           - name: themes
             label: Research themes
             widget: list
@@ -70,6 +75,15 @@ collections:
             fields:
               - { name: title, label: Title, widget: string }
               - { name: summary, label: Summary, widget: markdown }
+              - name: image
+                label: Figure
+                widget: object
+                required: false
+                fields:
+                  - { name: src, label: Image, widget: image, required: false }
+                  - { name: alt, label: Alt text, widget: string, required: false, hint: "Required when an image is set" }
+                  - { name: caption, label: Caption, widget: string, required: false }
+              - { name: story, label: Story (project file name), widget: string, required: false, hint: "The file name of a project with a story, without .yaml" }
       - name: teaching
         label: Teaching page
         file: src/content/pages/teaching.yaml
@@ -82,6 +96,14 @@ collections:
             fields:
               - { name: department, label: Department, widget: string }
               - { name: courses, label: Courses, widget: list }
+          - name: videos
+            label: Videos
+            widget: list
+            required: false
+            fields:
+              - { name: url, label: Video URL, widget: string, pattern: ['^https?://', 'Use a full URL starting with https://'] }
+              - { name: title, label: Title, widget: string }
+              - { name: poster, label: Poster image, widget: image, required: false }
 
   - name: news
     label: News
@@ -118,6 +140,9 @@ collections:
       - { name: featured, label: Featured, widget: boolean, default: false }
       - { name: note, label: Note, widget: text, required: false }
       - { name: abstract, label: Abstract, widget: markdown, required: false }
+      - { name: plain, label: Plain-language line, widget: text, required: false, hint: "One plain-language line for the paper" }
+      - { name: slides, label: Slides (PDF), widget: file, media_folder: public/docs, public_folder: /docs, accept: application/pdf, required: false, hint: "Upload a PDF (10 MB max), or paste a full https:// link" }
+      - { name: video, label: Video URL, widget: string, required: false, pattern: ['^https?://', 'Use a full URL starting with https://'] }
 
   - name: projects
     label: Projects
@@ -129,19 +154,42 @@ collections:
     slug: '{{slug}}'
     fields:
       - { name: title, label: Title, widget: string }
+      - { name: kind, label: Kind, widget: select, options: [research, build], default: build }
+      - { name: draft, label: Draft, widget: boolean, default: false, hint: "A draft story page is built only in dev" }
       - { name: order, label: Order, widget: number, value_type: int, default: 100, required: false }
       - { name: start, label: Start (YYYY or YYYY-MM), widget: string, required: false, pattern: ['^\d{4}(-(0[1-9]|1[0-2]))?$', 'Use YYYY or YYYY-MM'] }
       - { name: end, label: End (YYYY or YYYY-MM), widget: string, required: false, pattern: ['^\d{4}(-(0[1-9]|1[0-2]))?$', 'Use YYYY or YYYY-MM'] }
+      - { name: role, label: My role, widget: string, required: false }
+      - { name: team, label: Team, widget: string, required: false }
+      - { name: tools, label: Tools, widget: list, required: false }
+      - { name: outcome, label: Outcome, widget: string, required: false }
+      - { name: standfirst, label: Standfirst, widget: string, required: false, hint: "One sentence shown under the title" }
       - { name: summary, label: Summary, widget: markdown }
+      - { name: story, label: Story, widget: markdown, required: false, hint: "Suggested headings: What the problem was · What I did · What went wrong · What I'd do differently" }
       - { name: tags, label: Tags, widget: list, required: false }
       - name: links
         label: Links
-        widget: object
+        widget: list
         required: false
         fields:
-          - { name: code, label: Code, widget: string, required: false, pattern: ['^https?://', 'Use a full URL starting with https://'] }
-          - { name: paper, label: Paper, widget: string, required: false, pattern: ['^https?://', 'Use a full URL starting with https://'] }
-          - { name: demo, label: Demo, widget: string, required: false, pattern: ['^https?://', 'Use a full URL starting with https://'] }
+          - { name: label, label: Label, widget: string }
+          - { name: url, label: URL or PDF, widget: file, media_folder: public/docs, public_folder: /docs, accept: application/pdf, hint: "Paste a full https:// link, or upload a PDF (10 MB max)" }
+      - name: images
+        label: Images
+        widget: list
+        required: false
+        fields:
+          - { name: src, label: Image, widget: image }
+          - { name: alt, label: Alt text, widget: string }
+          - { name: caption, label: Caption, widget: string, required: false }
+      - name: videos
+        label: Videos
+        widget: list
+        required: false
+        fields:
+          - { name: url, label: Video URL, widget: string, pattern: ['^https?://', 'Use a full URL starting with https://'] }
+          - { name: title, label: Title, widget: string }
+          - { name: poster, label: Poster image, widget: image, required: false }
       - { name: image, label: Image, widget: image, required: false }
       - { name: image_alt, label: Image alt text (required if an image is set), widget: string, required: false }
       - { name: featured, label: Featured, widget: boolean, default: false }
@@ -163,6 +211,15 @@ collections:
       - { name: thesis_title, label: Thesis title, widget: string, required: false }
       - { name: supervisor, label: Supervisor, widget: string, required: false }
       - { name: details, label: Details, widget: list, required: false }
+      - { name: logo, label: Logo, widget: image, media_folder: public/images/logos, public_folder: /images/logos, required: false }
+      - name: links
+        label: Links
+        widget: list
+        required: false
+        fields:
+          - { name: label, label: Label, widget: string }
+          - { name: url, label: URL or PDF, widget: file, media_folder: public/docs, public_folder: /docs, accept: application/pdf, hint: "Paste a full https:// link, or upload a PDF (10 MB max)" }
+      - { name: story, label: Story (project file name), widget: string, required: false, hint: "The file name of the project that tells the story, without .yaml" }
 
   - name: experience
     label: Experience
@@ -181,6 +238,22 @@ collections:
       - { name: location, label: Location, widget: string, required: false }
       - { name: link, label: Link, widget: string, required: false, pattern: ['^https?://', 'Use a full URL starting with https://'] }
       - { name: points, label: Points, widget: list, required: false }
+      - { name: logo, label: Logo, widget: image, media_folder: public/images/logos, public_folder: /images/logos, required: false }
+      - name: image
+        label: Image
+        widget: object
+        required: false
+        fields:
+          - { name: src, label: Image, widget: image, required: false }
+          - { name: alt, label: Alt text, widget: string, required: false, hint: "Required when an image is set" }
+          - { name: caption, label: Caption, widget: string, required: false }
+      - name: links
+        label: Links
+        widget: list
+        required: false
+        fields:
+          - { name: label, label: Label, widget: string }
+          - { name: url, label: URL or PDF, widget: file, media_folder: public/docs, public_folder: /docs, accept: application/pdf, hint: "Paste a full https:// link, or upload a PDF (10 MB max)" }
 
   - name: teaching
     label: Teaching experience
@@ -214,6 +287,15 @@ collections:
       - { name: date, label: Date (YYYY or YYYY-MM), widget: string, pattern: ['^\d{4}(-(0[1-9]|1[0-2]))?$', 'Use YYYY or YYYY-MM'] }
       - { name: end, label: End (YYYY or YYYY-MM), widget: string, required: false, pattern: ['^\d{4}(-(0[1-9]|1[0-2]))?$', 'Use YYYY or YYYY-MM'] }
       - { name: description, label: Description, widget: text, required: false }
+      - name: image
+        label: Image
+        widget: object
+        required: false
+        fields:
+          - { name: src, label: Image, widget: image, required: false }
+          - { name: alt, label: Alt text, widget: string, required: false, hint: "Required when an image is set" }
+          - { name: caption, label: Caption, widget: string, required: false }
+      - { name: story, label: Story (project file name), widget: string, required: false, hint: "The file name of the project that tells the story, without .yaml" }
       - { name: link, label: Link, widget: string, required: false, pattern: ['^https?://', 'Use a full URL starting with https://'] }
 
   - name: activities
@@ -228,6 +310,7 @@ collections:
       - { name: title, label: Title, widget: string }
       - { name: kind, label: Kind, widget: select, options: [talk, service, reviewing, outreach] }
       - { name: event, label: Event, widget: string }
+      - { name: video, label: Video URL, widget: string, required: false, pattern: ['^https?://', 'Use a full URL starting with https://'] }
       - { name: date, label: Date (YYYY or YYYY-MM), widget: string, pattern: ['^\d{4}(-(0[1-9]|1[0-2]))?$', 'Use YYYY or YYYY-MM'] }
       - { name: location, label: Location, widget: string, required: false }
       - { name: link, label: Link, widget: string, required: false, pattern: ['^https?://', 'Use a full URL starting with https://'] }
@@ -245,6 +328,14 @@ collections:
       - { name: issuer, label: Issuer, widget: string }
       - { name: date, label: Date (YYYY or YYYY-MM), widget: string, pattern: ['^\d{4}(-(0[1-9]|1[0-2]))?$', 'Use YYYY or YYYY-MM'] }
       - { name: credential_url, label: Credential URL, widget: string, required: false, pattern: ['^https?://', 'Use a full URL starting with https://'] }
+      - name: image
+        label: Image
+        widget: object
+        required: false
+        fields:
+          - { name: src, label: Image, widget: image, required: false }
+          - { name: alt, label: Alt text, widget: string, required: false, hint: "Required when an image is set" }
+          - { name: caption, label: Caption, widget: string, required: false }
 
   - name: gallery
     label: Gallery

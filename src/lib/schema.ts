@@ -18,6 +18,25 @@ const url = z.url();
 const bool = blank(z.boolean().default(false));
 const list = blank(z.array(z.string()).default([]));
 
+export const link = z.object({ label: str, url: str });
+export const links = blank(z.array(link).default([]));
+export const img = z.object({ src: str, alt: z.string().min(1), caption: opt(str) });
+// A CMS image with no src ('', null or {src: ''}) is missing.
+export const optImg = z.preprocess(
+  (v) => (v === '' || v === null || (typeof v === 'object' && !(v as { src?: unknown }).src) ? undefined : v),
+  img.optional(),
+);
+export const video = z.object({ url, title: str, poster: opt(str) });
+
+// A stale CMS tab saves project links as {code, paper, demo}; map it to the list.
+const legacyLinks = (v: unknown) =>
+  v && typeof v === 'object' && !Array.isArray(v)
+    ? Object.entries({ code: 'Code', paper: 'Paper', demo: 'Demo' }).flatMap(([k, label]) => {
+        const u = (v as Record<string, unknown>)[k];
+        return u ? [{ label, url: u }] : [];
+      })
+    : v;
+
 export const profile = z.object({
   name: str,
   pub_name: str,
@@ -28,6 +47,10 @@ export const profile = z.object({
   photo: str,
   photo_alt: z.string().min(1),
   bio: str,
+  now: opt(str),
+  now_date: opt(ym),
+  about_opening: opt(str),
+  audience_line: opt(str),
   seeking: opt(str),
   interests: list,
   links: opt(
@@ -47,7 +70,10 @@ export const profile = z.object({
 
 export const researchPage = z.object({
   statement: str,
-  themes: z.array(z.object({ title: str, summary: str })).default([]),
+  questions: list,
+  themes: z
+    .array(z.object({ title: str, summary: str, image: optImg, story: opt(str) }))
+    .default([]),
 });
 
 export const teachingPage = z.object({
@@ -55,6 +81,7 @@ export const teachingPage = z.object({
   course_groups: z
     .array(z.object({ department: str, courses: z.array(str).min(1) }))
     .default([]),
+  videos: blank(z.array(video).default([])),
 });
 
 export const news = z.object({
@@ -78,6 +105,9 @@ export const publication = z
     featured: bool,
     note: opt(str),
     abstract: opt(str),
+    plain: opt(str),
+    slides: opt(str),
+    video: opt(url),
   })
   .refine((p) => p.status === 'in_preparation' || p.status === 'accepted' || p.year !== undefined, {
     message: 'year required unless status is in_preparation or accepted',
@@ -87,14 +117,24 @@ export const publication = z
 export const project = z
   .object({
     title: str,
+    kind: z.enum(['research', 'build']).default('build'),
+    draft: bool,
     order: blank(z.number().default(100)),
     start: opt(ym),
     end: opt(ym),
+    role: opt(str),
+    team: opt(str),
+    tools: list,
+    outcome: opt(str),
+    standfirst: opt(str),
     summary: str,
+    story: opt(str),
     tags: list,
-    links: opt(z.object({ code: opt(url), paper: opt(url), demo: opt(url) })),
+    links: z.preprocess(legacyLinks, links),
     image: opt(str),
     image_alt: opt(str),
+    images: blank(z.array(img).default([])),
+    videos: blank(z.array(video).default([])),
     featured: bool,
   })
   .refine((p) => !p.image || !!p.image_alt, {
@@ -111,6 +151,9 @@ export const education = z.object({
   thesis_title: opt(str),
   supervisor: opt(str),
   details: list,
+  logo: opt(str),
+  links,
+  story: opt(str),
 });
 
 export const experience = z.object({
@@ -122,6 +165,9 @@ export const experience = z.object({
   location: opt(str),
   link: opt(url),
   points: list,
+  logo: opt(str),
+  image: optImg,
+  links,
 });
 
 export const teaching = z.object({
@@ -142,6 +188,8 @@ export const award = z.object({
   end: opt(ym),
   description: opt(str),
   link: opt(url),
+  image: optImg,
+  story: opt(str),
 });
 
 export const activity = z.object({
@@ -151,6 +199,7 @@ export const activity = z.object({
   date: ym,
   location: opt(str),
   link: opt(url),
+  video: opt(url),
 });
 
 export const certificate = z.object({
@@ -158,6 +207,7 @@ export const certificate = z.object({
   issuer: str,
   date: ym,
   credential_url: opt(url),
+  image: optImg,
 });
 
 export const gallery = z.object({

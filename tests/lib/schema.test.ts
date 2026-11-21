@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 import { z } from 'astro/zod';
-import { opt, ym, education, publication, project, profile, teachingPage } from '../../src/lib/schema';
+import { opt, ym, education, experience, publication, project, profile, researchPage, teachingPage } from '../../src/lib/schema';
 
 describe('opt', () => {
   test('maps empty string to undefined', () => {
@@ -93,5 +93,49 @@ describe('profile photo_alt', () => {
   });
   test('a non-empty photo_alt passes', () => {
     expect(profile.shape.photo_alt.safeParse('Portrait').success).toBe(true);
+  });
+});
+
+describe('project links', () => {
+  const base = { title: 'T', summary: 'S' };
+  test('a stale CMS object of links converts to the list', () => {
+    expect(project.parse({ ...base, links: { code: 'https://c', paper: '', demo: 'https://d' } }).links).toEqual([
+      { label: 'Code', url: 'https://c' },
+      { label: 'Demo', url: 'https://d' },
+    ]);
+  });
+  test('a new project defaults to a build with empty lists', () => {
+    const p = project.parse(base);
+    expect(p.kind).toBe('build');
+    expect(p.links).toEqual([]);
+    expect(p.images).toEqual([]);
+    expect(p.videos).toEqual([]);
+    expect(p.tools).toEqual([]);
+    expect(p.draft).toBe(false);
+  });
+  test('an image without alt text fails', () => {
+    expect(project.safeParse({ ...base, images: [{ src: '/images/a.webp', alt: '' }] }).success).toBe(false);
+  });
+  test('an empty video poster from the CMS is treated as missing', () => {
+    expect(project.parse({ ...base, videos: [{ url: 'https://youtu.be/x', title: 'Run', poster: '' }] }).videos[0].poster).toBeUndefined();
+  });
+});
+
+describe('optional images from the CMS', () => {
+  test('an empty image object is treated as missing', () => {
+    expect(experience.parse({ role: 'R', org: 'O', kind: 'research', start: '2025', image: { src: '', alt: '' } }).image).toBeUndefined();
+  });
+});
+
+describe('education logo', () => {
+  test('an empty logo from the CMS is treated as missing', () => {
+    expect(education.parse({ degree: 'D', institution: 'I', logo: '' }).logo).toBeUndefined();
+  });
+});
+
+describe('research theme story', () => {
+  test('an empty story from the CMS is treated as missing', () => {
+    const r = researchPage.parse({ statement: 'S', questions: ['Q?'], themes: [{ title: 'T', summary: 'S', story: '' }] });
+    expect(r.themes[0].story).toBeUndefined();
   });
 });

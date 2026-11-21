@@ -1,0 +1,13 @@
+title: "Defending microgrids against false data injection"
+kind: research
+order: 2
+featured: true
+start: '2025'
+end: '2026'
+team: "EPIC Research Group, RUET"
+role: First author
+outcome: "86.2% lower maximum frequency deviation than an LSTM-based detector"
+summary: "A false data injection attack corrupts the measurements a microgrid’s controllers rely on and can push its frequency off target. I built a distributed framework to detect and mitigate these attacks."
+links:
+  - label: Paper (accepted)
+    url: https://www.researchgate.net/publication/417648405_Enhancing_Cyber-resilient_Frequency_Control_of_Isolated_Microgrids_Under_Composite_Noise_A_Collaborative_Learning-Based_Distributed_Framework

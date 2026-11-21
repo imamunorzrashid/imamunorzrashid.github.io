@@ -9,12 +9,6 @@ const projects = (await getCollection('projects'))
   .map((e) => e.data)
   .sort((a, b) => a.order - b.order || a.title.localeCompare(b.title));
 
-const LINKS = [
-  { label: 'Code', key: 'code' },
-  { label: 'Paper', key: 'paper' },
-  { label: 'Demo', key: 'demo' },
-] as const;
-
 const rangeOf = (p: { start?: string; end?: string }) =>
   p.start ? formatRange(p.start, p.end) : p.end ? formatYm(p.end) : undefined;
 ---
@@ -26,12 +20,12 @@ const rangeOf = (p: { start?: string; end?: string }) =>
         <Entry heading={p.title} sub={p.tags.length > 0 ? p.tags.join(', ') : undefined} range={rangeOf(p)}>
           <Prose md={p.summary} />
           {p.image && <img src={p.image} alt={p.image_alt} loading="lazy" />}
-          {LINKS.some((l) => p.links?.[l.key]) && (
+          {p.links.length > 0 && (
             <p class="meta">
-              {LINKS.filter((l) => p.links?.[l.key]).map((l, i) => (
+              {p.links.map((l, i) => (
                 <>
                   {i > 0 && ' · '}
-                  <a href={p.links?.[l.key]}>{l.label}</a>
+                  <a href={l.url}>{l.label}</a>
                 </>
               ))}
             </p>

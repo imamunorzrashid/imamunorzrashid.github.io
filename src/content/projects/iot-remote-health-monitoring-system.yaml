@@ -1,8 +1,10 @@
 title: 'IoT-Based Remote Health Monitoring System'
+kind: build
 order: 5
 summary: 'I built an ESP32-based IoT monitoring system that reads DHT11 and MAX30100 sensors and shows the readings remotely in real time through Blynk.'
 tags: ['ESP32', 'MAX30100', 'DHT11', 'Blynk']
 links:
-  code: 'https://github.com/imamunorzrashid/Advance-IoT-Based-Remote-Patient-Health-Monitoring-System'
+  - label: Code
+    url: 'https://github.com/imamunorzrashid/Advance-IoT-Based-Remote-Patient-Health-Monitoring-System'
 image: '/images/projects/patienthealth.webp'
 image_alt: 'IoT-based remote health monitoring system architecture'
