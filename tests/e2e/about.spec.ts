@@ -318,11 +318,15 @@ test.describe('About page', () => {
   });
 
   test('the EV-motors talk shows its photo under the talk line', async ({ page }) => {
+    const photos = activities.find((a) => a.title.includes('Driving Innovation'))?.images ?? [];
+    expect(photos.length).toBeGreaterThan(0);
     await page.goto('/about/');
     const talk = sectionOf(page, 'Talks and service').locator('.item', { hasText: 'Driving Innovation' });
-    await expect(talk.locator('figure')).toHaveCount(1);
-    await expect(talk.locator('figure img')).toHaveAttribute('src', '/images/activities/seminar.jpg');
-    await expect(talk.locator('figure img')).toHaveAttribute('alt', /EV Powertrain/);
+    await expect(talk.locator('figure')).toHaveCount(photos.length);
+    for (const [i, img] of photos.entries()) {
+      await expect(talk.locator('figure img').nth(i)).toHaveAttribute('src', img.src);
+      await expect(talk.locator('figure img').nth(i)).toHaveAttribute('alt', img.alt);
+    }
   });
 
   test('talk photos render one figure per image, and talks without photos render none', async ({ page }) => {
