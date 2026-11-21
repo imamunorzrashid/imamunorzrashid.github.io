@@ -21,6 +21,7 @@ const yamlIn = <T>(dir: URL) =>
 
 type Project = {
   title: string;
+  kind?: string;
   order?: number;
   draft?: boolean;
   story?: string;
@@ -32,9 +33,9 @@ type Project = {
   links?: { label: string; url: string }[];
   featured?: boolean;
 };
-// Same order as index.astro: order, then title.
+// Same order as index.astro: order, then title. Selected work shows build projects only.
 const featuredProjects = yamlIn<Project>(new URL('../../src/content/projects/', import.meta.url))
-  .filter((p) => p.featured)
+  .filter((p) => p.featured && (p.kind ?? 'build') === 'build')
   .sort((a, b) => (a.order ?? 100) - (b.order ?? 100) || a.title.localeCompare(b.title));
 const featuredPubs = yamlIn<{ title: string; featured?: boolean }>(new URL('../../src/content/publications/', import.meta.url)).filter(
   (p) => p.featured,

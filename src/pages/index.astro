@@ -15,9 +15,9 @@ const news = (await getCollection('news'))
   .sort((a, b) => ymSortKey(b.data.date) - ymSortKey(a.data.date))
   .slice(0, 5);
 
-// Same order as projects.astro. Only featured projects appear here.
+// Same order as projects.astro. Only featured build projects appear here; research projects are on the Research page.
 const selectedWork = (await getCollection('projects'))
-  .filter((e) => e.data.featured)
+  .filter((e) => e.data.featured && e.data.kind === 'build')
   .sort((a, b) => a.data.order - b.data.order || a.data.title.localeCompare(b.data.title))
   .map((e) => ({ ...e.data, slug: e.id }));
 

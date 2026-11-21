@@ -5,6 +5,7 @@ import { formatRange, formatYm, ymSortKey } from '../../src/lib/dates';
 
 type Project = {
   title: string;
+  kind?: string;
   order?: number;
   start?: string;
   end?: string;
@@ -16,7 +17,9 @@ const yamlIn = <T>(dir: URL): T[] =>
     .filter((f) => f.endsWith('.yaml'))
     .map((f) => load(readFileSync(new URL(f, dir), 'utf8')) as T);
 
-const projects = yamlIn<Project>(new URL('../../src/content/projects/', import.meta.url));
+// Projects lists only build projects; research projects live on the Research page. A missing kind means build.
+const allProjects = yamlIn<Project>(new URL('../../src/content/projects/', import.meta.url));
+const projects = allProjects.filter((p) => (p.kind ?? 'build') === 'build');
 const teachingDir = new URL('../../src/content/teaching/', import.meta.url);
 type Teaching = { role: string; start: string; end?: string };
 const teachingEntries = existsSync(teachingDir) ? yamlIn<Teaching>(teachingDir) : [];
@@ -38,6 +41,15 @@ test('projects has one h1 "Projects"', async ({ page }) => {
   const h1 = page.locator('h1');
   await expect(h1).toHaveCount(1);
   await expect(h1).toHaveText('Projects');
+});
+
+test('research projects are not listed on Projects', async ({ page }) => {
+  await page.goto('/projects/');
+  const research = allProjects.filter((p) => p.kind === 'research');
+  expect(research.length).toBeGreaterThan(0);
+  for (const p of research) {
+    await expect(page.getByRole('heading', { name: p.title, exact: true })).toHaveCount(0);
+  }
 });
 
 test('every project title is an h3, sorted by order then title', async ({ page }) => {

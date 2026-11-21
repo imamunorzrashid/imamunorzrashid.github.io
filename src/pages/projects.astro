@@ -5,8 +5,10 @@ import Entry from '../components/Entry.astro';
 import Prose from '../components/Prose.astro';
 import { formatRange, formatYm } from '../lib/dates';
 
+// Research projects (kind: research) are listed on the Research page, so this page lists build projects only.
 const projects = (await getCollection('projects'))
   .map((e) => e.data)
+  .filter((p) => p.kind === 'build')
   .sort((a, b) => a.order - b.order || a.title.localeCompare(b.title));
 
 const rangeOf = (p: { start?: string; end?: string }) =>
