@@ -2,9 +2,8 @@
 import { getCollection, getEntry } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Prose from '../components/Prose.astro';
-import PubEntry from '../components/PubEntry.astro';
-import { formatYm, ymSortKey } from '../lib/dates';
-import { groupPublications } from '../lib/pubs';
+import WorkRow from '../components/WorkRow.astro';
+import { formatRange, formatYm, ymSortKey } from '../lib/dates';
 import { homeLinks } from '../lib/links';
 import LinkIcon from '../components/LinkIcon.astro';
 
@@ -16,9 +15,19 @@ const news = (await getCollection('news'))
   .sort((a, b) => ymSortKey(b.data.date) - ymSortKey(a.data.date))
   .slice(0, 5);
 
-const featured = groupPublications(
-  (await getCollection('publications')).map((e) => e.data).filter((pub) => pub.featured),
-).flatMap((g) => g.items);
+// Same order as projects.astro. Only featured projects appear here.
+const selectedWork = (await getCollection('projects'))
+  .filter((e) => e.data.featured)
+  .sort((a, b) => a.data.order - b.data.order || a.data.title.localeCompare(b.data.title))
+  .map((e) => ({ ...e.data, slug: e.id }));
+
+// Same draft rule as projects/[slug].astro: production skips drafts, dev shows them.
+const rowHref = (w: (typeof selectedWork)[number]) =>
+  w.story && (import.meta.env.DEV || !w.draft) ? `/projects/${w.slug}/` : w.links[0]?.url;
+const rowMeta = (w: (typeof selectedWork)[number]) => {
+  const range = w.start ? formatRange(w.start, w.end) : w.end ? formatYm(w.end) : undefined;
+  return [w.role, range].filter(Boolean).join(' · ') || undefined;
+};
 
 const shownLinks = homeLinks(p);
 ---
@@ -57,17 +66,41 @@ const shownLinks = homeLinks(p);
     <p class="text-links">
       {shownLinks.map((l, i) => (
         <>
-          {i > 0 && ' · '}
+          {i > 0 && ' · '}
           <a href={l.href} class="with-icon">{l.icon && <LinkIcon name={l.icon} />} {l.label}</a>
         </>
       ))}
     </p>
+    {p.audience_line && (
+      <div class="audience">
+        <Prose md={p.audience_line} />
+      </div>
+    )}
   </section>
 
   {p.interests.length > 0 && (
     <section class="section">
       <h2>Research Interests</h2>
       <p>{p.interests.join(', ')}</p>
+    </section>
+  )}
+
+  {p.now && (
+    <section class="section">
+      <h2>Now</h2>
+      {p.now_date && <p class="meta">As of {formatYm(p.now_date)}</p>}
+      <Prose md={p.now} />
+    </section>
+  )}
+
+  {selectedWork.length > 0 && (
+    <section class="section">
+      <h2>Selected work</h2>
+      {selectedWork.map((w) => (
+        <WorkRow heading={w.title} href={rowHref(w)} meta={rowMeta(w)} image={w.image} imageAlt={w.image_alt}>
+          <Prose md={w.summary} />
+        </WorkRow>
+      ))}
     </section>
   )}
 
@@ -83,19 +116,6 @@ const shownLinks = homeLinks(p);
             ) : (
               <Prose md={n.data.text} inline />
             )}
-          </li>
-        ))}
-      </ul>
-    </section>
-  )}
-
-  {featured.length > 0 && (
-    <section class="section">
-      <h2>Selected Publications</h2>
-      <ul class="pubs">
-        {featured.map((pub) => (
-          <li>
-            <PubEntry pub={pub} selfName={p.pub_name} />
           </li>
         ))}
       </ul>
@@ -124,13 +144,11 @@ const shownLinks = homeLinks(p);
       }
     }
 
-    .news,
-    .pubs {
+    .news {
       list-style: none;
     }
 
-    .news li,
-    .pubs li {
+    .news li {
       margin-bottom: 0.75rem;
     }
 

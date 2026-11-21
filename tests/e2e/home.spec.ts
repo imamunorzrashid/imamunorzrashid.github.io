@@ -1,6 +1,7 @@
 import { test, expect } from './fixtures';
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 import { load } from 'js-yaml';
+import { formatYm, ymSortKey } from '../../src/lib/dates';
 
 const profile = load(readFileSync(new URL('../../src/content/pages/profile.yaml', import.meta.url), 'utf8')) as {
   name: string;
@@ -8,7 +9,42 @@ const profile = load(readFileSync(new URL('../../src/content/pages/profile.yaml'
   cv_academic?: string;
   links: { scholar: string; researchgate?: string };
   flag_counter?: string;
+  now?: string;
+  now_date?: string;
+  audience_line?: string;
 };
+
+const yamlIn = <T>(dir: URL) =>
+  readdirSync(dir)
+    .filter((f) => f.endsWith('.yaml'))
+    .map((f) => ({ slug: f.replace(/\.yaml$/, ''), ...(load(readFileSync(new URL(f, dir), 'utf8')) as T) }));
+
+type Project = {
+  title: string;
+  order?: number;
+  draft?: boolean;
+  story?: string;
+  role?: string;
+  start?: string;
+  end?: string;
+  image?: string;
+  image_alt?: string;
+  links?: { label: string; url: string }[];
+  featured?: boolean;
+};
+// Same order as index.astro: order, then title.
+const featuredProjects = yamlIn<Project>(new URL('../../src/content/projects/', import.meta.url))
+  .filter((p) => p.featured)
+  .sort((a, b) => (a.order ?? 100) - (b.order ?? 100) || a.title.localeCompare(b.title));
+const featuredPubs = yamlIn<{ title: string; featured?: boolean }>(new URL('../../src/content/publications/', import.meta.url)).filter(
+  (p) => p.featured,
+);
+const newsItems = yamlIn<{ date: string; text: string }>(new URL('../../src/content/news/', import.meta.url))
+  .sort((a, b) => ymSortKey(b.date) - ymSortKey(a.date))
+  .slice(0, 5);
+
+const sectionOf = (page: import('@playwright/test').Page, heading: string) =>
+  page.locator('section').filter({ has: page.getByRole('heading', { name: heading, level: 2, exact: true }) });
 
 // Optional links appear only when the profile sets them.
 const researchGate = profile.links.researchgate ? ['ResearchGate'] : [];
@@ -154,4 +190,76 @@ test('footer shows the Flag Counter after the last updated line iff flag_counter
   await expect(counter).toHaveAttribute('rel', 'noopener');
   const previous = await counter.evaluate((el) => el.closest('p')?.previousElementSibling?.textContent ?? '');
   expect(previous).toContain('Last updated');
+});
+
+test('Now heading appears only when now is set; "As of" sits under it when now_date is set', async ({ page }) => {
+  await page.goto('/');
+  const section = sectionOf(page, 'Now');
+  if (!profile.now) {
+    await expect(section).toHaveCount(0);
+    return;
+  }
+  await expect(section).toHaveCount(1);
+  if (profile.now_date) {
+    await expect(section.locator('h2 + p')).toHaveText(`As of ${formatYm(profile.now_date)}`);
+  } else {
+    await expect(section.getByText('As of')).toHaveCount(0);
+  }
+});
+
+test('audience line renders only when audience_line is set', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.locator('.audience')).toHaveCount(profile.audience_line ? 1 : 0);
+});
+
+test('Selected work lists featured projects by order, each linked and thumbnailed as its content allows', async ({ page }) => {
+  await page.goto('/');
+  const section = sectionOf(page, 'Selected work');
+  if (featuredProjects.length === 0) {
+    await expect(section).toHaveCount(0);
+    return;
+  }
+  await expect(section).toHaveCount(1);
+  const rows = section.locator('.work-row');
+  await expect(rows.locator('h3')).toHaveText(featuredProjects.map((p) => p.title));
+  for (const [i, p] of featuredProjects.entries()) {
+    const row = rows.nth(i);
+    const link = row.locator('h3').getByRole('link');
+    // Production skips drafts, so only a published story gets its story page.
+    if (p.story && !p.draft) {
+      await expect(link).toHaveAttribute('href', `/projects/${p.slug}/`);
+    } else if (p.links?.length) {
+      await expect(link).toHaveAttribute('href', p.links[0].url);
+    } else {
+      await expect(link).toHaveCount(0);
+    }
+    await expect(row.locator('img')).toHaveCount(p.image ? 1 : 0);
+  }
+});
+
+test('featured publications do not appear on the home page', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.getByRole('heading', { name: 'Selected Publications' })).toHaveCount(0);
+  // News repeats one paper's title, so the check skips the News section.
+  const outsideNews = page
+    .locator('main section')
+    .filter({ hasNot: page.getByRole('heading', { name: 'News', exact: true }) });
+  for (const pub of featuredPubs) {
+    await expect(outsideNews.getByText(pub.title)).toHaveCount(0);
+  }
+});
+
+test('News shows the latest five items, newest first, with their dates', async ({ page }) => {
+  await page.goto('/');
+  const section = sectionOf(page, 'News');
+  if (newsItems.length === 0) {
+    await expect(section).toHaveCount(0);
+    return;
+  }
+  await expect(section).toHaveCount(1);
+  const items = section.locator('li');
+  await expect(items).toHaveCount(newsItems.length);
+  for (const [i, n] of newsItems.entries()) {
+    await expect(items.nth(i).locator('.meta')).toHaveText(formatYm(n.date));
+  }
 });
