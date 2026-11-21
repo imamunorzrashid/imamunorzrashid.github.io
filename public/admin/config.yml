@@ -141,7 +141,7 @@ collections:
       - { name: note, label: Note, widget: text, required: false }
       - { name: abstract, label: Abstract, widget: markdown, required: false }
       - { name: plain, label: Plain-language line, widget: text, required: false, hint: "One plain-language line for the paper" }
-      - { name: slides, label: Slides (PDF), widget: file, media_folder: public/docs, public_folder: /docs, accept: application/pdf, required: false, hint: "Upload a PDF (10 MB max), or paste a full https:// link" }
+      - { name: slides, label: Slides (PDF), widget: file, media_folder: /public/docs, public_folder: /docs, accept: application/pdf, required: false, hint: "Upload a PDF (10 MB max), or paste a full https:// link" }
       - { name: video, label: Video URL, widget: string, required: false, pattern: ['^https?://', 'Use a full URL starting with https://'] }
 
   - name: projects
@@ -173,7 +173,7 @@ collections:
         required: false
         fields:
           - { name: label, label: Label, widget: string }
-          - { name: url, label: URL or PDF, widget: file, media_folder: public/docs, public_folder: /docs, accept: application/pdf, hint: "Paste a full https:// link, or upload a PDF (10 MB max)" }
+          - { name: url, label: URL or PDF, widget: file, media_folder: /public/docs, public_folder: /docs, accept: application/pdf, hint: "Paste a full https:// link, or upload a PDF (10 MB max)" }
       - name: images
         label: Images
         widget: list
@@ -211,14 +211,14 @@ collections:
       - { name: thesis_title, label: Thesis title, widget: string, required: false }
       - { name: supervisor, label: Supervisor, widget: string, required: false }
       - { name: details, label: Details, widget: list, required: false }
-      - { name: logo, label: Logo, widget: image, media_folder: public/images/logos, public_folder: /images/logos, required: false }
+      - { name: logo, label: Logo, widget: image, media_folder: /public/images/logos, public_folder: /images/logos, required: false }
       - name: links
         label: Links
         widget: list
         required: false
         fields:
           - { name: label, label: Label, widget: string }
-          - { name: url, label: URL or PDF, widget: file, media_folder: public/docs, public_folder: /docs, accept: application/pdf, hint: "Paste a full https:// link, or upload a PDF (10 MB max)" }
+          - { name: url, label: URL or PDF, widget: file, media_folder: /public/docs, public_folder: /docs, accept: application/pdf, hint: "Paste a full https:// link, or upload a PDF (10 MB max)" }
       - { name: story, label: Story (project file name), widget: string, required: false, hint: "The file name of the project that tells the story, without .yaml" }
 
   - name: experience
@@ -238,7 +238,7 @@ collections:
       - { name: location, label: Location, widget: string, required: false }
       - { name: link, label: Link, widget: string, required: false, pattern: ['^https?://', 'Use a full URL starting with https://'] }
       - { name: points, label: Points, widget: list, required: false }
-      - { name: logo, label: Logo, widget: image, media_folder: public/images/logos, public_folder: /images/logos, required: false }
+      - { name: logo, label: Logo, widget: image, media_folder: /public/images/logos, public_folder: /images/logos, required: false }
       - name: image
         label: Image
         widget: object
@@ -253,7 +253,7 @@ collections:
         required: false
         fields:
           - { name: label, label: Label, widget: string }
-          - { name: url, label: URL or PDF, widget: file, media_folder: public/docs, public_folder: /docs, accept: application/pdf, hint: "Paste a full https:// link, or upload a PDF (10 MB max)" }
+          - { name: url, label: URL or PDF, widget: file, media_folder: /public/docs, public_folder: /docs, accept: application/pdf, hint: "Paste a full https:// link, or upload a PDF (10 MB max)" }
 
   - name: teaching
     label: Teaching experience
