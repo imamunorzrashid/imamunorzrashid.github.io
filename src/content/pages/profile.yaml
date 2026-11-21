@@ -1,7 +1,7 @@
 name: Mamun Or Rashid
 pub_name: M. O. Rashid
 title: B.Sc. in Mechatronics Engineering
-affiliation: Rajshahi University of Engineering & Technology (RUET)
+affiliation: Rajshahi University of Engineering & Technology
 location: Rajshahi-6204, Bangladesh
 email: mamunorzrashid@gmail.com
 photo: /images/uploads/passport-size-photo.webp
@@ -10,7 +10,11 @@ bio: |-
   I am a Mechatronics Engineering graduate of Rajshahi University of Engineering & Technology (RUET), with a CGPA of 3.90/4.00 (3rd of 59), working on data-efficient control and cyber-physical security for microgrids.
 
   In the EPIC Research Group there, supervised by Subrata Kumar Sarker, I studied how distributed frequency controllers can keep working when their training data is scarce, noisy or under attack. My first-author paper in _Energy Conversion and Management: X_ (2026) transfers a dynamic neural network controller trained on clean data to degraded conditions through two-phase transfer learning, cutting error by up to 64% and training time by up to 35% against training from scratch, with real-time validation on OPAL-RT. A second first-author paper, accepted in _Next Energy_, extends the approach to detecting and mitigating false data injection attacks. My undergraduate thesis carries it from frequency regulation up to the economic dispatch layer.
-seeking: Open to PhD positions starting in Fall 2027
+now: ''
+now_date: ''
+about_opening: ''
+audience_line: ''
+seeking: ''
 interests:
   - Transfer Learning & Data-efficient Learning
   - Data-driven Distributed Control
@@ -25,7 +29,7 @@ links:
   linkedin: https://www.linkedin.com/in/imamunorzrashid
   researchgate: https://www.researchgate.net/profile/Mamun-Or-Rashid-6
 cv_academic: https://drive.google.com/file/d/1Xo7tER1Qupboh0M4GP3nL95p416H9Pav/view?usp=sharing
-cv_lecturer: https://drive.google.com/file/d/1stPZRMPbkSZluIPTqvrF5Zzem-FFZ-G_/view?usp=sharing
+cv_lecturer: ''
 flag_counter: jXJ4
 skills:
   - label: Programming
